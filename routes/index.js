@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const personal_schedule_controller = require('../controllers/personalscheduleController');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get('/', personal_schedule_controller.GET_personal_schedule);
+router.post('/release-shift', personal_schedule_controller.POST_release_shift);
+router.post('/unrelease-shift', personal_schedule_controller.POST_unrelease_shift);
 
 module.exports = router;
