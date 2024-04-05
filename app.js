@@ -3,11 +3,30 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require("mongoose");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const dotenv = require('dotenv')
+dotenv.config({ path: './config.env' });
+
+
 var app = express();
+
+// MongoDB connection
+mongoose.set("strictQuery", false);
+const dev_db_url = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@databasenumber1.bxvhltu.mongodb.net/?retryWrites=true&w=majority&appName=DatabaseNumber1";
+
+async function dbConnection() {
+  try {
+    await mongoose.connect(dev_db_url);
+    console.log("Connected to the database");
+  } catch (error) {
+    console.log("Could not connect to the database", error);
+  }
+}
+dbConnection();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
