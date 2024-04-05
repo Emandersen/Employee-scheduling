@@ -15,13 +15,13 @@ async function check_credentials(email, password) {
     }
 }
 
-function checkSession(req, res) {
+function checkSession(req, res, next) {
     if (req.session.user) {
-        return true;
+        next();
     } else {
-        return false;
+        res.redirect("/login");
     }
-};
+}
 
 function checkSessionAndPermissions(req, res, entryperm, permission) {
     if (checkSession(req, res)) {
@@ -34,25 +34,29 @@ function checkSessionAndPermissions(req, res, entryperm, permission) {
 };
 
 const GET_login = function (req, res) {
-    if (checkSession(req, res)) {
+    if (req.session && req.session.user) {
         res.redirect("/");
     } else {
         res.render("login", { title: "Login" });
-    };
+    }
 };
 
 const POST_login = async function (req, res) {
+    console.log('Attempting to log in with email:', req.body.email);
     if (await check_credentials(req.body.email, req.body.password)) {
-        User.findByEmail(req.body.email, function(err, user) {
-            if (err) {
-                res.redirect("/login");
-            } else {
-                req.session.user = user;
-            }
-        });
-
-        res.redirect("/");
+        console.log('Credentials are valid, trying to find user in database');
+        try {
+            const user = await users.findOne({ email: req.body.email });
+            console.log('User found, setting session user:', user);
+            req.session.user = user;
+            console.log('Redirecting to home page');
+            res.redirect("/");
+        } catch (err) {
+            console.log('Error occurred while finding user:', err);
+            res.redirect("/login");
+        }
     } else {
+        console.log('Invalid credentials, redirecting to login page');
         res.redirect("/login");
     }
 };

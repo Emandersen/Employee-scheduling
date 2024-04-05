@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const personalSchema = new Schema({
-      personal_id: { type: String, required: true },
+      email: { type: String, required: true },
       date: { type: date, required: true },
-      workHours: { type: String, required: true, maxLength: 3 },
+      workHours: { type: Number, required: true, maxLength: 3 },
       startTime: { type: date, required: true },
       endTime: { type: date, required: true },
       role: { type: String, required: true },
