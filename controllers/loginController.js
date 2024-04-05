@@ -61,10 +61,14 @@ const POST_login = async function (req, res) {
     }
 };
 
-const GET_logout = function (req, res) {
-    if (checkSession(req, res)) {
-        req.session.destroy();
-        res.redirect("/login");
+const GET_logout = function (req, res, next) {
+    if (req.session && req.session.user) {
+        req.session.destroy(err => {
+            if (err) {
+                return next(err);
+            }
+            res.redirect("/login");
+        });
     } else {
         res.redirect("/");
     }
