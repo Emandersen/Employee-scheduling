@@ -31,6 +31,12 @@ html
       .small {
         font-size: 0.8em;
       }
+      .content {
+        margin-left: 200px; // Adjust this value to match the width of your sidebar
+        padding: 20px;
+        padding-top: 70px; // Adjust this value to match the height of your navbar
+        overflow-y: auto;
+      }
   body
     div.sidebar
       br
@@ -42,7 +48,7 @@ html
       p.small Name: ${firstname} ${lastName}
       p.small Email: ${email}
       p.small Role: ${role}
-    nav(class="navbar navbar-expand-lg navbar-dark bg-primary")
+    nav(class="navbar navbar-expand-lg navbar-dark bg-primary", style="position: fixed; width: 100%; z-index: 1000;")
       div.container-fluid
         a.navbar-brand(href="/")
           img.logo(src="/path/to/your/logo.png", alt="Logo", height="100", width="100").d-inline-block.align-top.mr-2
@@ -69,6 +75,9 @@ html
           ul.navbar-nav.ml-auto
             li.nav-item
               a.nav-link(href="/logout") Logout
+    div.content
+      block content
+              
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
