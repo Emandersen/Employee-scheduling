@@ -24,16 +24,12 @@ function checkSession(req, res, next) {
 
 function checkSessionAndPermissions(entryperm) {
     return function(req, res, next) {
-        if (checkSession(req, res, next)) { // pass next to checkSession
-            if (req.session.user && (entryperm <= req.session.user.permission)) {
-                next();
-            } else {
-                res.status(403).send('Insufficient permissions');
-            }
+        if (req.session.user && (entryperm <= req.session.user.permission)) {
+            next();
         } else {
-            res.status(401).send('Not authenticated');
+            res.redirect("/");
         }
-    }
+    } 
 };
 
 const GET_login = function (req, res) {
