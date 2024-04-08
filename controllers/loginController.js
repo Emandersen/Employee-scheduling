@@ -29,11 +29,9 @@ function checkSessionAndPermissions(entryperm) {
                 next();
             } else {
                 res.status(403).send('Insufficient permissions');
-                return false;
             }
         } else {
             res.status(401).send('Not authenticated');
-            return false;
         }
     }
 };
