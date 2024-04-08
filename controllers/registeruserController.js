@@ -30,7 +30,7 @@ const POST_register = async function (req, res) {
     // Check if the user already exists
     const user = await userModel.findOne({ email: req.body.email });
     if (user) {
-        res.redirect('/register?error=User already exists');
+        res.redirect('/register?error=User already exists!');
         return;
     }
 
