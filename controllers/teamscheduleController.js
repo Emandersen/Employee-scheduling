@@ -16,11 +16,17 @@ function getCurrentWeek() {
   }
 
 async function GET_team_schedule(req, res) {
-  const allNames = await Users.find({
-    firstName: Users.firstName,
-    lastName: Users.lastName,
-  })
-  res.render('team_schedule', {week_number: getCurrentWeek()});
+  const allNames = await Users.find().exec();
+  let arr = [];
+  
+  for(i = 0; i <= allNames.length - 1; i++) {
+      arr.push(allNames[i].firstName + " " + allNames[i].lastName);
+  }
+
+  res.render('team_schedule', {
+    week_number: getCurrentWeek(),
+    names: arr
+  });
 };
 
 

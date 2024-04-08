@@ -13,5 +13,8 @@ block content
                 th Friday 
                 th Saturday 
                 th Sunday
-            tr
-                td #{firstName} #{lastName}
+
+            each name in names
+                tr 
+                    td= name
+                
