@@ -1,6 +1,5 @@
 const express = require("express");
-const router = express.Router();
-const users = require("../models/user");
+const users = require("../models/user.js");
 
 async function check_credentials(email, password) {
     try {
@@ -23,11 +22,17 @@ function checkSession(req, res, next) {
     }
 }
 
-function checkSessionAndPermissions(req, res, entryperm, permission) {
-    if (checkSession(req, res)) {
-        if (req.session.user.permission & (entryperm <= permission)) {
-            return true;
+function checkSessionAndPermissions(entryperm) {
+    return function(req, res, next) {
+        if (checkSession(req, res)) {
+            if (req.session.user && (entryperm <= req.session.user.permission)) {
+                next();
+            } else {
+                res.status(403).send('Insufficient permissions');
+                return false;
+            }
         } else {
+            res.status(401).send('Not authenticated');
             return false;
         }
     }

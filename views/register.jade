@@ -1,0 +1,32 @@
+extends layout 
+
+block content 
+    .container 
+        h1= title 
+        form(action='/register' method='post')
+            .form-group
+                label(for='firstName') First Name
+                input#firstName.form-control(type='text' name='firstName' required)
+            .form-group
+                label(for='lastName') Last Name
+                input#lastName.form-control(type='text' name='lastName' required)
+            .form-group
+                label(for='email') Email
+                input#email.form-control(type='email' name='email' required)
+            .form-group
+                label(for='password') Password
+                input#password.form-control(type='password' name='password' required)
+            .form-group
+                label(for='role') Role
+                input#role.form-control(type='text' name='role' required)
+            .form-group
+                label(for='department') Department
+                input#department.form-control(type='text' name='department' required)
+            .form-group
+                label(for='preferences') Preferences
+                input#preferences.form-control(type='text' name='preferences')
+            .form-group
+                label(for='permission') Permission
+                input#permission.form-control(type='number' name='permission' required)
+            .form-group
+                button(type='submit') Register
