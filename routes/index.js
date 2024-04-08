@@ -14,6 +14,7 @@ router.post('/login', login_controller.POST_login);
 router.get('/', login_controller.checkSession, personal_schedule_controller.GET_personal_schedule);
 router.post('/release-shift', login_controller.checkSession, personal_schedule_controller.POST_release_shift);
 router.post('/unrelease-shift', login_controller.checkSession, personal_schedule_controller.POST_unrelease_shift);
+router.get('/team_schedule',login_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
 
 // 500 handler
@@ -26,7 +27,5 @@ router.use(function (err, req, res, next) {
 router.use(function (req, res, next) {
     res.status(404).send('Sorry, we cannot find that!');
 });
-
-router.get('/team_schedule', team_schedule_controller.GET_team_schedule);
 
 module.exports = router;

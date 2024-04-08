@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var moment = require('moment');
+const Users = require('../models/user');
 
 
 
@@ -14,9 +15,14 @@ function getCurrentWeek() {
     return weekNumber;
   }
 
-  function GET_team_schedule(req, res) {
-    res.render('team_schedule', { week_number: getCurrentWeek()});
+async function GET_team_schedule(req, res) {
+  const allNames = await Users.find({
+    firstName: Users.firstName,
+    lastName: Users.lastName,
+  })
+  res.render('team_schedule', {week_number: getCurrentWeek()});
 };
+
 
 module.exports = {
     GET_team_schedule
