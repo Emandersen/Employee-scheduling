@@ -11,16 +11,8 @@ const users = require("../models/user.js");
 // The function is asynchronous, so it returns a promise that resolves to a boolean value.
 // Example: check_credentials('[email protected]', 'password123')
 async function check_credentials(email, password) {
-    try {
-        const user = await users.findOne({ email: email });
-        if (user && user.password === password) {
-            return true;
-        }
-        return false;
-    } catch (err) {
-        console.error(err);
-        return false;
-    }
+    const user = await users.findOne({ email });
+    return user && user.password === password;
 }
 
 // function: checkSession
@@ -64,7 +56,7 @@ function checkSessionAndPermissions(entryperm) {
 // Description: This function is called when the user navigates to the login page. It checks if the user is already logged in, and if so, redirects the user to the home page.
 // If the user is not logged in, the function renders the login page with the title "Login".
 // Example: GET_login(req, res)
-const GET_login = function (req, res) {
+function GET_login (req, res) {
     if (req.session && req.session.user) {
         res.redirect("/");
     } else {
@@ -81,7 +73,7 @@ const GET_login = function (req, res) {
 // The function then redirects the user to the home page.
 // If the credentials are invalid, the function redirects the user to the login page.
 // Example: POST_login(req, res)
-const POST_login = async function (req, res) {
+async function POST_login (req, res) {
     console.log('Attempting to log in with email:', req.body.email);
     if (await check_credentials(req.body.email, req.body.password)) {
         console.log('Credentials are valid, trying to find user in database');
@@ -108,7 +100,7 @@ const POST_login = async function (req, res) {
 // It destroys the user's session and redirects the user to the login page.
 // If the user is not logged in, the function redirects the user to the home page.
 // Example: GET_logout(req, res, next)
-const GET_logout = function (req, res, next) {
+function GET_logout (req, res, next) {
     if (req.session && req.session.user) {
         req.session.destroy(err => {
             if (err) {
@@ -130,7 +122,7 @@ const GET_logout = function (req, res, next) {
 // It renders the registration page with the title "Register".
 // If there is an error message or success message in the query parameters, 
 // it is passed to the view to be displayed to the user.
-const GET_register = function (req, res) {
+function GET_register (req, res) {
     res.render('register', { title: 'Register', error: req.query.error, message: req.query.message });
 };
 
@@ -152,7 +144,7 @@ const GET_register = function (req, res) {
 // The user is then redirected back to the registration page.
 // If there is an error, the error message is displayed to the user.
 // The user is then redirected back to the registration page.
-const POST_register = async function (req, res) {
+async function POST_register (req, res) {
     // Check if the user already exists
     const user = await userModel.findOne({ email: req.body.email });
     if (user) {

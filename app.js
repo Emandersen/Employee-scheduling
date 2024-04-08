@@ -24,7 +24,8 @@ const app = express();
 // MongoDB connection
 mongoose.set("strictQuery", false);
 // Use environment variables for database credentials
-const dev_db_url = process.env.DB_URL;
+const dev_db_url = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@databaseNumber1.bxvhltu.mongodb.net/?retryWrites=true&w=majority&appName=DatabaseNumber1";
+
 
 // Function to connect to MongoDB
 async function dbConnection() {
