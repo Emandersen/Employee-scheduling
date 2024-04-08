@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var moment = require('moment');
+const PersonalSchedule = require('../models/schedule');
 
 let dayId = 0;
 // Dummy data for the work days
@@ -92,7 +93,7 @@ function generateWeek(year, weekNumber, workDays = []) {
 }
 
 
-function GET_personal_schedule(req, res) {
+async function GET_personal_schedule(req, res) {
   const weeks = [];
   const today = moment();
   const startWeek = today.clone().subtract(12, 'weeks');
@@ -101,10 +102,19 @@ function GET_personal_schedule(req, res) {
   for (let week = startWeek; week.isBefore(endWeek); week.add(1, 'week')) {
     const year = week.year();
     const weekNumber = week.week();
+
+    // Fetch workDays from the database for the current week
+    const startDate = week.clone().startOf('week').toDate();
+    const endDate = week.clone().endOf('week').toDate();
+    const workDays = await PersonalSchedule.find({
+      email: req.session.user.email,
+      date: { $gte: startDate, $lte: endDate }
+    });
+
     weeks.push(generateWeek(year, weekNumber, workDays));
   }
-
-  res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: getCurrentWeek() });
+  console.log("Permission" + req.session.user.permission)
+  res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: getCurrentWeek(), permisssion: req.session.user.permission});
 };
 
 function POST_release_shift(req, res) {
