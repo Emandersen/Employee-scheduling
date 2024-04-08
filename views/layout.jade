@@ -32,6 +32,7 @@ html
       .content {
         padding-top: 110px; /* Adjust this value to match the height of your navbar */
       }
+      
   body
     nav(class="navbar navbar-expand-lg navbar-dark bg-primary", style="position: fixed; width: 100%; z-index: 1000;")
       div.container-fluid
@@ -68,9 +69,12 @@ html
         div.col-2
           div.sidebar
             h4 Account Information
-            p.small Name: ${firstname} ${lastName}
-            p.small Email: ${email}
-            p.small Role: ${role}
+            p.small Name: #{firstName} #{lastName}
+            p.small Email: #{email}
+            p.small Role: #{role}
+            p.small Department: #{department}
+            
+            
         div.col-10
           div.content
             block content

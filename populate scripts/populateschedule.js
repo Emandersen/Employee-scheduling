@@ -57,7 +57,8 @@ function generatePersonalSchedule(numEntries) {
     'charlie.williams@example.com',
     'diana.brown@example.com',
     'ethan.jones@example.com',
-    'fiona.miller@example.com'
+    'fiona.miller@example.com',
+    'user@user.com'
   ];
   
   const departments = ["Emergency", "ICU", "Operating"];
