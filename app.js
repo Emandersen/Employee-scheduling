@@ -12,6 +12,9 @@ var usersRouter = require('./routes/users');
 const dotenv = require('dotenv')
 dotenv.config({ path: './config.env' });
 
+require('events').EventEmitter.defaultMaxListeners = 20;
+
+
 
 var app = express();
 
