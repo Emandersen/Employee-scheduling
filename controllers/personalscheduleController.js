@@ -20,7 +20,8 @@ function getCurrentWeek() {
 }
 
 // function: generateWeek
-// description: This function generates a week object with the given year, week number and work days.
+// description: This function generates a week object with the given year, week number and work days amd 
+// fills it with the days of the week.
 // return: week
 // parameters: year, weekNumber, workDays
 // example: generateWeek(2021, 1, [])
@@ -45,6 +46,7 @@ function generateWeek(year, weekNumber, workDays = []) {
         workDayDate.getFullYear() === date.getFullYear();
     });
 
+    // Add the day to the week object
     week.days.push({
       id: workDay ? workDay.id : undefined,
       released: workDay ? workDay.released : undefined,
@@ -73,6 +75,7 @@ async function GET_personal_schedule(req, res) {
   const startWeek = today.clone().subtract(12, 'weeks');
   const endWeek = today.clone().add(12, 'weeks');
 
+  // Generate weeks for the next 12 weeks
   for (let week = startWeek; week.isBefore(endWeek); week.add(1, 'week')) {
     const year = week.year();
     const weekNumber = week.week();
@@ -85,9 +88,10 @@ async function GET_personal_schedule(req, res) {
       date: { $gte: startDate, $lte: endDate }
     });
 
+    // Generate the week object and add it to the weeks array
     weeks.push(generateWeek(year, weekNumber, workDays));
   }
-  console.log("Permission" + req.session.user.permission)
+  
   res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: getCurrentWeek(), permisssion: req.session.user.permission});
 };
 
