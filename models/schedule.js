@@ -15,3 +15,4 @@ const personalSchema = new Schema({
     });
 
 module.exports = mongoose.model("Personal Schedule", personalSchema);
+

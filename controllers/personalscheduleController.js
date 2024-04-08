@@ -3,47 +3,12 @@ var router = express.Router();
 var moment = require('moment');
 const PersonalSchedule = require('../models/schedule');
 
-let dayId = 0;
-// Dummy data for the work days
-const workDays = [
-  {
-    id: dayId++,
-    date: new Date(2024, 3, 1), // April 1, 2024
-    workHours: 8,
-    startTime: '09:00',
-    endTime: '17:00',
-    role: 'Nurse',
-    department: 'Emergency',
-    location: 'Hvidovre',
-    released: false
-  },
-  {
-    id: dayId++,
-    date: new Date(2024, 3, 2), // April 2, 2024
-    workHours: 8,
-    startTime: '09:00',
-    endTime: '17:00',
-    role: 'Nurse',
-    department: 'Emergency',
-    location: 'Hvidovre',
-    released: false
-  },
-  {
-    id: dayId++,
-    date: new Date(2024, 4, 15), // May 15, 2024
-    workHours: 8,
-    startTime: '09:00',
-    endTime: '17:00',
-    role: 'Nurse',
-    department: 'Emergency',
-    location: 'Hvidovre',
-    released: true
-  },
-  // Continue adding data for the next days...
-];
 
-
-
+// function: getCurrentWeek
+// description: This function returns the current week number of the year.
+// return: weekNumber
+// parameters: none
+// example: getCurrentWeek()
 function getCurrentWeek() {
   const date = new Date();
   const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -54,6 +19,11 @@ function getCurrentWeek() {
   return weekNumber;
 }
 
+// function: generateWeek
+// description: This function generates a week object with the given year, week number and work days.
+// return: week
+// parameters: year, weekNumber, workDays
+// example: generateWeek(2021, 1, [])
 function generateWeek(year, weekNumber, workDays = []) {
   // Create a date object at the start of the week
   const date = new Date(year, 0, 1 + (weekNumber - 1) * 7);
@@ -92,7 +62,11 @@ function generateWeek(year, weekNumber, workDays = []) {
   return week;
 }
 
-
+// function: GET_personal_schedule
+// description: This function fetches the personal schedule for the user and renders the schedule page.
+// return: none
+// parameters: req, res
+// example: GET_personal_schedule(req, res)
 async function GET_personal_schedule(req, res) {
   const weeks = [];
   const today = moment();
@@ -117,6 +91,11 @@ async function GET_personal_schedule(req, res) {
   res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: getCurrentWeek(), permisssion: req.session.user.permission});
 };
 
+// function: POST_release_shift
+// description: This function releases a shift for other users to pick up.
+// return: none
+// parameters: req, res
+// example: POST_release_shift(req, res)
 function POST_release_shift(req, res) {
   console.log("Missing implementation for releasing a shift")
 
@@ -124,6 +103,11 @@ function POST_release_shift(req, res) {
   res.redirect('/');
 };
 
+// function: POST_unrelease_shift
+// description: This function un-releases a shift for other users to pick up.
+// return: none
+// parameters: req, res
+// example: POST_unrelease_shift(req, res)
 function POST_unrelease_shift(req, res) {
   console.log("Missing implementation for releasing a shift")
 

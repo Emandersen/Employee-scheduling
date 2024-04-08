@@ -130,3 +130,14 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# .gitignore
+
+# Ignore environment variables
+config.env
+
+# Ignore dependencies
+/node_modules
+
+# Ignore lock files
+package-lock.json

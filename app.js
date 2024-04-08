@@ -12,6 +12,9 @@ var usersRouter = require('./routes/users');
 const dotenv = require('dotenv')
 dotenv.config({ path: './config.env' });
 
+require('events').EventEmitter.defaultMaxListeners = 20;
+
+
 
 var app = express();
 
@@ -38,6 +41,23 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false } // Note: secure should be true only in production (requires HTTPS)
 }));
+
+app.use(function(req, res, next) {
+  if (req.session.user) {
+    res.locals.firstName = req.session.user.firstName;
+    res.locals.lastName = req.session.user.lastName;
+    res.locals.email = req.session.user.email;
+    res.locals.role = req.session.user.role;
+    res.locals.department = req.session.user.department; // Add this line
+  } else {
+    res.locals.firstName = '';
+    res.locals.lastName = '';
+    res.locals.email = '';
+    res.locals.role = '';
+    res.locals.department = ''; // And this line
+  }
+  next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
