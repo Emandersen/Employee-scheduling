@@ -3,47 +3,6 @@ var router = express.Router();
 var moment = require('moment');
 const PersonalSchedule = require('../models/schedule');
 
-let dayId = 0;
-// Dummy data for the work days
-const workDays = [
-  {
-    id: dayId++,
-    date: new Date(2024, 3, 1), // April 1, 2024
-    workHours: 8,
-    startTime: '09:00',
-    endTime: '17:00',
-    role: 'Nurse',
-    department: 'Emergency',
-    location: 'Hvidovre',
-    released: false
-  },
-  {
-    id: dayId++,
-    date: new Date(2024, 3, 2), // April 2, 2024
-    workHours: 8,
-    startTime: '09:00',
-    endTime: '17:00',
-    role: 'Nurse',
-    department: 'Emergency',
-    location: 'Hvidovre',
-    released: false
-  },
-  {
-    id: dayId++,
-    date: new Date(2024, 4, 15), // May 15, 2024
-    workHours: 8,
-    startTime: '09:00',
-    endTime: '17:00',
-    role: 'Nurse',
-    department: 'Emergency',
-    location: 'Hvidovre',
-    released: true
-  },
-  // Continue adding data for the next days...
-];
-
-
-
 function getCurrentWeek() {
   const date = new Date();
   const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
