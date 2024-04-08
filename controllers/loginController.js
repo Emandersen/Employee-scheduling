@@ -24,7 +24,7 @@ function checkSession(req, res, next) {
 
 function checkSessionAndPermissions(entryperm) {
     return function(req, res, next) {
-        if (checkSession(req, res)) {
+        if (checkSession(req, res, next)) { // pass next to checkSession
             if (req.session.user && (entryperm <= req.session.user.permission)) {
                 next();
             } else {
