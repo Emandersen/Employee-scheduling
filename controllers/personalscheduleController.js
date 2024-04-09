@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var moment = require('moment');
-const PersonalSchedule = require('../models/schedule');
+const personalSchedule = require('../models/schedule');
 
 
 // function: getCurrentWeek
@@ -80,7 +80,7 @@ async function GET_personal_schedule(req, res) {
     // Fetch workDays from the database for the current week
     const startDate = week.clone().startOf('week').toDate();
     const endDate = week.clone().endOf('week').toDate();
-    const workDays = await PersonalSchedule.find({
+    const workDays = await personalSchedule.find({
       email: req.session.user.email,
       date: { $gte: startDate, $lte: endDate }
     });

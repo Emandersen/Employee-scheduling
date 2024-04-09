@@ -1,5 +1,5 @@
 const express = require("express");
-const users = require("../models/user.js");
+const users = require("../models/user");
 
 async function check_credentials(email, password) {
     try {

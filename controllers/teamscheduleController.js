@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 const Users = require('../models/user');
+const personalSchedule = require("./personalcheduleController");
 
 
 
@@ -18,7 +19,7 @@ function getCurrentWeek() {
 async function GET_team_schedule(req, res) {
   const allNames = await Users.find().exec();
   let arr = [];
-  
+
   for(i = 0; i <= allNames.length - 1; i++) {
       arr.push(allNames[i].firstName + " " + allNames[i].lastName);
   }
