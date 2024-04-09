@@ -60,7 +60,7 @@ function GET_login (req, res) {
     if (req.session && req.session.user) {
         res.redirect("/");
     } else {
-        res.render("login", { title: "Login", permission: req.session.user.permission});
+        res.render("login", { title: "Login"});
     }
 };
 
@@ -123,7 +123,7 @@ function GET_logout (req, res, next) {
 // If there is an error message or success message in the query parameters, 
 // it is passed to the view to be displayed to the user.
 function GET_register (req, res) {
-    res.render('register', { title: 'Register', error: req.query.error, message: req.query.message, permission: req.session.user.permission });
+    res.render('register', { title: 'Register', error: req.query.error, message: req.query.message });
 };
 
 // function: POST_register
