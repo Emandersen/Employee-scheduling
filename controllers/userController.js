@@ -60,7 +60,7 @@ function GET_login (req, res) {
     if (req.session && req.session.user) {
         res.redirect("/");
     } else {
-        res.render("login", { title: "Login" });
+        res.render("login", { title: "Login"});
     }
 };
 
@@ -146,14 +146,14 @@ function GET_register (req, res) {
 // The user is then redirected back to the registration page.
 async function POST_register (req, res) {
     // Check if the user already exists
-    const user = await userModel.findOne({ email: req.body.email });
+    const user = await users.findOne({ email: req.body.email });
     if (user) {
         res.redirect('/register?error=User already exists!');
         return;
     }
 
     // Create the user
-    const newUser = new userModel({
+    const newUser = new users({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
