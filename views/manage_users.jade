@@ -102,9 +102,9 @@ block content
                         .dropdown
                             button Actions
                             .dropdown-content
-                                form.action-buttons(href=`/edit-user/${user._id}`)
-                                    button(type='submit') Edit
-                                form.action-buttons(method='post', action=`/delete-user/${user._id}`)
+                                form.action-buttons(method='post')
+                                    button.button(type='button', onclick=`location.href='/edit-user/' + ${user.email}`) Edit
+                                form.action-buttons(method='post', action=`/delete-user/${user.email}`)
                                     button(type='submit') Delete
-                                form.action-buttons(method='post', action=`/reset-password/${user._id}`)
-                                    button(type='submit') Reset password
+                                form.action-buttons(method='post', action=`/reset-password/${user.email}`)
+                                    button(type='submit', onclick='alert("Default password is: default123");') Reset password

@@ -91,6 +91,44 @@ async function GET_manage_users (req, res) {
     }
 };
 
+async function GET_edit_user(req, res) {
+    try {
+        const user = await users.findOne({ email: req.params.email });
+        res.render('edit_user', { title: 'Edit User', user: user });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+async function POST_edit_user(req, res) {
+    try {
+        await users.findOneAndUpdate({ email: req.params.email }, { $set: req.body });
+        res.redirect('/manage-users');
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+async function POST_delete_user(req, res) {
+    try {
+        await users.findOneAndDelete({ email: req.params.email });
+        res.redirect('/manage-users');
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+async function POST_reset_password(req, res) {
+    try {
+        await users.findOneAndUpdate({ email: req.params.email }, { password: "default123" });
+        res.redirect('/manage-users');
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+
 
 module.exports = {
     checkSession,
@@ -101,4 +139,8 @@ module.exports = {
     GET_register,
     POST_register,
     GET_manage_users,
+    GET_edit_user,
+    POST_edit_user,
+    POST_delete_user,
+    POST_reset_password
 };
