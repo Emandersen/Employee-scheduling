@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '../config.env' });
 const User = require('../models/user');
 
+
+
 const dev_db_url = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@databaseNumber1.bxvhltu.mongodb.net/?retryWrites=true&w=majority&appName=DatabaseNumber1";
 
 async function dbConnection() {
@@ -43,6 +45,7 @@ async function createUsers() {
     await userCreate('Diana', 'Brown', 'diana.brown@example.com', 'password7', 'Nurse', 'Cardiology', [], 1);
     await userCreate('Ethan', 'Jones', 'ethan.jones@example.com', 'password8', 'Nurse', 'Cardiology', [], 0);
     await userCreate('Fiona', 'Miller', 'fiona.miller@example.com', 'password9', 'Nurse', 'Cardiology', [], 0);
+    await userCreate('thisIs', 'AName', 'user@user.com', 'user', 'Nurse', 'Cardiology', [], 2);
     console.log('Users added');
 }
 

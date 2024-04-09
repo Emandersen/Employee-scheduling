@@ -1,24 +1,33 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// Import required modules
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const mongoose = require("mongoose");
-const bodyParser = require('body-parser');
+const session = require('express-session');
+const dotenv = require('dotenv');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// Import routers
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-const dotenv = require('dotenv')
+// Load environment variables from .env file
 dotenv.config({ path: './config.env' });
 
+// Increase the maximum number of listeners
+require('events').EventEmitter.defaultMaxListeners = 20;
 
-var app = express();
+// Initialize express app
+const app = express();
 
 // MongoDB connection
 mongoose.set("strictQuery", false);
-const dev_db_url = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@databasenumber1.bxvhltu.mongodb.net/?retryWrites=true&w=majority&appName=DatabaseNumber1";
+// Use environment variables for database credentials
+const dev_db_url = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@databaseNumber1.bxvhltu.mongodb.net/?retryWrites=true&w=majority&appName=DatabaseNumber1";
 
+
+// Function to connect to MongoDB
 async function dbConnection() {
   try {
     await mongoose.connect(dev_db_url);
@@ -27,45 +36,58 @@ async function dbConnection() {
     console.log("Could not connect to the database", error);
   }
 }
+// Connect to MongoDB
 dbConnection();
 
 // Session setup
-const session = require('express-session');
-
+// Use environment variable for session secret
 app.use(session({
-  secret: 'This is a secret key',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // Note: secure should be true only in production (requires HTTPS)
 }));
 
-// view engine setup
+// Middleware to set user session data
+app.use(function(req, res, next) {
+  if (req.session.user) {
+    // Destructure user session data for cleaner code
+    permission = req.session.user.permission;
+    const { firstName, lastName, email, role, department } = req.session.user;
+    res.locals = { firstName, lastName, email, role, department, permission };
+  } else {
+    res.locals = { firstName: '', lastName: '', email: '', role: '', department: '', permission: '' };
+  }
+  next();
+});
+
+// Set view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// Use middleware
 app.use(logger('dev'));
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Use routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
-
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// Error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // Set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // Render the error page
   res.status(err.status || 500);
   res.render('error');
 });
