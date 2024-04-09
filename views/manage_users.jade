@@ -75,6 +75,11 @@ block content
         .dropdown-content button:hover {
             background-color: #ddd;
         }
+        .button.btn:hover, button.btn:hover {
+            /* Add the hover styles you want here. For example: */
+            background-color: #ddd;
+            color: #333;
+        }
     table
         thead
             tr
@@ -103,8 +108,8 @@ block content
                             button Actions
                             .dropdown-content
                                 form.action-buttons(method='post')
-                                    button.button(type='button', onclick=`location.href='/edit-user/' + ${user.email}`) Edit
+                                    a.button.btn(href=`/edit-user/${user.email}`) Edit
                                 form.action-buttons(method='post', action=`/delete-user/${user.email}`)
-                                    button(type='submit') Delete
+                                    button.btn(type='submit') Delete
                                 form.action-buttons(method='post', action=`/reset-password/${user.email}`)
-                                    button(type='submit', onclick='alert("Default password is: default123");') Reset password
+                                    button.btn(type='submit', onclick='alert("Default password is: default123");') Reset password
