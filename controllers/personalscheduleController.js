@@ -35,7 +35,7 @@ async function GET_personal_schedule(req, res) {
     weeks.push(dateHandler.generateWeek(year, weekNumber, workDays));
   }
   
-  res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: dateHandler.getCurrentWeek(), permisssion: req.session.user.permission});
+  res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: dateHandler.getCurrentWeek()});
 };
 
 // function: POST_release_shift

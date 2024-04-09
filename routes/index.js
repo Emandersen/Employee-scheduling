@@ -19,6 +19,9 @@ router.post('/unrelease-shift', user_controller.checkSession, personal_schedule_
 router.get('/register', user_controller.checkSessionAndPermissions(2), user_controller.GET_register);
 router.post('/register', user_controller.checkSessionAndPermissions(2), user_controller.POST_register);
 
+router.get('/manage-users', user_controller.checkSessionAndPermissions(2), user_controller.GET_manage_users);
+
+
 router.get('/team_schedule',user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
 // 500 handler

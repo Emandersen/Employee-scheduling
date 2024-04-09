@@ -52,10 +52,11 @@ app.use(session({
 app.use(function(req, res, next) {
   if (req.session.user) {
     // Destructure user session data for cleaner code
+    permission = req.session.user.permission;
     const { firstName, lastName, email, role, department } = req.session.user;
-    res.locals = { firstName, lastName, email, role, department };
+    res.locals = { firstName, lastName, email, role, department, permission };
   } else {
-    res.locals = { firstName: '', lastName: '', email: '', role: '', department: '' };
+    res.locals = { firstName: '', lastName: '', email: '', role: '', department: '', permission: '' };
   }
   next();
 });

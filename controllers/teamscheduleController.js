@@ -9,7 +9,7 @@ function daysInAWeek() {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   return days;
 }
-
+ 
 
 async function GET_team_schedule(req, res) {
   const allNames = await Users.find().sort({lastName: 1}).exec();
