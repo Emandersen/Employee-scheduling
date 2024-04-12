@@ -19,13 +19,11 @@ block content
                                 p(style='margin-bottom: 0; flex: 1; text-align: center;') Location: #{day.location}
                             p(style='margin-bottom: 0;') Hours: #{day.startTime} - #{day.endTime} (#{day.workHours})
                             if day.released
-                                form(unReleaseShift action='/unrelease-shift' method='post')
-                                    input(type='hidden' name='dayId' value='#{day.id}')
-                                    button(type='submit' style='margin-top: 10px;') Unrelease Shift
+                                form.action-buttons(method='post', action=`/toggle-shift/${day.id}`)
+                                    button.btn(type='submit') Claim shift
                             else
-                                form(action='/release-shift' method='post')
-                                    input(type='hidden' name='dayId' value='#{day.id}')
-                                    button(type='submit' style='margin-top: 10px;') Release Shift
+                                form.action-buttons(method='post', action=`/toggle-shift/${day.id}`)
+                                    button.btn(type='submit') Release Shift
                         else
                             p(style='margin-bottom: 0;') No work scheduled
     script.
