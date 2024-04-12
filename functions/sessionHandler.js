@@ -1,4 +1,5 @@
 const users = require('../models/user');
+const bcrypt = require('bcrypt');
 
 // function: check_credentials
 // Parameters: email, password
@@ -10,7 +11,11 @@ const users = require('../models/user');
 // Example: check_credentials('[email]', '[password]')
 async function check_credentials(email, password) {
     const user = await users.findOne({ email });
-    return user && user.password === password;
+    if (user) {
+        const match = await bcrypt.compare(password, user.password);
+        return match;
+    }
+    return false;
 }
 
 // function: checkSession
@@ -23,7 +28,12 @@ async function check_credentials(email, password) {
 // Example: checkSession(req, res, next)
 function checkSession(req, res, next) {
     if (req.session.user) {
-        next();
+        if (typeof next === 'function') {
+            next();
+        } else {
+            return true;
+        }
+            
     } else {
         res.redirect("/login");
     }

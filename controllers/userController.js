@@ -1,4 +1,5 @@
-const express = require("express");
+const bcrypt = require('bcrypt');
+
 const users = require("../models/user");
 const { check_credentials, checkSession, checkSessionAndPermissions } = require("../functions/sessionHandler.js");
 
@@ -34,7 +35,7 @@ async function POST_login (req, res) {
 };
 
 function GET_logout (req, res, next) {
-    if (req.session && req.session.user) {
+    if (checkSession(req)) {
         req.session.destroy(err => {
             if (err) {
                 return next(err);
@@ -62,18 +63,20 @@ async function POST_register (req, res) {
         return;
     }
 
+    // Hash the password before saving it
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
     // Create the user
     const newUser = new users({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: req.body.password, // Remember to hash the password before saving it
+        password: hashedPassword, // Use the hashed password here
         role: req.body.role,
         department: req.body.department,
         preferences: req.body.preferences,
         permission: req.body.permission
     });
-
 
     await newUser.save();
 
@@ -120,7 +123,8 @@ async function POST_delete_user(req, res) {
 
 async function POST_reset_password(req, res) {
     try {
-        await users.findOneAndUpdate({ email: req.params.email }, { password: "default123" });
+        const hashedPassword = await bcrypt.hash("default123", saltRounds);
+        await users.findOneAndUpdate({ email: req.params.email }, { password: hashedPassword });
         res.redirect('/manage-users');
     } catch (err) {
         console.log(err);

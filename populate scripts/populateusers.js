@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 dotenv.config({ path: '../config.env' });
 const User = require('../models/user');
-
-
 
 const dev_db_url = "mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@databaseNumber1.bxvhltu.mongodb.net/?retryWrites=true&w=majority&appName=DatabaseNumber1";
 
@@ -18,11 +18,12 @@ async function dbConnection() {
 dbConnection();
 
 async function userCreate(firstName, lastName, email, password, role, department, preferences, permission) {
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     const userdetail = {
         firstName,
         lastName,
         email,
-        password,
+        password: hashedPassword,
         role,
         department,
         preferences,
