@@ -5,10 +5,11 @@ const Personalschedule = require("../models/schedule");
 const DB_USER = "testuser123321";
 const DB_PASS = "5DtfQaMEaF0vb9Vn";
 
+const dev_db_url = "mongodb+srv://" + DB_USER + ":" + DB_PASS + "@databaseNumber1.bxvhltu.mongodb.net/?retryWrites=true&w=majority&appName=DatabaseNumber1";
+
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const dev_db_url = "mongodb+srv://" + DB_USER + ":" + DB_PASS + "@databaseNumber1.bxvhltu.mongodb.net/?retryWrites=true&w=majority&appName=DatabaseNumber1";
 
 async function dbConnection() {
     try {
