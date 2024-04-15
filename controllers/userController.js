@@ -34,15 +34,12 @@ async function POST_login (req, res) {
     }
 };
 
-function GET_logout (req, res, next) {
+function GET_logout (req, res) {
     if (checkSession(req)) {
-        req.session.destroy(err => {
-            if (err) {
-                return next(err);
-            }
-            res.redirect("/login");
-        });
-    } else {
+        req.session.destroy();
+        res.redirect("/login");
+    }
+    else {
         res.redirect("/");
     }
 };
