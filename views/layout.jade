@@ -1,61 +1,100 @@
 doctype html
-html
+html(lang="en")
   head
     title= title
     link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+    script.
+      document.addEventListener("DOMContentLoaded", function() {
+        var dropdownLinks = document.querySelectorAll('.dropdown-link');
+        var dropdownMenus = document.querySelectorAll('.dropdown-menu');
+
+        dropdownLinks.forEach(function(link, index) {
+          link.addEventListener('mouseover', function() {
+            var dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.add('show');
+          });
+          link.addEventListener('mouseout', function() {
+            var dropdownMenu = this.nextElementSibling;
+            setTimeout(function() {
+              if (!dropdownMenu.matches(':hover')) {
+                dropdownMenu.classList.remove('show');
+              }
+            }, 300); // Delay to allow the mouse to move to the dropdown menu
+          });
+        });
+
+        dropdownMenus.forEach(function(menu) {
+          menu.addEventListener('mouseover', function() {
+            this.classList.add('show'); // Add 'show' class when mouse enters dropdown menu
+          });
+          menu.addEventListener('mouseout', function() {
+            this.classList.remove('show'); // Remove 'show' class when mouse leaves dropdown menu
+          });
+        });
+      });
     style.
+      .dropdown-menu {
+        border: 20px solid transparent; /* Transparent border */
+        box-sizing: content-box; /* This makes the border not affect the size of the dropdown menu */
+      }
       .logo {
-        border: 5px solid white;
+        border: 5px solid #4CAF50; /* Green border */
+        border-radius: 50%; /* Circular shape */
         box-sizing: border-box;
       }
       .nav-link {
-        border: 3px solid #ddd;
+        border: 3px solid transparent; /* Transparent border */
         border-radius: 10px;
         padding: 10px;
         margin: 10px;
         transition: background-color 0.3s ease;
+        color: #fff; /* White text */
       }
       .nav-link:hover {
-        background-color: #f8f9fa;
-        opacity: 1;
+        background-color: #4CAF50; /* Green background on hover */
       }
       .small {
         font-size: 0.8em;
+        color: #777; /* Gray text */
       }
       .sidebar {
         position: fixed;
-        top: 150px; /* Adjust this value to match the height of your navbar */
+        top: 56px; /* Adjusted to match the height of the navbar */
         bottom: 0;
         left: 0;
         overflow: auto;
+        background-color: #E3F2FD; /* Light blue background */
+        padding: 20px 10px; /* Adjusted padding */
+        max-width: 250px; /* Maximum width */
       }
       .content {
-        padding-top: 110px; /* Adjust this value to match the height of your navbar */
+        padding-top: 70px; /* Adjusted to match the height of the navbar */
+        margin-left: 0; /* Adjusted to start from the left side */
       }
-      
+
   body
     nav(class="navbar navbar-expand-lg navbar-dark bg-primary", style="position: fixed; width: 100%; z-index: 1000;")
       div.container-fluid
         a.navbar-brand(href="/")
-          img.logo(src="/path/to/your/logo.png", alt="Logo", height="100", width="100").d-inline-block.align-top.mr-2
+          img.logo(src="/path/to/your/logo.png", alt="Logo", height="40", width="40").d-inline-block.align-top.mr-2
         button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav")
           span.navbar-toggler-icon
         div.collapse.navbar-collapse(id="navbarNav")
           ul.navbar-nav
             li.nav-item.dropdown
-              a.nav-link.dropdown-toggle(href="#" id="navbarDropdown1" role="button" data-toggle="dropdown") Personal Schedule
-              div.dropdown-menu(aria-labelledby="navbarDropdown1")
+              a.nav-link.dropdown-toggle.dropdown-link(href="/" id="navbarDropdown1" role="button") Personal Schedule
+              .dropdown-menu(aria-labelledby="navbarDropdown1")
                 a.dropdown-item(href="/team_schedule") Team Schedule
-                a.dropdown-item(href="#") statistics 
+                a.dropdown-item(href="#") Statistics 
             li.nav-item.dropdown
-              a.nav-link.dropdown-toggle(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
-              div.dropdown-menu(aria-labelledby="navbarDropdown2")
+              a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
+              .dropdown-menu(aria-labelledby="navbarDropdown2")
                 a.dropdown-item(href="#") Profile
                 a.dropdown-item(href="#") Settings
             if permission >= 1
               li.nav-item.dropdown
-                a.nav-link.dropdown-toggle(href="#" id="navbarDropdown3" role="button" data-toggle="dropdown") Management
-                div.dropdown-menu(aria-labelledby="navbarDropdown3")
+                a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown3" role="button" data-toggle="dropdown") Management
+                .dropdown-menu(aria-labelledby="navbarDropdown3")
                   if permission >=1
                     a.dropdown-item(href="#") Schedule planner
                   if permission >=2
@@ -67,14 +106,12 @@ html
     div.container-fluid
       div.row
         div.col-2
-          div.sidebar
+          div.sidebar(style="margin-top: 15px;")
             h4 Account Information
             p.small Name: #{firstName} #{lastName}
             p.small Email: #{email}
             p.small Role: #{role}
             p.small Department: #{department}
-            
-            
         div.col-10
           div.content
             block content

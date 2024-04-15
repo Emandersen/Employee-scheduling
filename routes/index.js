@@ -12,6 +12,7 @@ router.get('/logout', user_controller.GET_logout);
 router.post('/login', user_controller.POST_login);
 
 
+
 router.get('/', user_controller.checkSession, personal_schedule_controller.GET_personal_schedule);
 router.post('/toggle-shift/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_shift);
 
