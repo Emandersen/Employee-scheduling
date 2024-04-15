@@ -48,17 +48,14 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
           releasedShiftDate.getFullYear() === date.getFullYear();
       });
 
-      // If a released shift is in the same day as a shift in workDays, it should not be included
-      if (workDay && releasedShift) {
-        continue;
-      }
+
   
       // Add the day to the week object
       week.days.push({
         id: workDay ? workDay.id : releasedShift ? releasedShift.id : undefined,
         released: workDay ? workDay.released : releasedShift ? releasedShift.released : undefined,
         date: days[date.getDay()] + ' ' + day + '. ' + months[date.getMonth()],
-        workHours: workDay ? workDay.workHours : releasedShift ? releasedShift.workHours : 0,
+		workHours: workDay ? workDay.workHours : releasedShift ? releasedShift.workHours : 0,
         startTime: workDay ? workDay.startTime : releasedShift ? releasedShift.startTime : undefined,
         endTime: workDay ? workDay.endTime : releasedShift ? releasedShift.endTime : undefined,
         role: workDay ? workDay.role : releasedShift ? releasedShift.role : undefined,
