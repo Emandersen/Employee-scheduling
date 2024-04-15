@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 const Users = require('../models/user');
+const Schedule = require('../models/schedule');
 const personalSchedule = require("./personalcheduleController");
 
 
