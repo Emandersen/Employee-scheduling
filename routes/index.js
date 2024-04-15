@@ -25,7 +25,7 @@ router.post('/delete-user/:email', user_controller.checkSessionAndPermissions(2)
 router.post('/reset-password/:email', user_controller.checkSessionAndPermissions(2), user_controller.POST_reset_password);
 
 
-router.get('/team_schedule',user_controller.checkSession, team_schedule_controller.GET_team_schedule);
+router.get('/team_schedule/:yearId-:weekId',user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
 // 500 handler
 router.use(function (err, req, res, next) {

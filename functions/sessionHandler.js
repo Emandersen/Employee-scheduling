@@ -28,12 +28,7 @@ async function check_credentials(email, password) {
 // Example: checkSession(req, res, next)
 function checkSession(req, res, next) {
     if (req.session.user) {
-        /*if (typeof next === 'function') {
-            next();
-        } else {
-            return true;
-        }*/
-        next();   
+        next();
     } else {
         res.redirect("/login");
     }

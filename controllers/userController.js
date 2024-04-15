@@ -1,6 +1,7 @@
+const express = require("express");
+const users = require("../models/user");
 const bcrypt = require('bcrypt');
 
-const users = require("../models/user");
 const { check_credentials, checkSession, checkSessionAndPermissions } = require("../functions/sessionHandler.js");
 
 

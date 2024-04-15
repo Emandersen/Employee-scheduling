@@ -68,6 +68,7 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
     return week;
 };
 
+
 module.exports = {
     getCurrentWeek,
     generateWeek
