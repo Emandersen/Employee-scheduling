@@ -8,15 +8,6 @@ html
         border: 5px solid white;
         box-sizing: border-box;
       }
-      .sidebar {
-        width: 200px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        background-color: #f8f9fa;
-        padding: 20px;
-      }
       .nav-link {
         border: 3px solid #ddd;
         border-radius: 10px;
@@ -31,18 +22,19 @@ html
       .small {
         font-size: 0.8em;
       }
+      .sidebar {
+        position: fixed;
+        top: 150px; /* Adjust this value to match the height of your navbar */
+        bottom: 0;
+        left: 0;
+        overflow: auto;
+      }
+      .content {
+        padding-top: 110px; /* Adjust this value to match the height of your navbar */
+      }
+      
   body
-    div.sidebar
-      br
-      br
-      br
-      br
-      br 
-      h4 Account Information
-      p.small Name: ${firstname} ${lastName}
-      p.small Email: ${email}
-      p.small Role: ${role}
-    nav(class="navbar navbar-expand-lg navbar-dark bg-primary")
+    nav(class="navbar navbar-expand-lg navbar-dark bg-primary", style="position: fixed; width: 100%; z-index: 1000;")
       div.container-fluid
         a.navbar-brand(href="/")
           img.logo(src="/path/to/your/logo.png", alt="Logo", height="100", width="100").d-inline-block.align-top.mr-2
@@ -53,22 +45,39 @@ html
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(href="#" id="navbarDropdown1" role="button" data-toggle="dropdown") Personal Schedule
               div.dropdown-menu(aria-labelledby="navbarDropdown1")
-                a.dropdown-item(href="#") Team Schedule
+                a.dropdown-item(href="/team_schedule") Team Schedule
                 a.dropdown-item(href="#") statistics 
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
               div.dropdown-menu(aria-labelledby="navbarDropdown2")
                 a.dropdown-item(href="#") Profile
                 a.dropdown-item(href="#") Settings
-            if perm == 0
+            if permission >= 1
               li.nav-item.dropdown
                 a.nav-link.dropdown-toggle(href="#" id="navbarDropdown3" role="button" data-toggle="dropdown") Management
                 div.dropdown-menu(aria-labelledby="navbarDropdown3")
-                  a.dropdown-item(href="#") Schedule planner
-                  a.dropdown-item(href="#") Manage Accounts 
+                  if permission >=1
+                    a.dropdown-item(href="#") Schedule planner
+                  if permission >=2
+                    a.dropdown-item(href="/manage-users") Manage Users
+                    a.dropdown-item(href="/register") Add users
           ul.navbar-nav.ml-auto
             li.nav-item
               a.nav-link(href="/logout") Logout
+    div.container-fluid
+      div.row
+        div.col-2
+          div.sidebar
+            h4 Account Information
+            p.small Name: #{firstName} #{lastName}
+            p.small Email: #{email}
+            p.small Role: #{role}
+            p.small Department: #{department}
+            
+            
+        div.col-10
+          div.content
+            block content
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")

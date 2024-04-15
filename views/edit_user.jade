@@ -1,0 +1,66 @@
+extends layout 
+
+block content 
+    .container(style='font-size: 0.8em; margin-top: 30px;')
+        if error
+            .alert.alert-danger #{error}
+        if message
+            .alert.alert-success #{message}
+        h1(style='font-size: 2em;') Edit User
+        form(action='/edit-user/' + user.email method='post')
+            .row
+                .col-md-6.form-group
+                    label(for='firstName') First Name
+                    input#firstName.form-control(type='text', name='firstName', value=user.firstName, required)
+                .col-md-6.form-group
+                    label(for='lastName') Last Name
+                    input#lastName.form-control(type='text', name='lastName', value=user.lastName, required)
+            .row
+                .col-md-6.form-group
+                    label(for='email') Email
+                    input#email.form-control(type='email', name='email', value=user.email, required, readonly)
+                .col-md-6.form-group
+                    label(for='role') Role
+                    select#role.form-control(name='role', required)
+                        option(value='Registered Nurse') Registered Nurse
+                        option(value='Nurse Practitioner') Nurse Practitioner
+                        option(value='Nurse Anesthetist') Nurse Anesthetist
+                        option(value='Nurse Educator') Nurse Educator
+                        option(value='Nurse Manager') Nurse Manager
+                        option(value='Travel Nurse') Travel Nurse
+                        option(value='Pediatric Nurse') Pediatric Nurse
+                        option(value='Oncology Nurse') Oncology Nurse
+                        option(value='Orthopedic Nurse') Orthopedic Nurse
+                        option(value='Cardiac Nurse') Cardiac Nurse
+                        option(value='Geriatric Nurse') Geriatric Nurse
+                        option(value='Intensive Care Nurse') Intensive Care Nurse
+                        option(value='Emergency Nurse') Emergency Nurse
+                        option(value='Labor and Delivery Nurse') Labor and Delivery Nurse
+            .row
+                .col-md-6.form-group
+                    label(for='department') Department
+                    select#department.form-control(name='department', required)
+                        option(value='Cardiology') Cardiology
+                        option(value='Neurology') Neurology
+                        option(value='Orthopedics') Orthopedics
+                        option(value='Pediatrics') Pediatrics
+                        option(value='Radiology') Radiology
+                        option(value='Surgery') Surgery
+                        option(value='Dermatology') Dermatology
+                        option(value='Gastroenterology') Gastroenterology
+                        option(value='Endocrinology') Endocrinology
+                        option(value='Oncology') Oncology
+                        option(value='Ophthalmology') Ophthalmology
+                        option(value='Psychiatry') Psychiatry
+                        option(value='Anesthesiology') Anesthesiology
+                        option(value='Gynecology') Gynecology
+                        option(value='Geriatrics') Geriatrics
+                        option(value='Immunology') Immunology
+                .col-md-6.form-group
+                    label(for='permission') Permission
+                    select#permission.form-control(name='permission', required)
+                        option(value='0') Normal User
+                        option(value='1') Shift planner
+                        option(value='2') Administrator
+            .form-group
+                button.btn.btn-lg.btn-primary(type='submit', style='font-weight: bold;') Update User
