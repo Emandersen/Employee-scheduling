@@ -13,8 +13,7 @@ router.post('/login', user_controller.POST_login);
 
 
 router.get('/', user_controller.checkSession, personal_schedule_controller.GET_personal_schedule);
-router.post('/release-shift', user_controller.checkSession, personal_schedule_controller.POST_release_shift);
-router.post('/unrelease-shift', user_controller.checkSession, personal_schedule_controller.POST_unrelease_shift);
+router.post('/toggle-shift/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_shift);
 
 router.get('/register', user_controller.checkSessionAndPermissions(2), user_controller.GET_register);
 router.post('/register', user_controller.checkSessionAndPermissions(2), user_controller.POST_register);
