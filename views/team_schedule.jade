@@ -11,8 +11,11 @@ block content
                 each day in weekDays
                     th(style='text-align: center; width: 120;')= day
 
-            each name in names
+            each user in users
                 tr 
-                    td= name
+                    td= user.user.firstName + ' ' + user.user.lastName
+                    each schedule in user.allSchedules
+                        td(style='text-align: center;') #{schedule.date} - #{schedule.startTime} - #{schedule.endTime}
+
                     
                 

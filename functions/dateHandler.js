@@ -69,7 +69,18 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
 };
 
 
+function getStartWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear()) {
+    return new Date(year, 0, 1 + (weeknumber - 1) * 7);
+}
+
+function getEndWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear()) {
+    return new Date(year, 0, 1 + (weeknumber - 1) * 7 + 6);
+}
+
+
 module.exports = {
-    getCurrentWeek,
-    generateWeek
+	getCurrentWeek,
+	generateWeek,
+	getStartWeek,
+	getEndWeek
 };
