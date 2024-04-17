@@ -60,7 +60,8 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
         endTime: workDay ? workDay.endTime : releasedShift ? releasedShift.endTime : undefined,
         role: workDay ? workDay.role : releasedShift ? releasedShift.role : undefined,
         department: workDay ? workDay.department : releasedShift ? releasedShift.department : undefined,
-        location: workDay ? workDay.location : releasedShift ? releasedShift.location : undefined
+		  location: workDay ? workDay.location : releasedShift ? releasedShift.location : undefined,
+		  email: workDay ? workDay.email : releasedShift ? releasedShift.email : undefined
       });
       date.setDate(date.getDate() + 1);
     }
@@ -68,7 +69,55 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
     return week;
 };
 
+function generateDates(year, months) {
+	let dates = [];
+	let monthNames = ["Jan.", "Feb.", "Mar.", "Apr.", "May.", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
+	for (let month of months) {
+		let date = new Date(year, month - 1);
+		while (date.getMonth() === month - 1) {
+			let formattedDate = date.getDate() + '. ' + monthNames[date.getMonth()] + ' ' + date.getFullYear();
+			dates.push(formattedDate);
+			date.setDate(date.getDate() + 1);
+			
+		}
+	}
+	return dates;
+}
+
+async function getWeekForDate(date) {
+	const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+	const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+	return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+}
+
+function fillMissingDates(startDate, endDate, schedules) {
+	const datesWithSchedules = [];
+	const currentDate = new Date(startDate);
+
+	while (currentDate <= endDate) {
+		const schedule = schedules.find(schedule => {
+			const scheduleDate = new Date(schedule.date);
+			return scheduleDate.getDate() === currentDate.getDate() &&
+				scheduleDate.getMonth() === currentDate.getMonth() &&
+				scheduleDate.getFullYear() === currentDate.getFullYear();
+		});
+
+		datesWithSchedules.push({
+			date: new Date(currentDate),
+			schedule: schedule || { /* default schedule */ }
+		});
+
+		currentDate.setDate(currentDate.getDate() + 1);
+	}
+
+	return datesWithSchedules;
+}
+
 module.exports = {
-    getCurrentWeek,
-    generateWeek
+	getCurrentWeek,
+	generateWeek,
+	generateDates,
+	getWeekForDate,
+	fillMissingDates
+	
 };

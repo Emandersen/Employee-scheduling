@@ -66,6 +66,7 @@ html(lang="en")
         background-color: #E3F2FD; /* Light blue background */
         padding: 20px 10px; /* Adjusted padding */
         max-width: 250px; /* Maximum width */
+        z-index: 1; /* Adjusted z-index */
       }
       .content {
         padding-top: 70px; /* Adjusted to match the height of the navbar */
@@ -96,7 +97,7 @@ html(lang="en")
                 a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown3" role="button" data-toggle="dropdown") Management
                 .dropdown-menu(aria-labelledby="navbarDropdown3")
                   if permission >=1
-                    a.dropdown-item(href="#") Schedule planner
+                    a.dropdown-item(href="/planning-tool") Schedule planner
                   if permission >=2
                     a.dropdown-item(href="/manage-users") Manage Users
                     a.dropdown-item(href="/register") Add users

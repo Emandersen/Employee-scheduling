@@ -60,6 +60,8 @@ async function POST_register (req, res) {
         return;
     }
 
+    const saltRounds = 10;
+    
     // Hash the password before saving it
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
