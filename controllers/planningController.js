@@ -22,11 +22,9 @@ async function GET_planning_tool(req, res) {
 		return user;
 	});
 
-	// write to file
-	const fs = require('fs');
-	fs.writeFileSync('users.json', JSON.stringify(usersWithSchedules, null, 2));
-
-	res.render('planning_tool', {});
+	dates = dateHandler.generateDates(today.getFullYear(), [today.getMonth() + 1]);
+	
+	res.render('planning_tool', {users: usersWithSchedules, moment: moment, dates: dates, title: 'Planning Tool'});
 }
 
 async function POST_add_shift(req, res) {
