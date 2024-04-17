@@ -55,12 +55,13 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
         id: workDay ? workDay.id : releasedShift ? releasedShift.id : undefined,
         released: workDay ? workDay.released : releasedShift ? releasedShift.released : undefined,
         date: days[date.getDay()] + ' ' + day + '. ' + months[date.getMonth()],
-		workHours: workDay ? workDay.workHours : releasedShift ? releasedShift.workHours : 0,
+		    workHours: workDay ? workDay.workHours : releasedShift ? releasedShift.workHours : 0,
         startTime: workDay ? workDay.startTime : releasedShift ? releasedShift.startTime : undefined,
         endTime: workDay ? workDay.endTime : releasedShift ? releasedShift.endTime : undefined,
         role: workDay ? workDay.role : releasedShift ? releasedShift.role : undefined,
         department: workDay ? workDay.department : releasedShift ? releasedShift.department : undefined,
-        location: workDay ? workDay.location : releasedShift ? releasedShift.location : undefined
+        location: workDay ? workDay.location : releasedShift ? releasedShift.location : undefined,
+        email: workDay ? workDay.email : releasedShift ? releasedShift.email : undefined
       });
       date.setDate(date.getDate() + 1);
     }

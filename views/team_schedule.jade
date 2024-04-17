@@ -7,15 +7,12 @@ block content
             tr
                 th(style='text-align: center;') Personnel
 
-        
-                each day in weekDays
-                    th(style='text-align: center; width: 120;')= day
+                each day in weekDates.days
+                    th(style='text-align: center;') #{day.date}
 
-            each user in users
-                tr 
-                    td= user.user.firstName + ' ' + user.user.lastName
-                    each schedule in user.allSchedules
-                        td(style='text-align: center;') #{schedule.date} - #{schedule.startTime} - #{schedule.endTime}
-
-                    
-                
+                each user in users
+                    tr 
+                        td= user.user.firstName + ' ' + user.user.lastName  
+                        
+                        each day in user.week.days
+                                td(style='text-align: center;') #{day.startTime} - #{day.endTime}

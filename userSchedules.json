@@ -1,0 +1,738 @@
+[
+  {
+    "user": {
+      "_id": "6618f56165af40c8cb4a4674",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "email": "jane.doe@example.com",
+      "password": "$2b$10$8k.mmTFCv63QQVfWqnFYo.w8mcA/Aij2MmXr/dfagT0hRqnOOsZoa",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 0,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "date": "Monday 15. April",
+          "workHours": 0
+        },
+        {
+          "id": "6613cd8a18faa7a5866164fe",
+          "released": false,
+          "date": "Tuesday 16. April",
+          "workHours": 8,
+          "startTime": "09:00",
+          "endTime": "17:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "jane.doe@example.com"
+        },
+        {
+          "date": "Wednesday 17. April",
+          "workHours": 0
+        },
+        {
+          "id": "6613cd8a18faa7a586616382",
+          "released": false,
+          "date": "Thursday 18. April",
+          "workHours": 8,
+          "startTime": "12:00",
+          "endTime": "20:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "jane.doe@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866162c4",
+          "released": false,
+          "date": "Friday 19. April",
+          "workHours": 10,
+          "startTime": "06:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "jane.doe@example.com"
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "6618f56165af40c8cb4a4676",
+      "firstName": "Jim",
+      "lastName": "Doe",
+      "email": "jim.doe@example.com",
+      "password": "$2b$10$wyhrVmmtLBYBC4/9zVSk0.5YggkOn64FA6Gmlxv96nWlHw2XHJsRy",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 0,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "id": "6613cd8a18faa7a5866164f5",
+          "released": false,
+          "date": "Monday 15. April",
+          "workHours": 8,
+          "startTime": "08:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "jim.doe@example.com"
+        },
+        {
+          "date": "Tuesday 16. April",
+          "workHours": 0
+        },
+        {
+          "date": "Wednesday 17. April",
+          "workHours": 0
+        },
+        {
+          "id": "6613cd8a18faa7a5866164b9",
+          "released": false,
+          "date": "Thursday 18. April",
+          "workHours": 8,
+          "startTime": "10:00",
+          "endTime": "18:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "jim.doe@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866164ff",
+          "released": false,
+          "date": "Friday 19. April",
+          "workHours": 4,
+          "startTime": "10:00",
+          "endTime": "14:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "jim.doe@example.com"
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "6618f56165af40c8cb4a4678",
+      "firstName": "Alice",
+      "lastName": "Smith",
+      "email": "alice.smith@example.com",
+      "password": "$2b$10$M1A3W9K4mUsvGtcbVxydN.UqbpX0X3oAZ81CAigL5Qh1BHOpJb2vi",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 0,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "date": "Monday 15. April",
+          "workHours": 0
+        },
+        {
+          "id": "6613cd8a18faa7a586616514",
+          "released": false,
+          "date": "Tuesday 16. April",
+          "workHours": 8,
+          "startTime": "10:00",
+          "endTime": "18:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "alice.smith@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a586616230",
+          "released": false,
+          "date": "Wednesday 17. April",
+          "workHours": 8,
+          "startTime": "09:00",
+          "endTime": "17:00",
+          "role": "Nurse",
+          "department": "ICU",
+          "location": "Hvidovre",
+          "email": "alice.smith@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a58661633e",
+          "released": false,
+          "date": "Thursday 18. April",
+          "workHours": 4,
+          "startTime": "12:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "ICU",
+          "location": "Hvidovre",
+          "email": "alice.smith@example.com"
+        },
+        {
+          "id": "6613cd9818faa7a586616604",
+          "released": false,
+          "date": "Friday 19. April",
+          "workHours": 14,
+          "startTime": "06:00",
+          "endTime": "20:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "alice.smith@example.com"
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "6618f56265af40c8cb4a467a",
+      "firstName": "Bob",
+      "lastName": "Johnson",
+      "email": "bob.johnson@example.com",
+      "password": "$2b$10$MTCjVAUA2XB1mBTIim0G.u5VsUeqD.jwYlkU8UWI9QE25o1voG/Fm",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 1,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "id": "6613cd9518faa7a5866165d3",
+          "released": false,
+          "date": "Monday 15. April",
+          "workHours": 9,
+          "startTime": "08:00",
+          "endTime": "17:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "bob.johnson@example.com"
+        },
+        {
+          "date": "Tuesday 16. April",
+          "workHours": 0
+        },
+        {
+          "id": "6613cd8a18faa7a5866163f3",
+          "released": false,
+          "date": "Wednesday 17. April",
+          "workHours": 2,
+          "startTime": "12:00",
+          "endTime": "14:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "bob.johnson@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866163d5",
+          "released": false,
+          "date": "Thursday 18. April",
+          "workHours": 9,
+          "startTime": "09:00",
+          "endTime": "18:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "bob.johnson@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a58661649d",
+          "released": false,
+          "date": "Friday 19. April",
+          "workHours": 6,
+          "startTime": "12:00",
+          "endTime": "18:00",
+          "role": "Nurse",
+          "department": "ICU",
+          "location": "Hvidovre",
+          "email": "bob.johnson@example.com"
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "6618f56265af40c8cb4a467c",
+      "firstName": "Charlie",
+      "lastName": "Williams",
+      "email": "charlie.williams@example.com",
+      "password": "$2b$10$F8QMUIchwEIaLNhNqHgVOO6D8WOEZCTqgh/YHXWM6TEQY3d.SyUTi",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 2,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "id": "6613cd8a18faa7a586616458",
+          "released": false,
+          "date": "Monday 15. April",
+          "workHours": 6,
+          "startTime": "10:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "ICU",
+          "location": "Hvidovre",
+          "email": "charlie.williams@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866164a8",
+          "released": false,
+          "date": "Tuesday 16. April",
+          "workHours": 8,
+          "startTime": "08:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "charlie.williams@example.com"
+        },
+        {
+          "date": "Wednesday 17. April",
+          "workHours": 0
+        },
+        {
+          "date": "Thursday 18. April",
+          "workHours": 0
+        },
+        {
+          "id": "6613cd8a18faa7a586616228",
+          "released": false,
+          "date": "Friday 19. April",
+          "workHours": 6,
+          "startTime": "12:00",
+          "endTime": "18:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "charlie.williams@example.com"
+        },
+        {
+          "id": "6613cd8b18faa7a586616552",
+          "released": false,
+          "date": "Saturday 20. April",
+          "workHours": 8,
+          "startTime": "12:00",
+          "endTime": "20:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "charlie.williams@example.com"
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "6618f56265af40c8cb4a467e",
+      "firstName": "Diana",
+      "lastName": "Brown",
+      "email": "diana.brown@example.com",
+      "password": "$2b$10$L57UY9rPeEJbA6oE8w.B8ueplMugok8pDPFwJgbFi0kvSFAkuxm/6",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 1,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "id": "6613cd8a18faa7a586616229",
+          "released": false,
+          "date": "Monday 15. April",
+          "workHours": 6,
+          "startTime": "10:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "diana.brown@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866164f9",
+          "released": false,
+          "date": "Tuesday 16. April",
+          "workHours": 8,
+          "startTime": "08:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "diana.brown@example.com"
+        },
+        {
+          "date": "Wednesday 17. April",
+          "workHours": 0
+        },
+        {
+          "date": "Thursday 18. April",
+          "workHours": 0
+        },
+        {
+          "id": "6613cd8a18faa7a5866164ef",
+          "released": false,
+          "date": "Friday 19. April",
+          "workHours": 4,
+          "startTime": "12:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "diana.brown@example.com"
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "6618f56265af40c8cb4a4680",
+      "firstName": "Ethan",
+      "lastName": "Jones",
+      "email": "ethan.jones@example.com",
+      "password": "$2b$10$D6bZovpcnDLcqWG9w7geWOFUYOvIBH46uvleCL8lMuysV7beI2kFK",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 0,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "id": "6613cd8a18faa7a5866162ca",
+          "released": false,
+          "date": "Monday 15. April",
+          "workHours": 5,
+          "startTime": "09:00",
+          "endTime": "14:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "ethan.jones@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a586616400",
+          "released": false,
+          "date": "Tuesday 16. April",
+          "workHours": 8,
+          "startTime": "08:00",
+          "endTime": "16:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "ethan.jones@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a586616428",
+          "released": false,
+          "date": "Wednesday 17. April",
+          "workHours": 10,
+          "startTime": "08:00",
+          "endTime": "18:00",
+          "role": "Nurse",
+          "department": "ICU",
+          "location": "Hvidovre",
+          "email": "ethan.jones@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866163a6",
+          "released": false,
+          "date": "Thursday 18. April",
+          "workHours": 6,
+          "startTime": "12:00",
+          "endTime": "18:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "ethan.jones@example.com"
+        },
+        {
+          "date": "Friday 19. April",
+          "workHours": 0
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "6618f56265af40c8cb4a4682",
+      "firstName": "Fiona",
+      "lastName": "Miller",
+      "email": "fiona.miller@example.com",
+      "password": "$2b$10$bUYpLDisKFCeTwZPF7D.TuL1tyxqu7K1y.XFPqWnkIZEg6bJnjkHG",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 0,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "id": "6613cd8a18faa7a586616537",
+          "released": false,
+          "date": "Monday 15. April",
+          "workHours": 11,
+          "startTime": "09:00",
+          "endTime": "20:00",
+          "role": "Nurse",
+          "department": "Operating",
+          "location": "Hvidovre",
+          "email": "fiona.miller@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866162d5",
+          "released": false,
+          "date": "Tuesday 16. April",
+          "workHours": 6,
+          "startTime": "08:00",
+          "endTime": "14:00",
+          "role": "Nurse",
+          "department": "ICU",
+          "location": "Hvidovre",
+          "email": "fiona.miller@example.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866164b5",
+          "released": false,
+          "date": "Wednesday 17. April",
+          "workHours": 5,
+          "startTime": "12:00",
+          "endTime": "17:00",
+          "role": "Nurse",
+          "department": "ICU",
+          "location": "Hvidovre",
+          "email": "fiona.miller@example.com"
+        },
+        {
+          "date": "Thursday 18. April",
+          "workHours": 0
+        },
+        {
+          "date": "Friday 19. April",
+          "workHours": 0
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "6618f56265af40c8cb4a4684",
+      "firstName": "thisIs",
+      "lastName": "AName",
+      "email": "user@user.com",
+      "password": "$2b$10$M6MRIDSCulg4pajft1qzPetk31Wq3AV34yS7AjwG0Qfe0DQHXy7Fa",
+      "role": "Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 2,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "id": "6613cd8a18faa7a58661651a",
+          "released": false,
+          "date": "Monday 15. April",
+          "workHours": 8,
+          "startTime": "06:00",
+          "endTime": "14:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "user@user.com"
+        },
+        {
+          "id": "6613cd8a18faa7a5866164ca",
+          "released": false,
+          "date": "Tuesday 16. April",
+          "workHours": 12,
+          "startTime": "08:00",
+          "endTime": "20:00",
+          "role": "Nurse",
+          "department": "ICU",
+          "location": "Hvidovre",
+          "email": "user@user.com"
+        },
+        {
+          "id": "6613cd8a18faa7a586616484",
+          "released": false,
+          "date": "Wednesday 17. April",
+          "workHours": 5,
+          "startTime": "09:00",
+          "endTime": "14:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "user@user.com"
+        },
+        {
+          "date": "Thursday 18. April",
+          "workHours": 0
+        },
+        {
+          "id": "6613cd8a18faa7a5866164de",
+          "released": false,
+          "date": "Friday 19. April",
+          "workHours": 5,
+          "startTime": "09:00",
+          "endTime": "14:00",
+          "role": "Nurse",
+          "department": "Emergency",
+          "location": "Hvidovre",
+          "email": "user@user.com"
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  },
+  {
+    "user": {
+      "_id": "661f7e88b1f23f0480f05a57",
+      "firstName": "Elisa",
+      "lastName": "Johnson",
+      "email": "johnson.elise@gmail.com",
+      "password": "$2b$10$bx8QUu8FfgE8tjRAg2vu9eSKBCy8Gpavzp5U/aQ2qqWrOWB8STyDK",
+      "role": "Registered Nurse",
+      "department": "Cardiology",
+      "preferences": [],
+      "permission": 0,
+      "__v": 0
+    },
+    "week": {
+      "number": 16,
+      "year": 2024,
+      "days": [
+        {
+          "date": "Monday 15. April",
+          "workHours": 0
+        },
+        {
+          "date": "Tuesday 16. April",
+          "workHours": 0
+        },
+        {
+          "date": "Wednesday 17. April",
+          "workHours": 0
+        },
+        {
+          "date": "Thursday 18. April",
+          "workHours": 0
+        },
+        {
+          "date": "Friday 19. April",
+          "workHours": 0
+        },
+        {
+          "date": "Saturday 20. April",
+          "workHours": 0
+        },
+        {
+          "date": "Sunday 21. April",
+          "workHours": 0
+        }
+      ]
+    }
+  }
+]

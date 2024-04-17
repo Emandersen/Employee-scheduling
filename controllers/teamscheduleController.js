@@ -20,67 +20,34 @@ async function GET_team_schedule(req, res) {
   }
 
   const allSchedules = await Schedule.find({
-    date: { $gte: weekStart, $lte: weekEnd}
+    date: { $gte: weekStart, $lte: weekEnd},
   }).exec();
 
-  var userSchedules = {};
+  var userSchedules = [];
 
   allUsers.forEach(nameElement => {
-    var userSchedule = [];
+    var currentUser = allSchedules.filter(schedule => schedule.email == nameElement.email);
 
-    // Generate a week's worth of dates
-    let week = dateHandler.generateWeek(2024, dateHandler.getCurrentWeek(), allSchedules);
+    // Generate a week's worth of dates for the current iterating user
+    let week = dateHandler.generateWeek(2024, dateHandler.getCurrentWeek(), currentUser);
 
-    week.days.forEach(day => {
-      // Find a schedule for this date
-      let schedule = allSchedules.find(scheduleElement => 
-        scheduleElement.email == nameElement.email && 
-        scheduleElement.date.toISOString().slice(0,10) == new Date(day.date).toISOString().slice(0,10)
-      );
+    let userSchedule = {
+      user: nameElement,
+      week
+    }
 
-      // If there's no schedule for this date, add a placeholder schedule
-      if (!schedule) {
-        schedule = {
-          email: nameElement.email,
-          date: day.date,
-          // Add any other properties you need for a placeholder schedule
-        };
-      }
+    userSchedules.push(userSchedule);
 
-      userSchedule.push(schedule);
-    });
 
-    userSchedules[nameElement.email] = userSchedule;
-  });
-  
-  
-  // Sort User schedules from earliest to latest
-  for (let key in userSchedules) {
-    userSchedules[key].sort(function(a, b) {
-      return a.date - b.date;
-    });
-  }
 
-  // set the key in userSchedules to the allUsers array
-  
-  let users = [];
-  allUsers.forEach(user => {
-    users.push({
-      user,
-      allSchedules: userSchedules[user.email]
-    });
   });
 
-  
-
-  console.log(users);
-  console.log(users)
-
-
+  weekDates = dateHandler.generateWeek(2024, dateHandler.getCurrentWeek());
+  console.log(weekDates);
   res.render('team_schedule', {
     week_number: dateHandler.getCurrentWeek(),
-    weekDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    users: users
+    weekDates: weekDates,
+    users: userSchedules
   });
 };
 
