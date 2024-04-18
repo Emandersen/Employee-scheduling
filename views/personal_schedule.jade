@@ -1,47 +1,49 @@
 extends layout
 
 block content
-    div.container(style='font-size: 0.8em;')
-        h1(style='font-size: 1.2em;')= title
-        each week in weeks
-            if week.number == currentWeek
-                h2(id='week-' + week.number, style='font-size: 2em; margin-top: 10px; background-color: #00ccff; padding: 10px; border: 1px solid #ccc; border-radius: 5px;') Week #{week.number} - #{week.year} (Current Week)
-            else
-                h2(id='week-' + week.number, style='font-size: 2em; margin-top: 10px; background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc; border-radius: 5px;') Week #{week.number} - #{week.year}
-            div(style='border: 1px solid #ccc; padding: 5px; margin-bottom: 10px;')
-                each day in week.days
-                    div(style='display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;')
-                        h3(style='font-size: 1.3em; margin-bottom: 0;')= day.date
-                        if day.workHours > 0
-                            div(style='display: flex; justify-content: space-between; width: 50%;')
-                                p(style='margin-bottom: 0; flex: 1; text-align: center;') Role: #{day.role}
-                                p(style='margin-bottom: 0; flex: 1; text-align: center;') Department: #{day.department}
-                                p(style='margin-bottom: 0; flex: 1; text-align: center;') Location: #{day.location}
-                            p(style='margin-bottom: 0;') Hours: #{day.startTime} - #{day.endTime} (#{day.workHours})
-                            if day.released
-                                form(unReleaseShift action='/unrelease-shift' method='post')
-                                    input(type='hidden' name='dayId' value='#{day.id}')
-                                    button(type='submit' style='margin-top: 10px;') Unrelease Shift
-                            else
-                                form(action='/release-shift' method='post')
-                                    input(type='hidden' name='dayId' value='#{day.id}')
-                                    button(type='submit' style='margin-top: 10px;') Release Shift
-                        else
-                            p(style='margin-bottom: 0;') No work scheduled
-    script.
-        window.addEventListener('DOMContentLoaded', (event) => {
-            console.log('DOM fully loaded and parsed');
-            console.log(#{currentWeek});
+  div.container(style='font-size: 0.8em;')
+    h1(style='font-size: 1.2em;')= title
+    each week in weeks
+      if week.number == currentWeek
+        h2(id='week-' + week.number, style='font-size: 2em; margin-top: 10px; background-color: #00ccff; padding: 10px; border: 1px solid #ccc; border-radius: 5px;') Week #{week.number} - #{week.year} (Current Week)
+      else
+        h2(id='week-' + week.number, style='font-size: 2em; margin-top: 10px; background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc; border-radius: 5px;') Week #{week.number} - #{week.year}
+      div(style='border: 1px solid #ccc; padding: 5px; margin-bottom: 10px;')
+        table(style='width: 100%; border-collapse: collapse;')
 
-            const currentWeekElement = document.getElementById('week-' + #{currentWeek});
-            if (currentWeekElement) {
-                const offset = 150; // Adjust this value to your needs
-                const elementPosition = currentWeekElement.getBoundingClientRect().top + window.pageYOffset;
-                const offsetPosition = elementPosition - offset;
+          tbody
+            each day in week.days
+              tr(style='border-bottom: 1px solid #ccc; height: 30px;')
+                td= day.date
+                if day.workHours > 0
+                  td Role: #{day.role}
+                  td Department: #{day.department}
+                  td Location: #{day.location}
+                  td Hours: #{day.startTime} - #{day.endTime} (#{day.workHours})
+                  td
+                    if day.released
+                      form.action-buttons(method='post', action=`/toggle-shift/${day.id}`)
+                        button.btn(type='submit') Claim shift
+                    else
+                      form.action-buttons(method='post', action=`/toggle-shift/${day.id}`)
+                        button.btn(type='submit') Release Shift
+                else
+                  td(colspan='5') No work scheduled 
+                                    
+  script.
+    window.addEventListener('DOMContentLoaded', (event) => {
+      console.log('DOM fully loaded and parsed');
+      console.log(#{currentWeek});
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-            }
+      const currentWeekElement = document.getElementById('week-' + #{currentWeek});
+      if (currentWeekElement) {
+        const offset = 100; // Adjust this value to your needs
+        const elementPosition = currentWeekElement.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
         });
+      }
+    });

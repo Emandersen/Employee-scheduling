@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    .container
+        .table-responsive
+            table.table.table-striped
+                thead
+                    tr
+                        th User
+                        each date in dates
+                            th= moment(date).format('YYYY-MM-DD')
+                tbody
+                    each user in users
+                        tr
+                            td #{user.firstName} #{user.lastName}
+                            each date in dates
+                                td
+                                    - let schedule = user.schedules.find(schedule => moment(schedule.date).isSame(date, 'day'))
+                                    if schedule && schedule.schedule
+                                        | #{moment(schedule.schedule.date).format('YYYY-MM-DD')} - #{schedule.schedule.startTime} - #{schedule.schedule.endTime}
+                                    else
+                                        | None

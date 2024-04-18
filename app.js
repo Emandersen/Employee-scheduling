@@ -52,13 +52,39 @@ app.use(session({
 app.use(function(req, res, next) {
   if (req.session.user) {
     // Destructure user session data for cleaner code
+    permission = req.session.user.permission;
     const { firstName, lastName, email, role, department } = req.session.user;
-    res.locals = { firstName, lastName, email, role, department };
+    res.locals = { firstName, lastName, email, role, department, permission };
   } else {
-    res.locals = { firstName: '', lastName: '', email: '', role: '', department: '' };
+    res.locals = { firstName: '', lastName: '', email: '', role: '', department: '', permission: '' };
   }
   next();
 });
+
+//
+//  DEBUGGING MIDDLEWARE
+//
+app.use(function (req, res, next) {
+  if (!req.session.user) {
+    // Auto login user
+    req.session.user = {
+      _id: '6618f56265af40c8cb4a4684',
+      firstName: 'thisIs',
+      lastName: 'AName',
+      email: 'user@user.com',
+      password: '$2b$10$M6MRIDSCulg4pajft1qzPetk31Wq3AV34yS7AjwG0Qfe0DQHXy7Fa',
+      role: 'Nurse',
+      department: 'Cardiology',
+      preferences: [],
+      permission: 2,
+      __v: 0
+    };
+  }
+  next();
+});
+
+
+
 
 // Set view engine
 app.set('views', path.join(__dirname, 'views'));

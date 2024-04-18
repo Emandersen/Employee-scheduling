@@ -20,7 +20,7 @@ function getCurrentWeek() {
 // return: week
 // parameters: year, weekNumber, workDays
 // example: generateWeek(2021, 1, [])
-function generateWeek(year, weekNumber, workDays = []) {
+function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
     // Create a date object at the start of the week
     const date = new Date(year, 0, 1 + (weekNumber - 1) * 7);
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -40,18 +40,28 @@ function generateWeek(year, weekNumber, workDays = []) {
           workDayDate.getMonth() === date.getMonth() &&
           workDayDate.getFullYear() === date.getFullYear();
       });
+
+      const releasedShift = releasedShifts.find(d => {
+        const releasedShiftDate = new Date(d.date);
+        return releasedShiftDate.getDate() === date.getDate() &&
+          releasedShiftDate.getMonth() === date.getMonth() &&
+          releasedShiftDate.getFullYear() === date.getFullYear();
+      });
+
+
   
       // Add the day to the week object
       week.days.push({
-        id: workDay ? workDay.id : undefined,
-        released: workDay ? workDay.released : undefined,
+        id: workDay ? workDay.id : releasedShift ? releasedShift.id : undefined,
+        released: workDay ? workDay.released : releasedShift ? releasedShift.released : undefined,
         date: days[date.getDay()] + ' ' + day + '. ' + months[date.getMonth()],
-        workHours: workDay ? workDay.workHours : 0,
-        startTime: workDay ? workDay.startTime : undefined,
-        endTime: workDay ? workDay.endTime : undefined,
-        role: workDay ? workDay.role : undefined,
-        department: workDay ? workDay.department : undefined,
-        location: workDay ? workDay.location : undefined
+		    workHours: workDay ? workDay.workHours : releasedShift ? releasedShift.workHours : 0,
+        startTime: workDay ? workDay.startTime : releasedShift ? releasedShift.startTime : undefined,
+        endTime: workDay ? workDay.endTime : releasedShift ? releasedShift.endTime : undefined,
+        role: workDay ? workDay.role : releasedShift ? releasedShift.role : undefined,
+        department: workDay ? workDay.department : releasedShift ? releasedShift.department : undefined,
+		  location: workDay ? workDay.location : releasedShift ? releasedShift.location : undefined,
+		  email: workDay ? workDay.email : releasedShift ? releasedShift.email : undefined
       });
       date.setDate(date.getDate() + 1);
     }
