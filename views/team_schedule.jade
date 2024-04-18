@@ -3,16 +3,16 @@ extends layout
 block content 
     div.container(style='font-size: 0.8em; padding-top: 60px')
         h1(style='text-align: center;') Week #{week_number}
-        table(style='width:100%; table-layout: fixed;', border='1', )
+        table(style='width:100%; table-layout: fixed;', border='1')
             tr
                 th(style='text-align: center;') Personnel
 
                 each day in weekDates.days
                     th(style='text-align: center;') #{day.date}
 
-                each user in users
-                    tr 
+                each user, index in users
+                    tr(style=(index % 2 === 0) ? 'background-color: #dddddd;' : '')
                         td= user.user.firstName + ' ' + user.user.lastName  
                         
                         each day in user.week.days
-                                td(style='text-align: center;') #{day.startTime} - #{day.endTime}
+                                td(style='text-align: center;') #{day.startTime} - #{day.endTime} <br> #{day.department}
