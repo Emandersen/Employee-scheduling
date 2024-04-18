@@ -43,7 +43,7 @@ async function GET_team_schedule(req, res) {
   });
 
   weekDates = dateHandler.generateWeek(2024, dateHandler.getCurrentWeek());
-  console.log(weekDates);
+
   res.render('team_schedule', {
     week_number: dateHandler.getCurrentWeek(),
     weekDates: weekDates,
