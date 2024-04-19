@@ -3,7 +3,6 @@ extends layout
 block content
     .container(style='margin-top: 30px; margin-left: -20px;')
         .row(style='margin-right: -120px;')
-            // Your content here
             .table-responsive(id='scroll-container')
                 table.table.table-striped
                     thead
@@ -31,8 +30,8 @@ block content
                                     if previousWeekNumber != null && weekNumber != previousWeekNumber
                                         td(style='background-color: #000; width: 2px;')
                                     if schedule.workHours > 0
-                                        td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative;')
-                                            a(onclick='' style='display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 3;')
+                                        td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative;' data-date=dates[dateIndex] data-user=user.email)
+                                            a(onclick='handleEditEvent(event)' style='display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 3;')
                                             div(style='position: relative; z-index: 2;')
                                                 | Role: #{schedule.role} 
                                                 br
@@ -44,16 +43,16 @@ block content
                                                 br
                                                 | Hours: #{schedule.workHours}
                                     else 
-                                        td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative;')
-                                            a(onclick='handleNewEvent(event)' style='display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 3;')
+                                        td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative;' data-date=dates[dateIndex] data-user=user.email)
+                                            a(onclick='handleAddEvent(event)' style='display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 3;')
                                             div(style='position: relative; z-index: 2;') No work scheduled
                                     - previousWeekNumber = weekNumber
                                     - dateIndex++
 
-        div(id='myModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);')
+        div(id='addModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);')
             div(class='modal-content' style='background-color: #87CEFA; margin: 5% auto; padding: 5px; border: 1px solid #888; width: 20%;')
                 span(class='close' style='color: #aaa; float: right; font-size: 20px; font-weight: bold;') &times;
-                form(id='myForm')
+                form(id='addForm')
                     label(for='department' style='display: block; margin-top: 5px; font-size: 12px;') Department
                     select#department.form-control(name='department' required)
                         option(value='Cardiology') Cardiology
@@ -73,16 +72,70 @@ block content
                         option(value='Geriatrics') Geriatrics
                         option(value='Immunology') Immunology
                     label(for='location' style='display: block; margin-top: 5px; font-size: 12px;') Location
-                    input(type='text' id='location' name='location' style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    select#location.form-control(name='location' required)
+                        option(value='Rigshospitalet - Copenhagen') Rigshospitalet - Copenhagen
+                        option(value='Bispebjerg Hospital - Copenhagen') Bispebjerg Hospital - Copenhagen
+                        option(value='Herlev Hospital - Herlev') Herlev Hospital - Herlev
+                        option(value='Hillerød Hospital - Hillerød') Hillerød Hospital - Hillerød
+                        option(value='Hvidovre Hospital - Hvidovre') Hvidovre Hospital - Hvidovre
+                        option(value='Holbæk Hospital - Holbæk') Holbæk Hospital - Holbæk
+                        option(value='Roskilde Hospital - Roskilde') Roskilde Hospital - Roskilde
+                        option(value='Næstved Hospital - Næstved') Næstved Hospital - Næstved
+                        option(value='Slagelse Hospital - Slagelse') Slagelse Hospital - Slagelse
+                        option(value='Nykøbing Falster Hospital - Nykøbing Falster') Nykøbing Falster Hospital - Nykøbing Falster
                     label(for='startTime' style='display: block; margin-top: 5px; font-size: 12px;') Start Time
-                    input(type='text' id='startTime' name='startTime' style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    input(type='time' id='startTime' name='startTime' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
                     label(for='endTime' style='display: block; margin-top: 5px; font-size: 12px;') End Time
-                    input(type='text' id='endTime' name='endTime' style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
-                    label(for='user' style='display: block; margin-top: 5px; font-size: 12px;') Assign to User
-                    select#user.form-control(name='user' required)
+                    input(type='time' id='endTime' name='endTime' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    input(type='submit' value='Submit' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;')
+        
+        div(id='editModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);')
+            div(class='modal-content' style='background-color: #87CEFA; margin: 5% auto; padding: 5px; border: 1px solid #888; width: 20%;')
+                span(class='close' style='color: #aaa; float: right; font-size: 20px; font-weight: bold;') &times;
+                form(id='editForm')
+                    label(for='editDepartment' style='display: block; margin-top: 5px; font-size: 12px;') Department
+                    select#editDepartment.form-control(name='department' required)
+                        option(value='Cardiology') Cardiology
+                        option(value='Neurology') Neurology
+                        option(value='Orthopedics') Orthopedics
+                        option(value='Pediatrics') Pediatrics
+                        option(value='Radiology') Radiology
+                        option(value='Surgery') Surgery
+                        option(value='Dermatology') Dermatology
+                        option(value='Gastroenterology') Gastroenterology
+                        option(value='Endocrinology') Endocrinology
+                        option(value='Oncology') Oncology
+                        option(value='Ophthalmology') Ophthalmology
+                        option(value='Psychiatry') Psychiatry
+                        option(value='Anesthesiology') Anesthesiology
+                        option(value='Gynecology') Gynecology
+                        option(value='Geriatrics') Geriatrics
+                        option(value='Immunology') Immunology
+                    label(for='editLocation' style='display: block; margin-top: 5px; font-size: 12px;') Location
+                    select#editLocation.form-control(name='location' required)
+                        option(value='Rigshospitalet - Copenhagen') Rigshospitalet - Copenhagen
+                        option(value='Bispebjerg Hospital - Copenhagen') Bispebjerg Hospital - Copenhagen
+                        option(value='Herlev Hospital - Herlev') Herlev Hospital - Herlev
+                        option(value='Hillerød Hospital - Hillerød') Hillerød Hospital - Hillerød
+                        option(value='Hvidovre Hospital - Hvidovre') Hvidovre Hospital - Hvidovre
+                        option(value='Holbæk Hospital - Holbæk') Holbæk Hospital - Holbæk
+                        option(value='Roskilde Hospital - Roskilde') Roskilde Hospital - Roskilde
+                        option(value='Næstved Hospital - Næstved') Næstved Hospital - Næstved
+                        option(value='Slagelse Hospital - Slagelse') Slagelse Hospital - Slagelse
+                        option(value='Nykøbing Falster Hospital - Nykøbing Falster') Nykøbing Falster Hospital - Nykøbing Falster
+                    label(for='editStartTime' style='display: block; margin-top: 5px; font-size: 12px;') Start Time
+                    input(type='time' id='editStartTime' name='startTime' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='editEndTime' style='display: block; margin-top: 5px; font-size: 12px;') End Time
+                    input(type='time' id='editEndTime' name='endTime' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='editUser' style='display: block; margin-top: 5px; font-size: 12px;') Reassign to User
+                    select#editUser.form-control(name='user' required)
+                        option(value='false') Don't reassign
                         each user in users
                             option(value=user.email) #{user.firstName} #{user.lastName} - #{user.role}
+                        
                     input(type='submit' value='Submit' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;')
+                button(id='deleteShift' onclick='deleteShift(event)' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Delete Shift
+
         
         script.
             document.onkeydown = function(evt) {
@@ -94,7 +147,8 @@ block content
                     isEscape = (evt.keyCode === 27);
                 }
                 if (isEscape) {
-                    document.getElementById('myModal').style.display = 'none';
+                    document.getElementById('addModal').style.display = 'none';
+                    document.getElementById('editModal').style.display = 'none';
                 }
             };
 
@@ -112,8 +166,11 @@ block content
             });
 
         script.
-            function handleNewEvent(event) {
-                var modal = document.getElementById("myModal");
+            var date;
+            var user; 
+
+            function handleAddEvent(event) {
+                var modal = document.getElementById("addModal");
                 var span = document.getElementsByClassName("close")[0];
 
                 modal.style.display = "block";
@@ -128,31 +185,115 @@ block content
                     }
                 }
 
-                document.getElementById("myForm").onsubmit = function(e) {
+
+   
+
+                $('td').on('click', function() {
+                    date = $(this).data('date');
+                    user = $(this).data('user');
+
+                    console.log('Date clicked: ' + date);
+                    console.log('User clicked: ' + user);
+                });
+
+
+                document.getElementById("addForm").onsubmit = function(e) {
                     e.preventDefault();
 
+                    var location = document.getElementById("location").value;
                     var department = document.getElementById("department").value;
                     var location = document.getElementById("location").value;
                     var startTime = document.getElementById("startTime").value;
                     var endTime = document.getElementById("endTime").value;
-                    var user = document.getElementById("user").value;
 
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", '/your-endpoint', true);
+                    xhr.open("POST", '/planning-tool/add-shift', true);
                     xhr.setRequestHeader("Content-Type", "application/json");
                     xhr.send(JSON.stringify({
                         department: department,
                         location: location,
                         startTime: startTime,
                         endTime: endTime,
-                        user: user
+                        user: user,
+                        date: date
                     }));
 
                     modal.style.display = "none";
                 }
             }
 
-        script. 
-            function HandleEditEvent(event) {
-                console.log("missing implementation")
+        
+            function handleEditEvent(event) {
+                var modal = document.getElementById("editModal");
+                var span = document.getElementsByClassName("close")[0];
+
+                modal.style.display = "block";
+
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                
+   
+
+                $('td').on('click', function() {
+                    date = $(this).data('date');
+                    user = $(this).data('user');
+
+                    console.log('Date clicked: ' + date);
+                    console.log('User clicked: ' + user);
+                });
+
+
+                document.getElementById("editForm").onsubmit = function(e) {
+                    e.preventDefault();
+
+                    var location = document.getElementById("location").value;
+                    var department = document.getElementById("department").value;
+                    var startTime = document.getElementById("startTime").value;
+                    var endTime = document.getElementById("endTime").value;
+                    var user = document.getElementById("user").value;
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", '/planning-tool/edit-shift', true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.send(JSON.stringify({
+                        department: department,
+                        location: location,
+                        startTime: startTime,
+                        endTime: endTime,
+                        user: user,
+                        date: date
+                    }));
+
+                    modal.style.display = "none";
+                }
+            }
+
+    
+            window.deleteShift = function(event) { 
+                $('td').on('click', function() {
+                    date = $(this).data('date');
+                    user = $(this).data('user');
+
+                    console.log('Date clicked: ' + date);
+                    console.log('User clicked: ' + user);
+                });
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", '/planning-tool/delete-shift', true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send(JSON.stringify({
+                    date: date, // Replace with the date of the shift
+                    user: user // Replace with the user of the shift
+                }));
+
+                // Close the modal
+                document.getElementById('editModal').style.display = 'none';
             }
