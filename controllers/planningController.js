@@ -22,9 +22,9 @@ async function GET_planning_tool(req, res) {
 		return user;
 	});
 
-	dates = dateHandler.generateDates(today.getFullYear(), [today.getMonth() + 1]);
+	dates = dateHandler.generateDates(start, end);
 	
-	res.render('planning_tool', {users: usersWithSchedules, moment: moment, dates: dates, title: 'Planning Tool'});
+	res.render('planning_tool', {users: usersWithSchedules, dates: dates, title: 'Planning Tool', moment: moment});
 }
 
 async function POST_add_shift(req, res) {

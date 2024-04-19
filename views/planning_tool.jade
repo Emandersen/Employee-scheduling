@@ -1,22 +1,158 @@
 extends layout
 
 block content
-    .container
-        .table-responsive
-            table.table.table-striped
-                thead
-                    tr
-                        th User
-                        each date in dates
-                            th= moment(date).format('YYYY-MM-DD')
-                tbody
-                    each user in users
+    .container(style='margin-top: 30px; margin-left: -20px;')
+        .row(style='margin-right: -120px;')
+            // Your content here
+            .table-responsive(id='scroll-container')
+                table.table.table-striped
+                    thead
                         tr
-                            td #{user.firstName} #{user.lastName}
+                            th(style='border-right: 1px solid #000; position: sticky; left: 0; background: white; z-index: 1;') User
+                            - var previousWeekNumber = null
+                            - var currentWeek = moment().isoWeek()
                             each date in dates
-                                td
-                                    - let schedule = user.schedules.find(schedule => moment(schedule.date).isSame(date, 'day'))
-                                    if schedule && schedule.schedule
-                                        | #{moment(schedule.schedule.date).format('YYYY-MM-DD')} - #{schedule.schedule.startTime} - #{schedule.schedule.endTime}
+                                - var weekNumber = moment(date).isoWeek()
+                                if previousWeekNumber != null && weekNumber != previousWeekNumber
+                                    if weekNumber == currentWeek
+                                        th(id='week-' + weekNumber style='background-color: #1cbffd; width: 2px; opacity: 0.5; color: white;') Week #{weekNumber}
                                     else
-                                        | None
+                                        th(id='week-' + weekNumber style='background-color: #000; width: 2px; opacity: 0.5; color: white;') Week #{weekNumber}
+                                th(style='font-size: 10px; border-right: 1px solid #000;') #{moment(date).format('dddd')}<br>#{moment(date).format('DD. MMMM')}<br>#{moment(date).format('YYYY')}
+                                - previousWeekNumber = weekNumber
+                    tbody
+                        each user in users
+                            tr
+                                td(style='border-right: 1px solid #000; position: sticky; left: 0; background: white; z-index: 100;') #{user.firstName} #{user.lastName}
+                                - var previousWeekNumber = null
+                                - var dateIndex = 0
+                                each schedule in user.schedules
+                                    - var weekNumber = moment(dates[dateIndex]).isoWeek()
+                                    if previousWeekNumber != null && weekNumber != previousWeekNumber
+                                        td(style='background-color: #000; width: 2px;')
+                                    if schedule.workHours > 0
+                                        td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative;')
+                                            a(onclick='' style='display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 3;')
+                                            div(style='position: relative; z-index: 2;')
+                                                | Role: #{schedule.role} 
+                                                br
+                                                | Department: #{schedule.department} 
+                                                br
+                                                | Location: #{schedule.location} 
+                                                br
+                                                | Time: #{schedule.startTime} - #{schedule.endTime} 
+                                                br
+                                                | Hours: #{schedule.workHours}
+                                    else 
+                                        td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative;')
+                                            a(onclick='handleNewEvent(event)' style='display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 3;')
+                                            div(style='position: relative; z-index: 2;') No work scheduled
+                                    - previousWeekNumber = weekNumber
+                                    - dateIndex++
+
+        div(id='myModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);')
+            div(class='modal-content' style='background-color: #87CEFA; margin: 5% auto; padding: 5px; border: 1px solid #888; width: 20%;')
+                span(class='close' style='color: #aaa; float: right; font-size: 20px; font-weight: bold;') &times;
+                form(id='myForm')
+                    label(for='department' style='display: block; margin-top: 5px; font-size: 12px;') Department
+                    select#department.form-control(name='department' required)
+                        option(value='Cardiology') Cardiology
+                        option(value='Neurology') Neurology
+                        option(value='Orthopedics') Orthopedics
+                        option(value='Pediatrics') Pediatrics
+                        option(value='Radiology') Radiology
+                        option(value='Surgery') Surgery
+                        option(value='Dermatology') Dermatology
+                        option(value='Gastroenterology') Gastroenterology
+                        option(value='Endocrinology') Endocrinology
+                        option(value='Oncology') Oncology
+                        option(value='Ophthalmology') Ophthalmology
+                        option(value='Psychiatry') Psychiatry
+                        option(value='Anesthesiology') Anesthesiology
+                        option(value='Gynecology') Gynecology
+                        option(value='Geriatrics') Geriatrics
+                        option(value='Immunology') Immunology
+                    label(for='location' style='display: block; margin-top: 5px; font-size: 12px;') Location
+                    input(type='text' id='location' name='location' style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='startTime' style='display: block; margin-top: 5px; font-size: 12px;') Start Time
+                    input(type='text' id='startTime' name='startTime' style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='endTime' style='display: block; margin-top: 5px; font-size: 12px;') End Time
+                    input(type='text' id='endTime' name='endTime' style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='user' style='display: block; margin-top: 5px; font-size: 12px;') Assign to User
+                    select#user.form-control(name='user' required)
+                        each user in users
+                            option(value=user.email) #{user.firstName} #{user.lastName} - #{user.role}
+                    input(type='submit' value='Submit' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;')
+        
+        script.
+            document.onkeydown = function(evt) {
+                evt = evt || window.event;
+                var isEscape = false;
+                if ("key" in evt) {
+                    isEscape = (evt.key === "Escape" || evt.key === "Esc");
+                } else {
+                    isEscape = (evt.keyCode === 27);
+                }
+                if (isEscape) {
+                    document.getElementById('myModal').style.display = 'none';
+                }
+            };
+
+        script.
+            window.addEventListener('DOMContentLoaded', (event) => {
+                const currentWeekElement = document.getElementById('week-' + #{currentWeek});
+                const scrollContainer = document.getElementById('scroll-container');
+                if (currentWeekElement && scrollContainer) {
+                    const offset = 100; // Adjust this value to your needs
+                    const elementPosition = currentWeekElement.getBoundingClientRect().left - scrollContainer.getBoundingClientRect().left;
+                    const offsetPosition = elementPosition - offset;
+
+                    scrollContainer.scrollLeft = offsetPosition;
+                }
+            });
+
+        script.
+            function handleNewEvent(event) {
+                var modal = document.getElementById("myModal");
+                var span = document.getElementsByClassName("close")[0];
+
+                modal.style.display = "block";
+
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                document.getElementById("myForm").onsubmit = function(e) {
+                    e.preventDefault();
+
+                    var department = document.getElementById("department").value;
+                    var location = document.getElementById("location").value;
+                    var startTime = document.getElementById("startTime").value;
+                    var endTime = document.getElementById("endTime").value;
+                    var user = document.getElementById("user").value;
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", '/your-endpoint', true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.send(JSON.stringify({
+                        department: department,
+                        location: location,
+                        startTime: startTime,
+                        endTime: endTime,
+                        user: user
+                    }));
+
+                    modal.style.display = "none";
+                }
+            }
+
+        script. 
+            function HandleEditEvent(event) {
+                console.log("missing implementation")
+            }

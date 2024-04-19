@@ -69,7 +69,58 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
     return week;
 };
 
+function fillMissingDates(start, end, schedules) {
+    const datesWithSchedules = [];
+    let date = new Date(start);
+    while (date < end) {
+      const schedule = schedules.find(s => {
+        const scheduleDate = new Date(s.date);
+        return scheduleDate.getDate() === date.getDate() &&
+          scheduleDate.getMonth() === date.getMonth() &&
+          scheduleDate.getFullYear() === date.getFullYear();
+      });
+      datesWithSchedules.push(schedule || {
+        date: date,
+        workHours: 0,
+        startTime: undefined,
+        endTime: undefined,
+        role: undefined,
+        department: undefined,
+        location: undefined,
+        email: undefined
+      });
+      date.setDate(date.getDate() + 1);
+    }
+    return datesWithSchedules;
+};
+
+function generateDates(startDate, endDate) {
+  const dates = [];
+  startDate = new Date(startDate);
+  endDate = new Date(endDate);
+  let date = new Date(startDate);
+  while (date <= endDate) {
+    const formattedDate = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
+    dates.push(formattedDate);
+    date.setDate(date.getDate() + 1);
+  }
+  return dates;
+};
+
+function getStartWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear()) {
+  return new Date(year, 0, 1 + (weeknumber - 1) * 7);
+}
+
+function getEndWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear()) {
+  return new Date(year, 0, 1 + (weeknumber - 1) * 7 + 6);
+}
+
+
 module.exports = {
-    getCurrentWeek,
-    generateWeek
+  getCurrentWeek,
+  generateWeek,
+  fillMissingDates,
+  generateDates,
+  getStartWeek,
+  getEndWeek
 };
