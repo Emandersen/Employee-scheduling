@@ -13,7 +13,7 @@ async function GET_team_schedule(req, res) {
 
   if (req.query.week && req.query.year) {
     var weekStart = dateHandler.getStartWeek(req.query.week, req.query.year); 
-    var weekEnd = dateHandler.getWeekEnd(req.query.week, req.query.year);
+    var weekEnd = dateHandler.getEndWeek(req.query.week, req.query.year);
   } else {
     var weekStart = dateHandler.getStartWeek(); 
     var weekEnd = dateHandler.getEndWeek();
