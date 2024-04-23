@@ -115,6 +115,10 @@ function getEndWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear
   return new Date(year, 0, 1 + (weeknumber - 1) * 7 + 6);
 }
 
+function getCurrentYear() {
+  return new Date().getFullYear();
+}
+
 
 module.exports = {
   getCurrentWeek,
@@ -122,5 +126,6 @@ module.exports = {
   fillMissingDates,
   generateDates,
   getStartWeek,
-  getEndWeek
+  getEndWeek,
+  getCurrentYear
 };
