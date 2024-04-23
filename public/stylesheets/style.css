@@ -1,8 +1,36 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+a.buttonToChangeWeek {
+  border-color: #E7E7E7;
+  background-color: white;
+  color: black;
+  margin-right: 10px;
+  margin-bottom: 0px;
+  border: 1px solid;
+  text-align: center;
+  font-size: 13px;
+  border-radius: 7px;
+  padding-bottom: 3px;
+  padding-right: 4px;
+  padding-left: 4px;
+  padding-top: 1px;
+  cursor: pointer;
 }
 
-a {
-  color: #00B7FF;
+a.buttonToChangeWeek:hover {
+  background-color: #E7E7E7;
+}
+
+a.buttonToChangeWeek:link {
+  text-decoration: none;
+}
+
+a.buttonToChangeWeek:visited {
+  text-decoration: none;
+}
+
+a.buttonToChangeWeek:hover {
+  text-decoration: none;
+}
+
+a.buttonToChangeWeek:active {
+  text-decoration: none;
 }

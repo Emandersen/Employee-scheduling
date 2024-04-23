@@ -3,6 +3,7 @@ html(lang="en")
   head
     title= title
     link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+    link(rel='stylesheet' href='/stylesheets/style.css')
     script.
       document.addEventListener("DOMContentLoaded", function() {
         var dropdownLinks = document.querySelectorAll('.dropdown-link');
@@ -85,7 +86,7 @@ html(lang="en")
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle.dropdown-link(href="/" id="navbarDropdown1" role="button") Personal Schedule
               .dropdown-menu(aria-labelledby="navbarDropdown1")
-                a.dropdown-item(href="/team_schedule") Team Schedule
+                a.dropdown-item(href="/team_schedule/") Team Schedule
                 a.dropdown-item(href="#") Statistics 
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
