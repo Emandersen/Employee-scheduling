@@ -2,6 +2,7 @@ const moment = require('moment');
 const dateHandler = require('../functions/dateHandler');
 const userModel = require('../models/user');
 const scheduleModel = require('../models/schedule');
+const constraintHandler = require('../functions/constraintHandler');
 
 
 async function GET_planning_tool(req, res) {
@@ -28,7 +29,12 @@ async function GET_planning_tool(req, res) {
 }
 
 async function POST_add_shift(req, res) {
+	// add shift to scheme
 	console.log(req.body);
+
+	// check if date is populated in db
+	
+	schedule = await scheduleModel.findOne({email: req.body.email, date: req.body.date});
 	
 }
 
