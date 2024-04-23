@@ -34,6 +34,7 @@ router.get('/team_schedule', user_controller.checkSession, team_schedule_control
 
 router.get('/planning-tool', user_controller.checkSessionAndPermissions(1), planning_controller.GET_planning_tool);
 router.post('/planning-tool/add-shift/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_add_shift);
+router.post("/planning-tool/delete-shift/", user_controller.checkSessionAndPermissions(1), planning_controller.POST_delete_shift);
 
 // 500 handler
 router.use(function (err, req, res, next) {

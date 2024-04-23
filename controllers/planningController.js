@@ -2,6 +2,7 @@ const moment = require('moment');
 const dateHandler = require('../functions/dateHandler');
 const userModel = require('../models/user');
 const scheduleModel = require('../models/schedule');
+const constraintHandler = require('../functions/constraintHandler');
 
 
 async function GET_planning_tool(req, res) {
@@ -9,7 +10,7 @@ async function GET_planning_tool(req, res) {
 	const users = await userModel.find();
 	// get schedules 12 months ahead and 6 months back
 	const today = new Date();
-	const start = new Date(today.getFullYear(), today.getMonth() - 6, 1);
+	const start = new Date(today.getFullYear(), today.getMonth() - 3, 1);
 	const end = new Date(today.getFullYear(), today.getMonth() + 12, 1);
 	const schedules = await scheduleModel.find({ date: { $gte: start, $lt: end } });
 
@@ -28,7 +29,17 @@ async function GET_planning_tool(req, res) {
 }
 
 async function POST_add_shift(req, res) {
-		console.log(req.body);
+	// add shift to scheme
+	console.log(req.body);
+
+	// check if date is populated in db
+	
+	schedule = await scheduleModel.findOne({email: req.body.email, date: req.body.date});
+	
+}
+
+async function POST_delete_shift(req, res) {
+	console.log(req.body);
 }
 
 async function POST_publish_plan(req, res) {
@@ -39,5 +50,7 @@ async function POST_publish_plan(req, res) {
 module.exports = {
 	GET_planning_tool,
 	POST_publish_plan,
-	POST_add_shift
+	POST_add_shift,
+	POST_delete_shift
+
 };
