@@ -2,7 +2,7 @@ const moment = require('moment');
 const dateHandler = require('../functions/dateHandler');
 const userModel = require('../models/user');
 const scheduleModel = require('../models/schedule');
-const constraintHandler = require('../functions/constraintHandler');
+const constraintHandler = require('../functions/hardConstraints');
 
 
 async function GET_planning_tool(req, res) {
@@ -22,6 +22,7 @@ async function GET_planning_tool(req, res) {
 		user.schedules = datesWithSchedules;
 		return user;
 	});
+	
 
 	dates = dateHandler.generateDates(start, end);
 	
@@ -29,16 +30,39 @@ async function GET_planning_tool(req, res) {
 }
 
 async function POST_add_shift(req, res) {
-	// add shift to scheme
-	console.log(req.body);
 
+	const schedule = await scheduleModel.findOne({ email: req.body.user, date: req.body.date });
+	const user = await userModel.findOne({ email: req.body.user });
+
+	var startTime = new Date(req.body.date + "T" + req.body.startTime);
+	var endTime = new Date(req.body.date + "T" + req.body.endTime);
 	
-	schedule = await scheduleModel.findOne({email: req.body.email, date: req.body.date});
+
+	allSchedules = await scheduleModel.find({ email: req.body.user });
 	
+	var diff = (endTime - startTime) / 1000 / 60 / 60;
+	console.log(constraintHandler.checkHardConstraints(allSchedules, user));
+
+
+	// add to schedule 
+	/*
+	const newSchedule = new scheduleModel({
+		email: user.email,
+		date: req.body.date,
+		workHours: diff,
+		startTime: req.body.startTime,
+		endTime: req.body.endTime,
+		role: user.role,
+		department: user.department,
+		location: req.body.location,
+		released: false		
+	});
+
+	await newSchedule.save(); */
 }
 
 async function POST_delete_shift(req, res) {
-	console.log(req.body);
+	console.log("deleting shift");
 }
 
 async function POST_publish_plan(req, res) {

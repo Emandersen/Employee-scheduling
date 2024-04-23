@@ -60,8 +60,8 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
         endTime: workDay ? workDay.endTime : releasedShift ? releasedShift.endTime : undefined,
         role: workDay ? workDay.role : releasedShift ? releasedShift.role : undefined,
         department: workDay ? workDay.department : releasedShift ? releasedShift.department : undefined,
-		  location: workDay ? workDay.location : releasedShift ? releasedShift.location : undefined,
-		  email: workDay ? workDay.email : releasedShift ? releasedShift.email : undefined
+		    location: workDay ? workDay.location : releasedShift ? releasedShift.location : undefined,
+        email: workDay ? workDay.email : releasedShift ? releasedShift.email : undefined
       });
       date.setDate(date.getDate() + 1);
     }
@@ -118,6 +118,8 @@ function getEndWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear
 function getCurrentYear() {
   return new Date().getFullYear();
 }
+
+
 
 
 module.exports = {
