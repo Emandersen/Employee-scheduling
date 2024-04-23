@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    .table-responsive(id='scroll-container')
+    div.table-responsive(id='scroll-container', style='visibility: hidden;')
         table.table.table-striped
             thead
                 tr
@@ -161,6 +161,7 @@ block content
 
                     scrollContainer.scrollLeft = offsetPosition;
                 }
+                document.getElementById('scroll-container').style.visibility = 'visible';
             });
 
         script.
@@ -217,8 +218,10 @@ block content
                     }));
 
                     modal.style.display = "none";
+                    
                 }
-            }
+            }; 
+    
 
         
             function handleEditEvent(event) {
