@@ -46,7 +46,27 @@ function elevenHoursRest(schedule, user) {
 
 // Constraint 4: After six days of work nurses are required to have at least one day of rest
 function restAfterSixDays(schedule, user) {
-    // Implementation depends on the structure of your schedule and nurse objects
+    // Sort the schedule by date //
+    schedule = schedule.sort((a, b) => a.date - b.date);
+
+    let consecutive_count = 1;
+   
+    // For-loop to count consecutive days //
+    for (let i = 1; i < schedule.length; i++) {
+        // First part of the equation calculates the difference in milliseconds between the current date and the previous date //
+        // If it equals the same as the second part of the equation, it means that the two days are exactly one day apart //
+        if (schedule[i].date - schedule[i - 1].date === 24 * 60 * 60 * 1000) {
+            consecutive_count++;
+            console.log("Consecutive Days: ",consecutive_count);
+            if (consecutive_count >= 6) {
+                return false;
+            }
+        }
+        else {
+            // Sets the consecutive_count back to 1 when the if-statement on line 58 isn't true. //
+            consecutive_count = 1;
+        }
+    }
     return true;
 }
 
@@ -64,9 +84,25 @@ function timeOffBeforeThreeMonths(schedule, user) {
 
 // Constraint 7: If a nurse is allocated to a certain shift they can not be allocated to a new one that overlaps their current
 function noOverlappingShifts(schedule, user) {
-    // Implementation depends on the structure of your schedule object
+    let shifts = 1;
+    
+    for (let i = 1; i < schedule.length; i++) {
+        if (schedule[i].date == schedule[i - 1].date) {
+            shifts++;
+            if (shifts > 1) {
+                schedule.splice(i, 1);
+                i--;
+            }
+        } else {
+            shifts = 1;
+        }
+    }   
     return true;
 }
+
+// A for-loop that goes through the dates of the schedule and looks to see if there is more of one of each date pr. day //
+// If there is more than one shift pr. date, delete so that there is only one left. //
+// return true //
 
 // Constraint 8: All patients must have a nurse covering them
 function allPatientsCovered(schedule, user) {
