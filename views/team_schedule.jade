@@ -21,8 +21,9 @@ block content
 
     div.container(style='font-size: 0.8em; padding-top: 30px')
         h1(style='text-align: center;') Week #{currentParams.week_number}
-        a(class='buttonToChangeWeek' href=urlPrev) Prev Week
-        a(class='buttonToChangeWeek' href=urlNext) Next Week
+        a(type='button' class='buttonToChangeWeek' href=urlPrev) Prev Week
+        a(type='button' class='buttonToChangeWeek' href='/team_schedule/') &orarr;
+        a(type='button' class='buttonToChangeWeek' href=urlNext) Next Week
 
         table(style='width:100%; table-layout: fixed;', border='1')
             tr
