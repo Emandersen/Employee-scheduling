@@ -12,8 +12,7 @@ async function GET_team_schedule(req, res) {
     res.redirect('/team_schedule/' + dateHandler.getCurrentYear() + '-' + dateHandler.getCurrentWeek());
 
   allUsers = await Users.find().exec();
-  console.log(req.params.week, req.params.year);
-
+  
   
   var weekStart = dateHandler.getStartWeek(req.params.week, req.params.year); 
   var weekEnd = dateHandler.getEndWeek(req.params.week, req.params.year);
@@ -38,17 +37,51 @@ async function GET_team_schedule(req, res) {
 
     userSchedules.push(userSchedule);
   });
+  currentParams = {
+    week_number: req.params.week,
+    year: req.params.year
+  }
 
   weekDates = dateHandler.generateWeek(req.params.year, req.params.week);
-  console.log(weekDates);
   res.render('team_schedule', {
-    week_number: req.params.week,
+    currentParams: currentParams,
     weekDates: weekDates,
     users: userSchedules
   });
 };
 
+async function POST_next_week(req, res) {
+  var currentWeek = parseInt((req.body.week_number), 10);
+  var currentYear = parseInt((req.body.year), 10);
+
+  var nextWeek = currentWeek + 1;
+  var nextYear = currentYear;
+
+  if (nextWeek > 52) {
+    nextWeek = 1;
+    nextYear = currentYear + 1;
+  }
+
+  res.redirect('/team_schedule/' + nextYear + '-' + nextWeek);
+};
+
+async function POST_previous_week(req, res) {
+  var currentWeek = parseInt((req.body.week_number), 10);
+  var currentYear = parseInt((req.body.year), 10);
+
+  var previousWeek = currentWeek - 1;
+  var previousYear = currentYear;
+
+  if (previousWeek < 1) {
+    previousWeek = 52;
+    previousYear = currentYear - 1;
+  }
+
+  res.redirect('/team_schedule/' + previousYear + '-' + previousWeek);
+};
 
 module.exports = {
-    GET_team_schedule
+  GET_team_schedule,
+  POST_next_week,
+  POST_previous_week
 };
