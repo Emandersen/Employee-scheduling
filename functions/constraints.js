@@ -11,7 +11,7 @@ function twoDaysOffEachWeek(schedule, user) {
     
         for (let i = 0; i < schedule.length; i++) {
             const weekNumber = moment(schedule[i].date).isoWeek();
-    
+
             if (!weeks[weekNumber]) {
                 weeks[weekNumber] = [];
             }
@@ -32,15 +32,27 @@ function twoDaysOffEachWeek(schedule, user) {
     return true;
 }
 
-// Constraint 2: A nurse can only be allocated to a shift if their qualifications match the requirements for the given shift
-function qualificationsMatchRequirements(schedule, user) {
-    // Implementation depends on the structure of your schedule and nurse objects
-    return true;
-}
 
 // Constraint 3: In a 24 hour work day nurses must have at least 11 consecutive hours of rest
 function elevenHoursRest(schedule, user) {
-    // Implementation depends on the structure of your schedule and nurse objects
+    const userSchedule = schedule.filter(shift => shift.email === user.email);
+    
+    for (let i = 0; i < userSchedule.length - 1; i++) {
+        const currentShift = userSchedule[i];
+        const nextShift = userSchedule[i + 1];
+
+        // Convert string time to Date object
+        const currentShiftEndTime = new Date(`1970-01-01T${currentShift.endTime}:00Z`);
+        const nextShiftStartTime = new Date(`1970-01-01T${nextShift.startTime}:00Z`);
+
+        // Calculate the difference in hours
+        const diff = (nextShiftStartTime - currentShiftEndTime) / 1000 / 60 / 60;
+
+        if (diff < 11) {
+            console.log(`Less than 11 hours of rest between ${currentShift.date} ${currentShift.endTime} and ${nextShift.date} ${nextShift.startTime}`)
+            return false;
+        }
+    }
     return true;
 }
 
@@ -115,6 +127,14 @@ function noShiftDuringLeave(schedule, user) {
     // Implementation depends on the structure of your schedule object
     return true;
 }
+
+// Constraint 2: A nurse can only be allocated to a shift if their qualifications match the requirements for the given shift
+// Only applicable if the schedule has shifts with specific requirements as in shift reassigment
+function qualificationsMatchRequirements(schedule, user) {
+    // Implementation depends on the structure of your schedule and nurse objects
+    return true;
+}
+
 
 const hardConstraints = [
     twoDaysOffEachWeek,

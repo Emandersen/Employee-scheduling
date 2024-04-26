@@ -64,7 +64,7 @@ app.use(function(req, res, next) {
 //
 //  DEBUGGING MIDDLEWARE
 //
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
   if (!req.session.user) {
     // Auto login user
     req.session.user = {
@@ -81,7 +81,7 @@ app.use(function (req, res, next) {
     };
   }
   next();
-});
+});*/
 
 
 

@@ -2,7 +2,7 @@ const moment = require('moment');
 const dateHandler = require('../functions/dateHandler');
 const userModel = require('../models/user');
 const scheduleModel = require('../models/schedule');
-const constraintHandler = require('../functions/hardConstraints');
+const constraintHandler = require('../functions/constraints');
 
 
 async function GET_planning_tool(req, res) {
@@ -62,7 +62,12 @@ async function POST_add_shift(req, res) {
 }
 
 async function POST_delete_shift(req, res) {
-	console.log("deleting shift");
+	try {
+		await scheduleModel.findOneAndDelete({ email: req.body.user, date: req.body.date });
+	} catch (err) {
+		console.log(err);
+		
+	}
 }
 
 async function POST_publish_plan(req, res) {
