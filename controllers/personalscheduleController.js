@@ -2,6 +2,8 @@ var express = require('express');
 var moment = require('moment');
 const PersonalSchedule = require('../models/schedule');
 const dateHandler = require('../functions/dateHandler');
+const schedule = require('../models/schedule');
+const user = require('../models/user');
 
 
 
@@ -42,10 +44,9 @@ async function GET_personal_schedule(req, res) {
 
     // Generate the week object and add it to the weeks array
     weeks.push(dateHandler.generateWeek(year, weekNumber, workDays, releasedShifts));
-  }
-  console.log('released shifts:', allReleasedShifts)
+	}
   
-  res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: dateHandler.getCurrentWeek()});
+  res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: dateHandler.getCurrentWeek(), moment: moment});
 };
 
 
@@ -56,11 +57,9 @@ async function GET_personal_schedule(req, res) {
 // example: POST_toggleshift(req, res)
 async function POST_toggle_shift(req, res) {
   try {
-    console.log('dayId:', req.params.dayId);
 
     // Find the schedule by its ID
     const schedule = await PersonalSchedule.findById(req.params.dayId);
-    console.log('schedule:', schedule);
 
     if (!schedule) {
       res.redirect('/?error=Schedule not found');
@@ -85,8 +84,51 @@ async function POST_toggle_shift(req, res) {
   }
 };
 
+async function POST_toggle_vacation(req, res) {
+	let schedule;
+	console.log('date: ' + req.params.dayId);
+
+	let year = new Date().getFullYear(); // Use the current year
+	let date = moment(req.params.dayId + ' ' + year, 'dddd D. MMMM YYYY');
+	if (!date.isValid()) {
+		console.error('Invalid date format');
+		return;
+	}
+	let isoDate = date.format();
+
+	schedule = await PersonalSchedule.findOne({ email: req.session.user.email, date: isoDate });
+	console.log('schedule:', schedule);
+
+	if (!schedule || !schedule.released) {
+		try {
+			const specificUser = await user.findOne({ email: req.session.user.email });
+			if (specificUser) {
+				if (specificUser.vacationDays.includes(isoDate)) {
+					await user.findOneAndUpdate(
+						{ email: req.session.user.email },
+						{ $pull: { vacationDays: isoDate } }
+					);
+				} else {
+					await user.findOneAndUpdate(
+						{ email: req.session.user.email },
+						{ $addToSet: { vacationDays: isoDate } }
+					);
+				}
+			}
+		} catch (error) {
+			console.error(error);
+			res.redirect('/?error=An error occurred');
+		}
+	}
+	
+	res.redirect('/');
+};
+
+
+
 
 module.exports = {
-  GET_personal_schedule,
-  POST_toggle_shift
+	GET_personal_schedule,
+	POST_toggle_shift,
+	POST_toggle_vacation
 }; 

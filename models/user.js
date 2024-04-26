@@ -31,6 +31,10 @@ const userSchema = new Schema({
         type: Array,
         required: false
     },
+    vacationDays: {
+        type: Array,
+        required: false
+    },
     // Permissions are stored as an integer, where each bit represents a permission.
     // The permissions are as follows:
     // 0 - can view schedule

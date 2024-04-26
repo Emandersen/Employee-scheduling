@@ -26,10 +26,14 @@ block content
                         button.btn(type='submit') Claim shift
                     else
                       form.action-buttons(method='post', action=`/toggle-shift/${day.id}`)
-                        button.btn(type='submit') Release Shift
+                        button.btn(type='submit') Release Shift 
                 else
                   td(colspan='5') No work scheduled 
-                                    
+                td
+                  form.action-buttons(method='post', action=`/request-vacation/${day.date}`)
+                    button.btn(type='submit') Request Vacation 
+                  
+                            
   script.
     window.addEventListener('DOMContentLoaded', (event) => {
       console.log('DOM fully loaded and parsed');
