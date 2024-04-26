@@ -86,7 +86,7 @@ function timeOffBeforeThreeMonths(schedule, user) {
 function noOverlappingShifts(schedule, user) {
     let shifts = 1;
     
-    for (let i = 1; i < schedule.length; i++) {
+    for (let i = 1; i <= schedule.length; i++) {
         if (schedule[i].date == schedule[i - 1].date) {
             shifts++;
             if (shifts > 1) {
