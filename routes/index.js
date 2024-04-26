@@ -28,8 +28,9 @@ router.post('/delete-user/:email', user_controller.checkSessionAndPermissions(2)
 router.post('/reset-password/:email', user_controller.checkSessionAndPermissions(2), user_controller.POST_reset_password);
 
 
-router.get('/team_schedule/:year-:week', user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
+router.get('/team_schedule/:year?-:week?', user_controller.checkSession, team_schedule_controller.GET_team_schedule);
+router.get('/team_schedule/', user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
 router.get('/planning-tool', user_controller.checkSessionAndPermissions(1), planning_controller.GET_planning_tool);
 router.post('/planning-tool/add-shift/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_add_shift);
