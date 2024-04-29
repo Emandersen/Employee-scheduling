@@ -124,22 +124,17 @@ function allPatientsCovered(schedule, user) {
 
 // Constraint 9: If a nurse is on vacation or other leave they can not be allocated to a shift in that period
 function noShiftDuringLeave(schedule, user) {
-    user.vacationDays = new Date(`2024-05-10`);
-    console.log("Hej");
+    user.vacationDays = [new Date(`2024-05-04`), new Date(`2024-05-05`), new Date(`2024-05-06`), new Date(`2024-05-07`), new Date(`2024-05-08`)];
 
     schedule = schedule.sort((a, b) => a.date - b.date);
     
-    for (let i = 1; i < schedule.length; i++) {
-        if (schedule[i].date == user.vacationDays) {
-            console.log("Hej");
-            return false;
-        }
-        else {
-            return true;
-        }
+    if (schedule.date == user.vacationDays) {
+        console.log("HejJa");
+        return false;
     }
  
     // Implementation depends on the structure of your schedule object
+    console.log("HejNej");
     return true;
 }
 
