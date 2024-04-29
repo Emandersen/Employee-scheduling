@@ -84,6 +84,19 @@ function restAfterSixDays(schedule, user) {
 
 // Constraint 5: If time off (Due to too many hours) is canceled, employee should be warned 4 days before
 function warnBeforeCancelingTimeOff(schedule, user) {
+
+    for (let i = 0; i < schedule.length; i++) {
+        if (schedule[i+4].date) {
+        // todo: find a way to notify x user
+        }
+        if (user.vacationDays[i+4]){
+            console.log(`${user.firstName} ${user.lastName} is on vacation`);
+            return false;
+        }
+    }
+
+
+
     // Implementation depends on the structure of your schedule and nurse objects
     return true;
 }
