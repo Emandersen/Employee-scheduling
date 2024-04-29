@@ -1,97 +1,111 @@
-var express = require('express');
-var router = express.Router();
-var moment = require('moment');
+const express = require('express');
+const moment = require('moment');
 const PersonalSchedule = require('../models/schedule');
-
-function getCurrentWeek() {
-  const date = new Date();
-  const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const firstDay = new Date(date.getFullYear(), 0, 1);
-  const dayOfYear = Math.round((today - firstDay) / 86400000);
-  const weekNumber = Math.ceil((dayOfYear + firstDay.getDay() + 1) / 7);
-
-  return weekNumber;
-}
-
-function generateWeek(year, weekNumber, workDays = []) {
-  // Create a date object at the start of the week
-  const date = new Date(year, 0, 1 + (weekNumber - 1) * 7);
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  const week = {
-    number: weekNumber,
-    year: year,
-    days: []
-  };
-
-  // Add each day in the week
-  for (let i = 0; i < 7; i++) {
-    const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-    const workDay = workDays.find(d => {
-      const workDayDate = new Date(d.date);
-      return workDayDate.getDate() === date.getDate() &&
-        workDayDate.getMonth() === date.getMonth() &&
-        workDayDate.getFullYear() === date.getFullYear();
-    });
-
-    week.days.push({
-      id: workDay ? workDay.id : undefined,
-      released: workDay ? workDay.released : undefined,
-      date: days[date.getDay()] + ' ' + day + '. ' + months[date.getMonth()],
-      workHours: workDay ? workDay.workHours : 0,
-      startTime: workDay ? workDay.startTime : undefined,
-      endTime: workDay ? workDay.endTime : undefined,
-      role: workDay ? workDay.role : undefined,
-      department: workDay ? workDay.department : undefined,
-      location: workDay ? workDay.location : undefined
-    });
-    date.setDate(date.getDate() + 1);
-  }
-
-  return week;
-}
-
+const User = require('../models/user');
+const dateHandler = require('../functions/dateHandler');
 
 async function GET_personal_schedule(req, res) {
-  const weeks = [];
-  const today = moment();
-  const startWeek = today.clone().subtract(12, 'weeks');
-  const endWeek = today.clone().add(12, 'weeks');
+  try {
+    const weeks = [];
+    const today = moment();
+    const startWeek = today.clone().subtract(12, 'weeks');
+    const endWeek = today.clone().add(12, 'weeks');
 
-  for (let week = startWeek; week.isBefore(endWeek); week.add(1, 'week')) {
-    const year = week.year();
-    const weekNumber = week.week();
-
-    // Fetch workDays from the database for the current week
-    const startDate = week.clone().startOf('week').toDate();
-    const endDate = week.clone().endOf('week').toDate();
-    const workDays = await PersonalSchedule.find({
+    const allWorkDays = await PersonalSchedule.find({
       email: req.session.user.email,
-      date: { $gte: startDate, $lte: endDate }
+      date: { $gte: startWeek.toDate(), $lte: endWeek.toDate() }
     });
 
-    weeks.push(generateWeek(year, weekNumber, workDays));
+    const allReleasedShifts = await PersonalSchedule.find({
+      date: { $gte: startWeek.toDate(), $lte: endWeek.toDate() },
+      released: true
+    });
+
+    for (let week = startWeek; week.isBefore(endWeek); week.add(1, 'week')) {
+      const startDate = week.clone().startOf('week').toDate();
+      const endDate = week.clone().endOf('week').toDate();
+      const workDays = allWorkDays.filter(workDay => workDay.date >= startDate && workDay.date <= endDate);
+      const releasedShifts = allReleasedShifts.filter(shift => shift.date >= startDate && shift.date <= endDate);
+
+      weeks.push(dateHandler.generateWeek(week.year(), week.week(), workDays, releasedShifts, req.session.user.vacationDays));
+    }
+
+    res.render('personal_schedule', {
+      title: 'Work Schedule',
+      weeks: weeks,
+      currentWeek: dateHandler.getCurrentWeek(),
+      moment: moment,
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
   }
-  console.log("Permission" + req.session.user.permission)
-  res.render('personal_schedule', { title: 'Work Schedule', weeks: weeks, currentWeek: getCurrentWeek(), permisssion: req.session.user.permission});
 };
 
-function POST_release_shift(req, res) {
-  console.log("Missing implementation for releasing a shift")
+async function POST_toggle_shift(req, res) {
+  try {
+    const schedule = await PersonalSchedule.findById(req.params.dayId);
 
-  // Redirect back to the schedule page
-  res.redirect('/');
+    if (!schedule) {
+      res.redirect('/?error=Schedule not found');
+      return;
+    }
+
+    schedule.released = !schedule.released;
+
+    if (!schedule.released) {
+      schedule.email = req.session.user.email;
+    }
+
+    await schedule.save();
+
+    res.redirect('/');
+  } catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
+  }
 };
 
-function POST_unrelease_shift(req, res) {
-  console.log("Missing implementation for releasing a shift")
+async function POST_toggle_vacation(req, res) {
+  try {
+    let year = new Date().getFullYear();
+    let date = moment.utc(req.params.dayId + ' ' + year, 'dddd D. MMMM YYYY').startOf('day');
+    if (!date.isValid()) {
+      console.error('Invalid date format');
+      return;
+    }
+    let isoDate = date.format('YYYY-MM-DDTHH:mm:ss.SSS+00:00');
 
-  // Redirect back to the schedule page
-  res.redirect('/');
+    const schedule = await PersonalSchedule.findOne({ email: req.session.user.email, date: isoDate });
+
+    if (!schedule || !schedule.released) {
+      const specificUser = await User.findOne({ email: req.session.user.email });
+      if (specificUser) {
+        const update = specificUser.vacationDays.includes(isoDate)
+          ? { $pull: { vacationDays: isoDate } }
+          : { $addToSet: { vacationDays: isoDate } };
+
+        await User.findOneAndUpdate({ email: req.session.user.email }, update);
+
+        // Update the session data
+        if (update.$pull) {
+          req.session.user.vacationDays = req.session.user.vacationDays.filter(day => day !== isoDate);
+        } else if (update.$addToSet) {
+          req.session.user.vacationDays.push(isoDate);
+        }
+      }
+    }
+
+    res.redirect('/');
+  } catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
+  }
 };
 
 module.exports = {
   GET_personal_schedule,
-  POST_release_shift,
-  POST_unrelease_shift
-}; 
+  POST_toggle_shift,
+  POST_toggle_vacation
+};
