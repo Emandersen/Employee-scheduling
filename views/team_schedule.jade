@@ -1,15 +1,40 @@
-extends layout 
+extends layout
+
 
 block content 
-    div.container(style='font-size: 0.8em; padding-top: 60px')
-        h1(style='text-align: center;') Week #{week_number}
-        table(style='width:100%; table-layout: fixed;', border='1', )
+    - var currentWeek = parseInt(currentParams.week_number, 10)
+    - var currentYear = parseInt(currentParams.year, 10)
+    - var nextWeek = currentWeek + 1
+    - var prevWeek = currentWeek - 1
+    - var nextYear = currentYear
+    - var prevYear = currentYear
+
+    - if (currentWeek === 52) {
+        - nextWeek = 1
+        - nextYear = currentYear + 1
+    - } else if (currentWeek === 1) {
+        - prevWeek = 52
+        - prevYear = currentYear - 1
+    - }
+    - var urlNext = '/team_schedule/' + nextYear + '-' + nextWeek
+    - var urlPrev = '/team_schedule/' + prevYear + '-' + prevWeek
+
+    div.container(style='font-size: 0.8em; padding-top: 30px')
+        h1(style='text-align: center;') Week #{currentParams.week_number}
+        a(type='button' class='buttonToChangeWeek' href=urlPrev) Prev Week
+        a(type='button' class='buttonToChangeWeek' href='/team_schedule/') &orarr;
+        a(type='button' class='buttonToChangeWeek' href=urlNext) Next Week
+
+        table(style='width:100%; table-layout: fixed;', border='1')
             tr
                 th(style='text-align: center;') Personnel
-                each day in weekDays
-                    th(style='text-align: center; width: 120;')= day
 
-            each name in names
-                tr 
-                    td= name
-                
+                each day in weekDates.days
+                    th(style='text-align: center;') #{day.date}
+
+                each user, index in users
+                    tr(style=(index % 2 === 0) ? 'background-color: #dddddd;' : '')
+                        td= user.user.firstName + ' ' + user.user.lastName  
+                        
+                        each day in user.week.days
+                                td(style='text-align: center;') #{day.startTime} - #{day.endTime} <br> #{day.department}

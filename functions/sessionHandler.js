@@ -28,12 +28,11 @@ async function check_credentials(email, password) {
 // Example: checkSession(req, res, next)
 function checkSession(req, res, next) {
     if (req.session.user) {
-        /*if (typeof next === 'function') {
+        if (typeof next === 'function') {
             next();
         } else {
-            return true;
-        }*/
-        next();   
+            throw new Error('next is not a function');
+        }  
     } else {
         res.redirect("/login");
     }
