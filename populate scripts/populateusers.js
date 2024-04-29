@@ -51,7 +51,7 @@ async function createUsers() {
     await userCreate('Diana', 'Brown', 'diana.brown@example.com', 'password7', 'Nurse', 'Cardiology', [], [], 1);
     await userCreate('Ethan', 'Jones', 'ethan.jones@example.com', 'password8', 'Nurse', 'Cardiology', [], [], 0);
     await userCreate('Fiona', 'Miller', 'fiona.miller@example.com', 'password9', 'Nurse', 'Cardiology', [], [], 0);
-    await userCreate('thisIs', 'AName', 'user@user.com', 'user', 'Nurse', 'Cardiology', [], [], 2);
+    await userCreate('thisIs', 'AName', 'user@user.com', 'user', 'Nurse', 'Cardiology', [], ['2024-05-04'], 2);
     console.log('Users added');
 }
 
