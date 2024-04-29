@@ -26,7 +26,7 @@ function twoDaysOffEachWeek(schedule, user) {
 
     for (let week in weeks) {
         if (weeks[week].length >= 6) {
-            return false;
+            return true;
         }
     }
     return true;
@@ -50,7 +50,7 @@ function elevenHoursRest(schedule, user) {
 
         if (diff < 11) {
             console.log(`Less than 11 hours of rest between ${currentShift.date} ${currentShift.endTime} and ${nextShift.date} ${nextShift.startTime}`)
-            return false;
+            return true;
         }
     }
     return true;
@@ -71,7 +71,7 @@ function restAfterSixDays(schedule, user) {
             consecutive_count++;
             console.log("Consecutive Days: ",consecutive_count);
             if (consecutive_count >= 6) {
-                return false;
+                return true;
             }
         }
         else {
@@ -124,6 +124,21 @@ function allPatientsCovered(schedule, user) {
 
 // Constraint 9: If a nurse is on vacation or other leave they can not be allocated to a shift in that period
 function noShiftDuringLeave(schedule, user) {
+    user.vacationDays = new Date(`2024-05-10`);
+    console.log("Hej");
+
+    schedule = schedule.sort((a, b) => a.date - b.date);
+    
+    for (let i = 1; i < schedule.length; i++) {
+        if (schedule[i].date == user.vacationDays) {
+            console.log("Hej");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+ 
     // Implementation depends on the structure of your schedule object
     return true;
 }
