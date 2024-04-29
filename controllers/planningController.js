@@ -22,7 +22,6 @@ async function GET_planning_tool(req, res) {
 		user.schedules = datesWithSchedules;
 		return user;
 	});
-	
 
 	dates = dateHandler.generateDates(start, end);
 	
