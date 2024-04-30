@@ -82,12 +82,48 @@ function restAfterSixDays(schedule, user) {
     return true;
 }
 
+function calculateOvertimeDueDate(overtimeMonths, user, schedule) {
+    // Parse the start date
+    const currentDate = new Date();
+    const parsedStartDate = schedule.date
+
+    // Calculate the difference in months between the current date and the start date
+    const diffMonths = (currentDate.getFullYear() - parsedStartDate.getFullYear()) * 12 + currentDate.getMonth() - parsedStartDate.getMonth();
+
+    // Calculate the due date based on the overtime months
+    switch (overtimeMonths) {
+        case 3:
+            console.log(`${user.firstName} ${user.lastname} Overtime needs to be held this month`);
+            break;
+        case 2:
+            if (diffMonths >= 2) {
+                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held this month`);
+            } else {
+                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held at latest next month`);
+            }
+            break;
+        case 1:
+            if (diffMonths >= 1) {
+                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held this month`);
+            } else if (diffMonths === 0) {
+                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held at latest next month`);
+            } else {
+                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held at latest in 2 months`);
+            }
+            break;
+        default:
+            console.log("Invalid input");
+    }
+}
+
 // Constraint 5: If time off (Due to too many hours) is canceled, employee should be warned 4 days before
 function warnBeforeCancelingTimeOff(schedule, user) {
 
-    for (let i = 0; i < schedule.length; i++) {
+    for (let i = 1; i < schedule.length; i++) {
         if (schedule[i+4].date) {
-        // todo: find a way to notify x user
+            console.log(`${user.firstName} ${user.lastName} you time off have been canceled and you have a shift in 4 days`);
+            alert(`${user.firstName} ${user.lastName} you time off have been canceled and you have a shift in 4 days`)
+            // todo: find a way to notify x user properly
         }
         if (user.vacationDays[i+4]){
             console.log(`${user.firstName} ${user.lastName} is on vacation`);
