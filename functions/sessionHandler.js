@@ -42,7 +42,7 @@ function checkSession(req, res, next) {
 // Parameters: entryperm
 // Returns: function
 // Description: This function returns a middleware function that checks if the user is logged in and
-//  has the required permissions to access a route.
+// has the required permissions to access a route.
 // The middleware function takes the request, response, and next function as parameters.
 // If the user is logged in and has the required permissions, the middleware calls the next function.
 // If the user is not logged in or does not have the required permissions, the middleware redirects the user to the home page.
