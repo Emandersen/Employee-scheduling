@@ -40,14 +40,20 @@ function elevenHoursRest(schedule, user) {
     for (let i = 0; i < userSchedule.length - 1; i++) {
         const currentShift = userSchedule[i];
         const nextShift = userSchedule[i + 1];
+        const date1Day = ('0' + userSchedule[i].date.getUTCDate()).slice(-2);
+        const date1Month = ('0' + (userSchedule[i].date.getUTCMonth() + 1)).slice(-2);
+        const date1Year = userSchedule[i].date.getUTCFullYear();
+        const date2Day = ('0' + userSchedule[i + 1].date.getUTCDate()).slice(-2);
+        const date2Month = ('0' + (userSchedule[i + 1].date.getUTCMonth() + 1)).slice(-2);
+        const date2Year = userSchedule[i+ 1].date.getUTCFullYear();
 
         // Convert string time to Date object
-        const currentShiftEndTime = new Date(`1970-01-01T${currentShift.endTime}:00Z`);
-        const nextShiftStartTime = new Date(`1970-01-01T${nextShift.startTime}:00Z`);
+        const currentShiftEndTime = new Date(`${date1Year}-${date1Month}-${date1Day}T${currentShift.endTime}:00Z`);
+        const nextShiftStartTime = new Date(`${date2Year}-${date2Month}-${date2Day}T${nextShift.startTime}:00Z`);
 
         // Calculate the difference in hours
-        const diff = (nextShiftStartTime - currentShiftEndTime) / 1000 / 60 / 60;
-
+        const diff = Math.floor((nextShiftStartTime - currentShiftEndTime) / (1000 * 60 * 60));
+        console.log(diff);
         if (diff < 11) {
             console.log(`Less than 11 hours of rest between ${currentShift.date} ${currentShift.endTime} and ${nextShift.date} ${nextShift.startTime}`)
             return false;
