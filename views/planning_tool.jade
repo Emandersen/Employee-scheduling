@@ -1,6 +1,41 @@
 extends layout
 
 block content
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light(style="font-size: 0.8em;")
+        a.navbar-brand(href="#") Planning Tool
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+            span.navbar-toggler-icon
+        div.collapse.navbar-collapse#navbarNav
+            ul.navbar-nav
+                li.nav-item.active
+                    a.nav-link(href="/planning-tool/export") Export to Excel
+                li.nav-item
+                    a.nav-link(href="/planning-tool/import") Import from Excel
+                li.nav-item
+                    a.nav-link(href="/planning-tool/reset") Reset
+                li.nav-item
+                    a.nav-link(href="/planning-tool/add-user") Add User
+                li.nav-item
+                    a.nav-link(href="/planning-tool/add-shift") Add Shift
+        form(action="/planning-tool" method="post" style="margin-top: 20px; font-size: 0.8em;")
+            label(for="startDate") Start Date
+            input#startDate.form-control(type="date" name="startDate" value=startDate required)
+            label(for="endDate") End Date
+            input#endDate.form-control(type="date" name="endDate" value=endDate required)
+            input.btn.btn-primary(type="submit" value="Submit")
+        form(action="/planning-tool" method="post" style="margin-top: 20px; font-size: 0.8em;")
+            label(for="user") User
+            select#user.form-control(name="user" required)
+                each user in users
+                    option(value=user.email) #{user.firstName} #{user.lastName} - #{user.role}
+            input.btn.btn-primary(type="submit" value="Filter")
+        form(action="/planning-tool" method="post" style="margin-top: 20px; font-size: 0.8em;")
+            label(for="department") Department
+            select#department.form-control(name="department" required)
+                option(value="Cardiology") Cardiology
+                // ... rest of the options ...
+            input.btn.btn-primary(type="submit" value="Filter")
+        
     div.table-responsive(id='scroll-container', style='visibility: hidden;')
         table.table.table-striped
             thead

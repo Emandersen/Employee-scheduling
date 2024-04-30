@@ -69,7 +69,7 @@ function restAfterSixDays(schedule, user) {
         // If it equals the same as the second part of the equation, it means that the two days are exactly one day apart //
         if (schedule[i].date - schedule[i - 1].date === 24 * 60 * 60 * 1000) {
             consecutive_count++;
-            console.log("Consecutive Days: ",consecutive_count);
+            console.log("Consecutive Days: ", consecutive_count);
             if (consecutive_count >= 6) {
                 return false;
             }
@@ -161,5 +161,14 @@ function checkHardConstraints(schedule, user) {
 }
 
 module.exports = {
-    checkHardConstraints
+    checkHardConstraints,
+    twoDaysOffEachWeek,
+    qualificationsMatchRequirements,
+    elevenHoursRest,
+    restAfterSixDays,
+    warnBeforeCancelingTimeOff,
+    timeOffBeforeThreeMonths,
+    noOverlappingShifts,
+    allPatientsCovered,
+    noShiftDuringLeave
 };
