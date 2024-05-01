@@ -69,7 +69,8 @@ async function POST_toggle_shift(req, res) {
 
 async function POST_toggle_vacation(req, res) {
   try {
-    let year = new Date().getFullYear();
+    const d = new Date();
+    let year = d.prototype.getFullYear();
     let date = moment.utc(req.params.dayId + ' ' + year, 'dddd D. MMMM YYYY').startOf('day');
     if (!date.isValid()) {
       console.error('Invalid date format');
