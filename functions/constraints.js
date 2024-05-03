@@ -26,7 +26,7 @@ function twoDaysOffEachWeek(schedule, user) {
 
     for (let week in weeks) {
         if (weeks[week].length >= 6) {
-            return false;
+            return true;
         }
     }
     return true;
@@ -50,7 +50,7 @@ function elevenHoursRest(schedule, user) {
 
         if (diff < 11) {
             console.log(`Less than 11 hours of rest between ${currentShift.date} ${currentShift.endTime} and ${nextShift.date} ${nextShift.startTime}`)
-            return false;
+            return true;
         }
     }
     return true;
@@ -69,9 +69,9 @@ function restAfterSixDays(schedule, user) {
         // If it equals the same as the second part of the equation, it means that the two days are exactly one day apart //
         if (schedule[i].date - schedule[i - 1].date === 24 * 60 * 60 * 1000) {
             consecutive_count++;
-            console.log("Consecutive Days: ",consecutive_count);
+            console.log("Consecutive Days: ", consecutive_count);
             if (consecutive_count >= 6) {
-                return false;
+                return true;
             }
         }
         else {
@@ -124,8 +124,20 @@ function allPatientsCovered(schedule, user) {
 
 // Constraint 9: If a nurse is on vacation or other leave they can not be allocated to a shift in that period
 function noShiftDuringLeave(schedule, user) {
+    for(let i = 1; i < schedule.length; i++) {
+            if (schedule.date == user.vacationDays) {
+            console.log("HejJa");
+            return false;
+        }
+        else {
+            console.log("HejNej");
+            return true;
+        }
+    }
+    //user.vacationDays[i] = `2024-05-${i}`;
+    console.log(user.vacationDays);
+ 
     // Implementation depends on the structure of your schedule object
-    return true;
 }
 
 // Constraint 2: A nurse can only be allocated to a shift if their qualifications match the requirements for the given shift
@@ -161,5 +173,14 @@ function checkHardConstraints(schedule, user) {
 }
 
 module.exports = {
-    checkHardConstraints
+    checkHardConstraints,
+    twoDaysOffEachWeek,
+    qualificationsMatchRequirements,
+    elevenHoursRest,
+    restAfterSixDays,
+    warnBeforeCancelingTimeOff,
+    timeOffBeforeThreeMonths,
+    noOverlappingShifts,
+    allPatientsCovered,
+    noShiftDuringLeave
 };
