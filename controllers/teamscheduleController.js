@@ -8,9 +8,10 @@ const dateHandler = require('../functions/dateHandler');
 
 
 async function GET_team_schedule(req, res) {
-  if (!req.params.week || !req.params.year)
-    res.redirect('/team_schedule/' + dateHandler.getCurrentYear() + '-' + dateHandler.getCurrentWeek());
-
+  if (!req.params.week || !req.params.year) {
+    return res.redirect('/team_schedule/' + dateHandler.getCurrentYear() + '-' + dateHandler.getCurrentWeek());
+  }
+  
   allUsers = await Users.find().exec();
   
   
