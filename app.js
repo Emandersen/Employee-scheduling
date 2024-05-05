@@ -8,6 +8,9 @@ const mongoose = require("mongoose");
 const session = require('express-session');
 const dotenv = require('dotenv');
 
+//Import schedule Model
+const PersonalSchedule = require('./models/schedule');
+
 // Import routers
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -49,12 +52,14 @@ app.use(session({
 }));
 
 // Middleware to set user session data
-app.use(function(req, res, next) {
+app.use(async function(req, res, next) {
   if (req.session.user) {
+    // Get 3 upcoming shifts from database
+    const upcomingShifts = await PersonalSchedule.find({ email: req.session.user.email, date: { $gte: new Date() } }).sort({ date: 1 }).limit(3);
     // Destructure user session data for cleaner code
     permission = req.session.user.permission;
     const { firstName, lastName, email, role, department } = req.session.user;
-    res.locals = { firstName, lastName, email, role, department, permission };
+    res.locals = { firstName, lastName, email, role, department, permission, upcomingShifts };
   } else {
     res.locals = { firstName: '', lastName: '', email: '', role: '', department: '', permission: '' };
   }
