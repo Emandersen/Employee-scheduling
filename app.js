@@ -13,7 +13,7 @@ const PersonalSchedule = require('./models/schedule');
 
 // Import routers
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+
 
 // Load environment variables from .env file
 dotenv.config({ path: './config.env' });
@@ -104,7 +104,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Use routers
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {

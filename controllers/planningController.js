@@ -40,11 +40,13 @@ async function POST_add_shift(req, res) {
 	allSchedules = await scheduleModel.find({ email: req.body.user });
 	
 	var diff = (endTime - startTime) / 1000 / 60 / 60;
-	console.log(constraintHandler.checkHardConstraints(allSchedules, user));
+	// Previously used to check if constraints were working, now unit tests are used 
+	/*
+	console.log(constraintHandler.checkHardConstraints(allSchedules, user)); 
+	*/
 
 
 	// add to schedule 
-	/*
 	const newSchedule = new scheduleModel({
 		email: user.email,
 		date: req.body.date,
@@ -57,7 +59,7 @@ async function POST_add_shift(req, res) {
 		released: false		
 	});
 
-	await newSchedule.save(); */
+	await newSchedule.save(); 
 }
 
 async function POST_delete_shift(req, res) {
