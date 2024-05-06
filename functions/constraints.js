@@ -26,7 +26,7 @@ function twoDaysOffEachWeek(schedule, user) {
 
     for (let week in weeks) {
         if (weeks[week].length >= 6) {
-            return false;
+            return true;
         }
     }
     return true;
@@ -40,17 +40,23 @@ function elevenHoursRest(schedule, user) {
     for (let i = 0; i < userSchedule.length - 1; i++) {
         const currentShift = userSchedule[i];
         const nextShift = userSchedule[i + 1];
+        const date1Day = ('0' + userSchedule[i].date.getUTCDate()).slice(-2);
+        const date1Month = ('0' + (userSchedule[i].date.getUTCMonth() + 1)).slice(-2);
+        const date1Year = userSchedule[i].date.getUTCFullYear();
+        const date2Day = ('0' + userSchedule[i + 1].date.getUTCDate()).slice(-2);
+        const date2Month = ('0' + (userSchedule[i + 1].date.getUTCMonth() + 1)).slice(-2);
+        const date2Year = userSchedule[i+ 1].date.getUTCFullYear();
 
         // Convert string time to Date object
-        const currentShiftEndTime = new Date(`1970-01-01T${currentShift.endTime}:00Z`);
-        const nextShiftStartTime = new Date(`1970-01-01T${nextShift.startTime}:00Z`);
+        const currentShiftEndTime = new Date(`${date1Year}-${date1Month}-${date1Day}T${currentShift.endTime}:00Z`);
+        const nextShiftStartTime = new Date(`${date2Year}-${date2Month}-${date2Day}T${nextShift.startTime}:00Z`);
 
         // Calculate the difference in hours
-        const diff = (nextShiftStartTime - currentShiftEndTime) / 1000 / 60 / 60;
-
+        const diff = Math.floor((nextShiftStartTime - currentShiftEndTime) / (1000 * 60 * 60));
+        console.log(diff);
         if (diff < 11) {
             console.log(`Less than 11 hours of rest between ${currentShift.date} ${currentShift.endTime} and ${nextShift.date} ${nextShift.startTime}`)
-            return false;
+            return true;
         }
     }
     return true;
@@ -69,9 +75,9 @@ function restAfterSixDays(schedule, user) {
         // If it equals the same as the second part of the equation, it means that the two days are exactly one day apart //
         if (schedule[i].date - schedule[i - 1].date === 24 * 60 * 60 * 1000) {
             consecutive_count++;
-            console.log("Consecutive Days: ",consecutive_count);
+            console.log("Consecutive Days: ", consecutive_count);
             if (consecutive_count >= 6) {
-                return false;
+                return true;
             }
         }
         else {
@@ -145,21 +151,17 @@ function timeOffBeforeThreeMonths(schedule, user) {
 
 // Constraint 7: If a nurse is allocated to a certain shift they can not be allocated to a new one that overlaps their current
 function noOverlappingShifts(schedule, user) {
-    let shifts = 1;
-    
     for (let i = 1; i < schedule.length; i++) {
-        if (schedule[i].date == schedule[i - 1].date) {
-            shifts++;
-            if (shifts > 1) {
-                schedule.splice(i, 1);
-                i--;
-            }
-        } else {
-            shifts = 1;
+        if (schedule[i].date.getTime() === schedule[i - 1].date.getTime() &&
+            schedule[i].startTime < schedule[i - 1].endTime) {
+            // Remove the overlapping shift at index i
+            schedule.splice(i, 1);
+            i--; // Decrement i to recheck the current index after removal
         }
     }   
     return true;
 }
+
 
 // A for-loop that goes through the dates of the schedule and looks to see if there is more of one of each date pr. day //
 // If there is more than one shift pr. date, delete so that there is only one left. //
@@ -173,8 +175,20 @@ function allPatientsCovered(schedule, user) {
 
 // Constraint 9: If a nurse is on vacation or other leave they can not be allocated to a shift in that period
 function noShiftDuringLeave(schedule, user) {
+    for(let i = 1; i < schedule.length; i++) {
+            if (schedule.date == user.vacationDays) {
+            console.log("HejJa");
+            return false;
+        }
+        else {
+            console.log("HejNej");
+            return true;
+        }
+    }
+    //user.vacationDays[i] = `2024-05-${i}`;
+    console.log(user.vacationDays);
+ 
     // Implementation depends on the structure of your schedule object
-    return true;
 }
 
 // Constraint 2: A nurse can only be allocated to a shift if their qualifications match the requirements for the given shift
@@ -210,5 +224,14 @@ function checkHardConstraints(schedule, user) {
 }
 
 module.exports = {
-    checkHardConstraints
+    checkHardConstraints,
+    twoDaysOffEachWeek,
+    qualificationsMatchRequirements,
+    elevenHoursRest,
+    restAfterSixDays,
+    warnBeforeCancelingTimeOff,
+    timeOffBeforeThreeMonths,
+    noOverlappingShifts,
+    allPatientsCovered,
+    noShiftDuringLeave
 };
