@@ -151,21 +151,17 @@ function timeOffBeforeThreeMonths(schedule, user) {
 
 // Constraint 7: If a nurse is allocated to a certain shift they can not be allocated to a new one that overlaps their current
 function noOverlappingShifts(schedule, user) {
-    let shifts = 1;
-    
-    for (let i = 1; i <= schedule.length; i++) {
-        if (schedule[i].date == schedule[i - 1].date) {
-            shifts++;
-            if (shifts > 1) {
-                schedule.splice(i, 1);
-                i--;
-            }
-        } else {
-            shifts = 1;
+    for (let i = 1; i < schedule.length; i++) {
+        if (schedule[i].date.getTime() === schedule[i - 1].date.getTime() &&
+            schedule[i].startTime < schedule[i - 1].endTime) {
+            // Remove the overlapping shift at index i
+            schedule.splice(i, 1);
+            i--; // Decrement i to recheck the current index after removal
         }
     }   
     return true;
 }
+
 
 // A for-loop that goes through the dates of the schedule and looks to see if there is more of one of each date pr. day //
 // If there is more than one shift pr. date, delete so that there is only one left. //
