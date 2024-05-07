@@ -120,6 +120,18 @@ return new Date().getFullYear();
 }
 
 
+// Statistics //
+// Normtider, afspadsering og ferie //
+// gennemsnitlige timer pr. uge og pr. måned //
+function NormCalculator(schedule) {
+  const user = req.session.user.email;
+
+  for(i = 0; i < schedule.length; i++) {
+    let accumulative_hours =+ schedule[i].workHours;
+  }
+} 
+
+
 module.exports = {
 getCurrentWeek,
 generateWeek,
