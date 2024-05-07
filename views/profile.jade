@@ -1,0 +1,61 @@
+extends layout
+
+block content
+    h1 Profile
+
+    style.
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            max-width: 500px;
+            margin: auto;
+        }
+        .profile-form label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .profile-form input, .profile-form select {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .profile-form button {
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            background-color: #007BFF;
+        }
+        .profile-form button:hover {
+            background-color: #0056b3;
+        }
+
+    form.profile-form(action="/update-profile" method="POST")
+        label(for="firstName") First Name
+        input#firstName(type="text" name="firstName" value=user.firstName)
+
+        label(for="lastName") Last Name
+        input#lastName(type="text" name="lastName" value=user.lastName)
+
+        label(for="email") Email
+        input#email(type="email" name="email" value=user.email readonly)
+
+        label(for="role") Role
+        input#role(type="text" name="role" value=user.role)
+
+        label(for="department") Department
+        input#department(type="text" name="department" value=user.department)
+
+        label(for="preferences") Current Preferences
+        ul
+            each preference in user.preferences
+                li= preference
+
+        label(for="addPreference") Add Preference
+        select#addPreference(name="addPreference")
+            each preference in availablePreferences
+                option(value=preference)= preference
+
+        button(type="submit") Update Profile

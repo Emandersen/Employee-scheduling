@@ -91,7 +91,7 @@ html(lang="en")
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
               .dropdown-menu(aria-labelledby="navbarDropdown2")
-                a.dropdown-item(href="#") Profile
+                a.dropdown-item(href="/profile") Profile
                 a.dropdown-item(href="#") Settings
             if permission >= 1
               li.nav-item.dropdown
@@ -114,6 +114,18 @@ html(lang="en")
             p.small Email: #{email}
             p.small Role: #{role}
             p.small Department: #{department}
+            h6 Upcoming Shifts 
+            ul(style="list-style-type: none; padding-left: 0;")
+              each shift in upcomingShifts
+                //- Format the date better
+                - var date = typeof shift.date === 'string' ? new Date(shift.date) : shift.date
+                - var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                - var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                - var formattedDate = days[date.getDay()] + ' ' + date.getDate() + '. ' + months[date.getMonth()] + ' ' + date.getFullYear()
+                div(style="margin-bottom: 10px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #d3d3d3;")
+                  li= formattedDate
+                  li= shift.startTime + ' - ' + shift.endTime
+
         div.col-10
           div.content(style="padding-top: 100px;")
             block content

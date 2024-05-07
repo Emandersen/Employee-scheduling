@@ -54,7 +54,7 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
     week.days.push({
       id: workDay ? workDay.id : releasedShift ? releasedShift.id : undefined,
       released: workDay ? workDay.released : releasedShift ? releasedShift.released : undefined,
-      date: days[date.getDay()] + ' ' + day + '. ' + months[date.getMonth()],
+      date: days[date.getDay()] + ' ' + day + '. ' + months[date.getMonth()] + ' ' + date.getFullYear(),
       workHours: workDay ? workDay.workHours : releasedShift ? releasedShift.workHours : 0,
       startTime: workDay ? workDay.startTime : releasedShift ? releasedShift.startTime : undefined,
       endTime: workDay ? workDay.endTime : releasedShift ? releasedShift.endTime : undefined,
