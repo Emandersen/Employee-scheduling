@@ -60,7 +60,7 @@ async function POST_toggle_shift(req, res) {
 
     await schedule.save();
 
-    res.redirect('/');
+    res.redirect(req.headers.referer || '/');
   } catch (error) {
     console.error(error);
     res.redirect('/?error=An error occurred');

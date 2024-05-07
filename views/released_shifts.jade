@@ -29,13 +29,17 @@ block content
             border-bottom: 1px solid #ccc;
             height: 30px;
         }
-        
+        .shift-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
 
     div.container
         div.released-shift
             h2 Released shifts
             each shift in releasedShifts
-                div
                     table
                         tbody
                             tr
@@ -45,5 +49,5 @@ block content
                                 td Location: #{shift.location}
                                 td Hours: #{shift.startTime} - #{shift.endTime} (#{shift.workHours})
                                 td
-                                    form.action-buttons(method='post', action=`/toggle-shift/${shift.id}`)
+                                    form.action-buttons(method='post', action=`/claim-shift/${shift.id}`)
                                         button.btn(type='submit') Claim Shift
