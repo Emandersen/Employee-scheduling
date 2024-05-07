@@ -105,8 +105,25 @@ async function POST_toggle_vacation(req, res) {
   }
 };
 
+async function GET_released_shifts(req, res) {
+  try {
+    const releasedShifts = await PersonalSchedule.find({ released: true });
+
+    res.render('released_shifts', {
+      title: 'Released Shifts',
+      releasedShifts: releasedShifts,
+      moment: moment,
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
+  }
+};
+
 module.exports = {
   GET_personal_schedule,
   POST_toggle_shift,
-  POST_toggle_vacation
+  POST_toggle_vacation,
+  GET_released_shifts
 };

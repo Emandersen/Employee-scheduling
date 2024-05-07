@@ -38,11 +38,16 @@ router.post("/planning-tool/delete-shift/", user_controller.checkSessionAndPermi
 
 // Profile page
 router.get('/profile', user_controller.checkSession, profile_controller.GET_profile_page);
+router.post('/profile/add-preferences', user_controller.checkSession, profile_controller.POST_add_preferences);
+router.post('/profile/remove-preference', user_controller.checkSession, profile_controller.POST_remove_preference);
+router.post('/profile/change-password', user_controller.checkSession, user_controller.POST_change_password);
 
-// misc routes
+// Personal schedule
 router.get('/', user_controller.checkSession, personal_schedule_controller.GET_personal_schedule);
 router.post('/toggle-shift/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_shift);
 router.post('/request-vacation/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_vacation);
+router.get('/released-shifts', user_controller.checkSession, personal_schedule_controller.GET_released_shifts);
+
 
 
 
