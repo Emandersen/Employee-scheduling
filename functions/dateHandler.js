@@ -123,29 +123,33 @@ function getCurrentYear() {
 // Statistics //
 // Normtider, afspadsering og ferie //
 // gennemsnitlige timer pr. uge og pr. måned //
+//This function cannot pass the test for boundary dates
+//please fix
 function userNormWorkHours(schedule, req) {
   const today = new Date();
   const currentYear = today.getFullYear();
-  // Creating new date objects that represents a different quarter of a year //
   const quarters = [
-    { start: new Date(currentYear, 0, 1), end: new Date(currentYear, 2, 31) }, // Q1: Jan. 1 - Mar. 31 //
-    { start: new Date(currentYear, 3, 1), end: new Date(currentYear, 5, 30) }, // Q2: Apr. 1 - Jun. 30 //
-    { start: new Date(currentYear, 6, 1), end: new Date(currentYear, 8, 30) }, // Q3: Jul. 1 - Sep. 30 //
-    { start: new Date(currentYear, 9, 1), end: new Date(currentYear, 11, 31) } // Q4: Okt. 1 - Dec. 31 //
+      { start: new Date(currentYear, 0, 1), end: new Date(currentYear, 2, 31) }, // Q1: Jan. 1 - Mar. 31
+      { start: new Date(currentYear, 3, 1), end: new Date(currentYear, 5, 30) }, // Q2: Apr. 1 - Jun. 30
+      { start: new Date(currentYear, 6, 1), end: new Date(currentYear, 8, 30) }, // Q3: Jul. 1 - Sep. 30
+      { start: new Date(currentYear, 9, 1), end: new Date(currentYear, 11, 31) }  // Q4: Oct. 1 - Dec. 31
   ];
 
-  const user = schedule.find(item => item.email === req.session.user.email);
-
   const accumulativeWorkHoursByQuarter = quarters.map(quarter => {
-    const filteredData = schedule.filter(item => new Date(item.date) >= quarter.start && 
-          new Date(item.date) <= quarter.end && item.email === user.email);
-    return filteredData.reduce((total, item) => total + item.workHours, 0);
+      // Filter schedule data for the current quarter
+      const filteredData = schedule.filter(item => {
+          const itemDate = new Date(item.date);
+          return itemDate >= quarter.start && itemDate <= quarter.end;
+      });
+
+      // Calculate total work hours for the current quarter
+      const totalWorkHours = filteredData.reduce((total, item) => total + item.workHours, 0);
+
+      return totalWorkHours;
   });
 
-  // Return only the first four elements of the result array
-  return accumulativeWorkHoursByQuarter.slice(0, 4);
+  return accumulativeWorkHoursByQuarter;
 }
-
 
 
 
