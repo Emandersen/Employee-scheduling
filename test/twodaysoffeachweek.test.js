@@ -1,4 +1,4 @@
-const { twoDaysOffEachWeek } = require('../functions/constraints');
+const { twoDaysOffEachWeek } = require('../functions/hardConstraints');
 
 describe('twoDaysOffEachWeek', () => {
     test('should return false if a nurse has more than 5 days of work in a week', () => {
