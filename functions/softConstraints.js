@@ -1,8 +1,10 @@
 // Soft constraints should always return a value between 0.01 and 0.2 , if the soft constraint critiria is not met
 // then the function should return the value as a minus value.
 
-function example1() {
-  return true;
+// The more a nurse has worked the less prioritized they should be for emergency shifts
+function lessPrioritizedOverworkedNurse(schedule, user) {
+    
+    return true;
 }
 
 function example2() {
@@ -14,7 +16,7 @@ function example3() {
 }
 
 const constraints = {
-    constraint1: example1,
+    lessPrioritizedOverworkedNurse,
     constraint2: example2,
     constraint3: example3
 };
