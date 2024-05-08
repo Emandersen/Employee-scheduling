@@ -88,66 +88,45 @@ function restAfterSixDays(schedule, user) {
     return true;
 }
 
-function calculateOvertimeDueDate(overtimeMonths, user, schedule) {
-    // Parse the start date
-    const currentDate = new Date();
-    const parsedStartDate = schedule.date
 
-    // Calculate the difference in months between the current date and the start date
-    const diffMonths = (currentDate.getFullYear() - parsedStartDate.getFullYear()) * 12 + currentDate.getMonth() - parsedStartDate.getMonth();
-
-    // Calculate the due date based on the overtime months
-    switch (overtimeMonths) {
-        case 3:
-            console.log(`${user.firstName} ${user.lastname} Overtime needs to be held this month`);
-            break;
-        case 2:
-            if (diffMonths >= 2) {
-                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held this month`);
-            } else {
-                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held at latest next month`);
-            }
-            break;
-        case 1:
-            if (diffMonths >= 1) {
-                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held this month`);
-            } else if (diffMonths === 0) {
-                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held at latest next month`);
-            } else {
-                console.log(`${user.firstName} ${user.lastname} Overtime needs to be held at latest in 2 months`);
-            }
-            break;
-        default:
-            console.log("Invalid input");
-    }
-}
-
-// Constraint 5: If time off (Due to too many hours) is canceled, employee should be warned 4 days before
+// contraint 5 og 6 warn employee if timeoff was canceled and inform user to take time off within 3 months of overtime
 function warnBeforeCancelingTimeOff(schedule, user) {
+    // Assuming schedule is an array of objects with date property
 
-    for (let i = 1; i < schedule.length; i++) {
-        if (schedule[i+4].date) {
-            console.log(`${user.firstName} ${user.lastName} you time off have been canceled and you have a shift in 4 days`);
-            alert(`${user.firstName} ${user.lastName} you time off have been canceled and you have a shift in 4 days`)
-            // todo: find a way to notify x user properly
-        }
-        if (user.vacationDays[i+4]){
-            console.log(`${user.firstName} ${user.lastName} is on vacation`);
-            return false;
+    const currentDate = new Date();
+    const daysToCheck = 4;
+
+    // Loop through the schedule
+    for (let i = 0; i < schedule.length; i++) {
+        // Check if the date is present and within 4 days from now
+        if (schedule[i].date) {
+            const shiftDate = new Date(schedule[i].date);
+            const timeDiff = Math.abs(shiftDate.getTime() - currentDate.getTime());
+            const daysDifference = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            switch (daysDifference) {
+                case daysToCheck:
+                    console.log(`${user.firstName} ${user.lastName}, your time off has been canceled and you have a shift in 4 days.`);
+                    alert(`${user.firstName} ${user.lastName}, your time off has been canceled and you have a shift in 4 days.`);
+                    break;
+                case 30:
+                    console.log(`${user.firstName} ${user.lastName}, your time off should be forced around 30 days.`);
+                    alert(`${user.firstName} ${user.lastName}, your time off should be forced around 30 days.`);
+                    break;
+                // If the overtime is due within 3 months, handle accordingly
+                case 90: // Assuming 90 days equals 3 months
+                    console.log(`${user.firstName} ${user.lastName}, your time off due to too many hours should be taken care of before the 3rd month.`);
+                    alert(`${user.firstName} ${user.lastName}, your time off due to too many hours should be taken care of before the 3rd month.`);
+                    break;
+                default:
+                    break;
+            }
         }
     }
-
-
-
-    // Implementation depends on the structure of your schedule and nurse objects
-    return true;
 }
 
-// Constraint 6: Time off (Due to too many hours) should be taken care off before the 3rd month from the with overtime hours
-function timeOffBeforeThreeMonths(schedule, user) {
-    // Implementation depends on the structure of your schedule and nurse objects
-    return true;
-}
+
+
 
 // Constraint 7: If a nurse is allocated to a certain shift they can not be allocated to a new one that overlaps their current
 function noOverlappingShifts(schedule, user) {
@@ -179,7 +158,10 @@ function noShiftDuringLeave(schedule, user) {
         for(let j = 0; j < user.vacationDays.length; j++) {
             if (schedule[i].date.toISOString() === user.vacationDays[j].toISOString() &&
                 schedule[i].email === user.email) {
+
+
                 console.log(schedule[i].date + " = " + user.vacationDays[j]);
+
                 return false;
             }
         }
@@ -203,7 +185,6 @@ const hardConstraints = [
     elevenHoursRest,
     restAfterSixDays,
     warnBeforeCancelingTimeOff,
-    timeOffBeforeThreeMonths,
     noOverlappingShifts,
     allPatientsCovered,
     noShiftDuringLeave
@@ -228,7 +209,6 @@ module.exports = {
     elevenHoursRest,
     restAfterSixDays,
     warnBeforeCancelingTimeOff,
-    timeOffBeforeThreeMonths,
     noOverlappingShifts,
     allPatientsCovered,
     noShiftDuringLeave
