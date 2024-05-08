@@ -175,14 +175,13 @@ function allPatientsCovered(schedule, user) {
 
 // Constraint 9: If a nurse is on vacation or other leave they can not be allocated to a shift in that period
 function noShiftDuringLeave(schedule, user) {
-    for(let i = 1; i < schedule.length; i++) {
-            if (schedule.date == user.vacationDays) {
-            console.log("HejJa");
-            return false;
-        }
-        else {
-            console.log("HejNej");
-            return true;
+    for(let i = 0; i < schedule.length; i++) {
+        for(let j = 0; j < user.vacationDays.length; j++) {
+            if (schedule[i].date.toISOString() === user.vacationDays[j].toISOString() &&
+                schedule[i].email === user.email) {
+                console.log(schedule[i].date + " = " + user.vacationDays[j]);
+                return false;
+            }
         }
     }
     //user.vacationDays[i] = `2024-05-${i}`;
