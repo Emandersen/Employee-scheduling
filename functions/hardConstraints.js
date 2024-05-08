@@ -88,6 +88,7 @@ function restAfterSixDays(schedule, user) {
     return true;
 }
 
+
 // contraint 5 og 6 warn employee if timeoff was canceled and inform user to take time off within 3 months of overtime
 function warnBeforeCancelingTimeOff(schedule, user) {
     // Assuming schedule is an array of objects with date property
@@ -126,6 +127,7 @@ function warnBeforeCancelingTimeOff(schedule, user) {
 
 
 
+
 // Constraint 7: If a nurse is allocated to a certain shift they can not be allocated to a new one that overlaps their current
 function noOverlappingShifts(schedule, user) {
     for (let i = 1; i < schedule.length; i++) {
@@ -156,7 +158,10 @@ function noShiftDuringLeave(schedule, user) {
         for(let j = 0; j < user.vacationDays.length; j++) {
             if (schedule[i].date.toISOString() === user.vacationDays[j].toISOString() &&
                 schedule[i].email === user.email) {
-                console.log(schedule[i].date + "=" + user.vacationDays[j]);
+
+
+                console.log(schedule[i].date + " = " + user.vacationDays[j]);
+
                 return false;
             }
         }
