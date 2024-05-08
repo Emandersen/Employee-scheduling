@@ -1,4 +1,4 @@
-const { elevenHoursRest } = require('../functions/constraints');
+const { elevenHoursRest } = require('../functions/hardConstraints');
 
 describe('elevenHoursRest', () => {
     test('should return true if the difference between the two dates is equal to or more than 11 hours', () => {
