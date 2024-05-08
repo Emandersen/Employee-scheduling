@@ -26,7 +26,7 @@ function twoDaysOffEachWeek(schedule, user) {
 
     for (let week in weeks) {
         if (weeks[week].length >= 6) {
-            return true;
+            return false;
         }
     }
     return true;
@@ -56,7 +56,7 @@ function elevenHoursRest(schedule, user) {
         console.log(diff);
         if (diff < 11) {
             console.log(`Less than 11 hours of rest between ${currentShift.date} ${currentShift.endTime} and ${nextShift.date} ${nextShift.startTime}`)
-            return true;
+            return false;
         }
     }
     return true;
@@ -77,7 +77,7 @@ function restAfterSixDays(schedule, user) {
             consecutive_count++;
             console.log("Consecutive Days: ", consecutive_count);
             if (consecutive_count >= 6) {
-                return true;
+                return false;
             }
         }
         else {
@@ -184,9 +184,8 @@ function noShiftDuringLeave(schedule, user) {
             }
         }
     }
-    //user.vacationDays[i] = `2024-05-${i}`;
     console.log(user.vacationDays);
- 
+    return true;
     // Implementation depends on the structure of your schedule object
 }
 
