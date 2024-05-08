@@ -43,10 +43,39 @@ block content
         input#email(type="email" name="email" value=user.email readonly)
 
         label(for="role") Role
-        input#role(type="text" name="role" value=user.role)
+        select#role(type="text" name="role" value=user.role)
+                        option(value='Nurse Practitioner') Nurse Practitioner
+                        option(value='Nurse Anesthetist') Nurse Anesthetist
+                        option(value='Nurse Educator') Nurse Educator
+                        option(value='Nurse Manager') Nurse Manager
+                        option(value='Travel Nurse') Travel Nurse
+                        option(value='Pediatric Nurse') Pediatric Nurse
+                        option(value='Oncology Nurse') Oncology Nurse
+                        option(value='Orthopedic Nurse') Orthopedic Nurse
+                        option(value='Cardiac Nurse') Cardiac Nurse
+                        option(value='Geriatric Nurse') Geriatric Nurse
+                        option(value='Intensive Care Nurse') Intensive Care Nurse
+                        option(value='Emergency Nurse') Emergency Nurse
+                        option(value='Labor and Delivery Nurse') Labor and Delivery Nurse
 
         label(for="department") Department
-        input#department(type="text" name="department" value=user.department)
+        select#department(type="text" name="department" value=user.department)
+                        option(value='Cardiology') Cardiology
+                        option(value='Neurology') Neurology
+                        option(value='Orthopedics') Orthopedics
+                        option(value='Pediatrics') Pediatrics
+                        option(value='Radiology') Radiology
+                        option(value='Surgery') Surgery
+                        option(value='Dermatology') Dermatology
+                        option(value='Gastroenterology') Gastroenterology
+                        option(value='Endocrinology') Endocrinology
+                        option(value='Oncology') Oncology
+                        option(value='Ophthalmology') Ophthalmology
+                        option(value='Psychiatry') Psychiatry
+                        option(value='Anesthesiology') Anesthesiology
+                        option(value='Gynecology') Gynecology
+                        option(value='Geriatrics') Geriatrics
+                        option(value='Immunology') Immunology
 
         label(for="preferences") Current Preferences
         ul
