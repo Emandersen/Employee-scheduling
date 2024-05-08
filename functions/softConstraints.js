@@ -37,8 +37,8 @@ function softConstraints(user, schedule) {
         weightgain += funkypunky(user, schedule);
     }
     if (weightgain >= 0.6) {
-        return weightgain;
+        return true;
     } else {
-        return -weightgain;
+        return false;
     }
 }
