@@ -142,9 +142,34 @@ async function POST_stamp_in(req, res) {
   }
 }
 
+async function POST_stamp_out(req, res) {
+  try {
+    const currentTime = new Date();
+    const timeStamp = await timeStampModel.findOne({ email: req.session.user.email, verified: false });
+
+    if (!timeStamp) {
+      res.redirect('/?error=No stamp in found');
+      return;
+    }
+
+    timeStamp.endTime = currentTime;
+    timeStamp.verified = true;
+
+    await timeStamp.save();
+    res.redirect(req.headers.referer || '/');
+  }
+  catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
+  }
+}
+
+
 module.exports = {
   GET_personal_schedule,
   POST_toggle_shift,
   POST_toggle_vacation,
-  GET_released_shifts
+  GET_released_shifts,
+  POST_stamp_in,
+  POST_stamp_out
 };

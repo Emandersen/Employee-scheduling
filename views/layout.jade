@@ -128,12 +128,10 @@ html(lang="en")
             
             h4 Stamping 
             if timeStamp
-              form(action="/stamp", method="post")
-                input(type="hidden", name="userId", value=userId)
+              form(action="/stamp-out", method="post")
                 button.btn.btn-primary(type="submit") Stamp out
             else
-              form(action="/stamp", method="post")
-                input(type="hidden", name="userId", value=userId)
+              form(action="/stamp-in", method="post")
                 button.btn.btn-primary(type="submit") Stamp in
             
 

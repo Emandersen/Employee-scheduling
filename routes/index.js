@@ -47,7 +47,8 @@ router.get('/', user_controller.checkSession, personal_schedule_controller.GET_p
 router.post('/toggle-shift/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_shift);
 router.post('/request-vacation/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_vacation);
 router.get('/released-shifts', user_controller.checkSession, personal_schedule_controller.GET_released_shifts);
-
+router.post('/stamp-in', user_controller.checkSession, personal_schedule_controller.POST_stamp_in);
+router.post('/stamp-out', user_controller.checkSession, personal_schedule_controller.POST_stamp_out);
 
 
 
