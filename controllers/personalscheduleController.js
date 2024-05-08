@@ -1,6 +1,8 @@
 const express = require('express');
 const moment = require('moment');
 const PersonalSchedule = require('../models/schedule');
+const timeStampModel = require('../models/timestamping');
+
 const User = require('../models/user');
 const dateHandler = require('../functions/dateHandler');
 
@@ -120,6 +122,25 @@ async function GET_released_shifts(req, res) {
     res.redirect('/?error=An error occurred');
   }
 };
+
+
+async function POST_stamp_in(req, res) {
+  try {
+    const currentTime = new Date();
+    const newTimeStamp = new timeStampModel({
+      email: req.session.user.email,
+      verified: false,
+      startTime: currentTime
+    });
+
+    await newTimeStamp.save();
+    res.redirect(req.headers.referer || '/');
+  }
+  catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
+  }
+}
 
 module.exports = {
   GET_personal_schedule,

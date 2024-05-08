@@ -44,6 +44,10 @@ const userSchema = new Schema({
         type: Number,
         required: true
     },
+    timeStamp: {
+        type: Boolean,
+        required: true
+    }
 });
     
 module.exports = mongoose.model('User', userSchema);
