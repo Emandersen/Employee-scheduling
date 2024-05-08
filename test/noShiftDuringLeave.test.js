@@ -1,4 +1,4 @@
-const { noShiftDuringLeave } = require('../functions/constraints');
+const { noShiftDuringLeave } = require('../functions/hardConstraints');
 
 describe('noShiftDuringLeave', () => {
     test('should return false if there is a vacation day and a work day overlap', () => {

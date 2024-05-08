@@ -1,4 +1,4 @@
-const { noOverlappingShifts } = require('../functions/constraints');
+const { noOverlappingShifts } = require('../functions/hardConstraints');
 
 describe('noOverlappingShifts', () => {
     test('No Overlapping Shifts', () => {
