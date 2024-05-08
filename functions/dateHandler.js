@@ -123,13 +123,32 @@ return new Date().getFullYear();
 // Statistics //
 // Normtider, afspadsering og ferie //
 // gennemsnitlige timer pr. uge og pr. måned //
-function NormCalculator(schedule) {
-  const user = req.session.user.email;
+function userNormWorkHours(schedule) {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  // Creating new date objects that represents a different quarter of a year //
+  const quarters = [
+    { start: new Date(currentYear, 0, 1), end: new Date(currentYear, 2, 31) }, // Q1: Jan. 1 - Mar. 31 //
+    { start: new Date(currentYear, 3, 1), end: new Date(currentYear, 5, 30) }, // Q2: Apr. 1 - Jun. 30 //
+    { start: new Date(currentYear, 6, 1), end: new Date(currentYear, 8, 30) }, // Q3: Jul. 1 - Sep. 30 //
+    { start: new Date(currentYear, 9, 1), end: new Date(currentYear, 11, 31) } // Q4: Okt. 1 - Dec. 31 //
+  ];
 
-  for(i = 0; i < schedule.length; i++) {
-    let accumulative_hours =+ schedule[i].workHours;
-  }
-} 
+  const user = schedule.find({
+    email: req.session.user.email
+  });
+
+  const accumulativeWorkHoursByQuarter = quarters.map(quarter => {
+    const filteredData = schedule.filter(item => new Date(item.date) >= quarter.start && 
+          new Date(item.date) <= quarter.end && item.email === user.email);
+    return filteredData.reduce((total, item) => total + item.workHours, 0);
+  });
+
+  return accumulativeWorkHoursByQuarter;
+};
+
+
+
 
 
 module.exports = {
