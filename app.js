@@ -11,9 +11,11 @@ const dotenv = require('dotenv');
 //Import schedule Model
 const PersonalSchedule = require('./models/schedule');
 const users = require('./models/user');
+const timeStamp = require('./models/timestamping');
 
 // Import routers
 const indexRouter = require('./routes/index');
+
 
 
 // Load environment variables from .env file
@@ -57,7 +59,9 @@ app.use(async function(req, res, next) {
   if (req.session.user) {
     // Get 3 upcoming shifts from database
     const upcomingShifts = await PersonalSchedule.find({ email: req.session.user.email, date: { $gte: new Date() } }).sort({ date: 1 }).limit(3);
-    const user = await users.findOne({ email: req.session.user.email });
+    const user = await users.findOne({ email: req.session.user.email});
+    const timeStampingBool = await timeStamp.findOne({ email: req.session.user.email, verified: false });
+    
     // Destructure user session data for cleaner code
     permission = req.session.user.permission;
     res.locals = {
@@ -68,8 +72,8 @@ app.use(async function(req, res, next) {
       department: user.department,
       permission: user.permission,
       upcomingShifts: upcomingShifts,
-      timeStamp: user.timeStamp
-      
+      // if timestamp is not found, set timeStamp to false
+      timeStamp: timeStampingBool ? timeStampingBool : false
     };
   } else {
     res.locals = { firstName: '', lastName: '', email: '', role: '', department: '', permission: '' };
