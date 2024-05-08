@@ -2,7 +2,7 @@ const moment = require('moment');
 const dateHandler = require('../functions/dateHandler');
 const userModel = require('../models/user');
 const scheduleModel = require('../models/schedule');
-const constraintHandler = require('../functions/constraints');
+const constraintHandler = require('../functions/hardConstraints');
 
 
 async function GET_planning_tool(req, res) {
