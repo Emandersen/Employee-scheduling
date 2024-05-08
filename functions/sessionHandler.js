@@ -38,6 +38,7 @@ function checkSession(req, res, next) {
     }
 }   
 
+
 // function: checkSessionAndPermissions
 // Parameters: entryperm
 // Returns: function
@@ -57,8 +58,10 @@ function checkSessionAndPermissions(entryperm) {
     } 
 };
 
+
+
 module.exports = {
     check_credentials,
     checkSession,
-    checkSessionAndPermissions
+    checkSessionAndPermissions,
 };

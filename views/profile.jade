@@ -4,15 +4,39 @@ block content
     h1 Profile
 
     style.
+        body {
+            font-family: Arial, sans-serif;
+        }
         .profile-form {
             display: flex;
             flex-direction: column;
             max-width: 500px;
             margin: auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .profile-form h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+        .profile-form .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .profile-form .input-group label {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .profile-form .input-group input {
+            flex: 2;
         }
         .profile-form label {
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 20px;
         }
         .profile-form input, .profile-form select {
             margin-bottom: 10px;
@@ -27,64 +51,65 @@ block content
             border: none;
             color: white;
             background-color: #007BFF;
+            margin-top: 20px;
         }
         .profile-form button:hover {
             background-color: #0056b3;
         }
+        .profile-form p {
+            margin-bottom: 0;
+        }
+        .profile-form ul {
+            padding-left: 0;
+        }
+        .profile-form ul li {
+            list-style-type: none;
+            margin-bottom: 10px;
+        }
 
-    form.profile-form(action="/update-profile" method="POST")
-        label(for="firstName") First Name
-        input#firstName(type="text" name="firstName" value=user.firstName)
+    div.profile-form
+        h1= user.firstName + ' ' + user.lastName
 
-        label(for="lastName") Last Name
-        input#lastName(type="text" name="lastName" value=user.lastName)
+        p
+            strong Email: 
+            span= user.email
 
-        label(for="email") Email
-        input#email(type="email" name="email" value=user.email readonly)
+        p
+            strong Role: 
+            span= user.role
 
-        label(for="role") Role
-        select#role(type="text" name="role" value=user.role)
-                        option(value='Nurse Practitioner') Nurse Practitioner
-                        option(value='Nurse Anesthetist') Nurse Anesthetist
-                        option(value='Nurse Educator') Nurse Educator
-                        option(value='Nurse Manager') Nurse Manager
-                        option(value='Travel Nurse') Travel Nurse
-                        option(value='Pediatric Nurse') Pediatric Nurse
-                        option(value='Oncology Nurse') Oncology Nurse
-                        option(value='Orthopedic Nurse') Orthopedic Nurse
-                        option(value='Cardiac Nurse') Cardiac Nurse
-                        option(value='Geriatric Nurse') Geriatric Nurse
-                        option(value='Intensive Care Nurse') Intensive Care Nurse
-                        option(value='Emergency Nurse') Emergency Nurse
-                        option(value='Labor and Delivery Nurse') Labor and Delivery Nurse
 
-        label(for="department") Department
-        select#department(type="text" name="department" value=user.department)
-                        option(value='Cardiology') Cardiology
-                        option(value='Neurology') Neurology
-                        option(value='Orthopedics') Orthopedics
-                        option(value='Pediatrics') Pediatrics
-                        option(value='Radiology') Radiology
-                        option(value='Surgery') Surgery
-                        option(value='Dermatology') Dermatology
-                        option(value='Gastroenterology') Gastroenterology
-                        option(value='Endocrinology') Endocrinology
-                        option(value='Oncology') Oncology
-                        option(value='Ophthalmology') Ophthalmology
-                        option(value='Psychiatry') Psychiatry
-                        option(value='Anesthesiology') Anesthesiology
-                        option(value='Gynecology') Gynecology
-                        option(value='Geriatrics') Geriatrics
-                        option(value='Immunology') Immunology
+        p
+            strong Department: 
+            span= user.department
 
-        label(for="preferences") Current Preferences
-        ul
-            each preference in user.preferences
-                li= preference
+    div.profile-form
+        h1 Change Password 
+        form(action="/profile/change-password" method="POST")
+            .input-group
+                label(for="currentPassword") Current Password
+                input#currentPassword(name="currentPassword" type="password" required="required")
+            .input-group
+                label(for="newPassword") New Password
+                input#newPassword(name="newPassword" type="password" required="required")
+            .input-group
+                label(for="confirmPassword") Confirm Password
+                input#confirmPassword(name="confirmPassword" type="password" required="required")
+            button(type="submit") Change Password
 
-        label(for="addPreference") Add Preference
-        select#addPreference(name="addPreference")
-            each preference in availablePreferences
-                option(value=preference)= preference
-
-        button(type="submit") Update Profile
+    div.profile-form
+        h1 Preferences
+        form(action="/profile/add-preferences" method="POST")
+            label(for="addPreference") Add Preference
+            select#addPreference(name="addPreference")
+                each preference in availablePreferences
+                    option(value=preference)= preference
+            button(type="submit") Add
+        p
+            strong Current Preferences: 
+            ul
+                each preference in user.preferences
+                    li
+                        span= preference
+                        form(action=`/profile/remove-preference?preference=${preference}` method="POST")
+                            button(type="submit") Remove
