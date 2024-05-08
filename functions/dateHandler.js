@@ -95,30 +95,30 @@ function fillMissingDates(start, end, schedules) {
 };
 
 function generateDates(startDate, endDate) {
-const dates = [];
-startDate = new Date(startDate);
-endDate = new Date(endDate);
-let date = new Date(startDate);
-while (date <= endDate) {
-  const formattedDate = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
-  dates.push(formattedDate);
-  date.setDate(date.getDate() + 1);
-}
-return dates;
+  const dates = [];
+  startDate = new Date(startDate);
+  endDate = new Date(endDate);
+  let date = new Date(startDate);
+  while (date <= endDate) {
+    const formattedDate = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
+    dates.push(formattedDate);
+    date.setDate(date.getDate() + 1);
+  }
+  return dates;
 };
 
 function getStartWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear()) {
-return new Date(year, 0, 1 + (weeknumber - 1) * 7);
+  return new Date(year, 0, 1 + (weeknumber - 1) * 7);
 }
 
 function getEndWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear()) {
-return new Date(year, 0, 1 + (weeknumber - 1) * 7 + 6);
+  return new Date(year, 0, 1 + (weeknumber - 1) * 7 + 6);
 }
 
 function getCurrentYear() {
-return new Date().getFullYear();
+  return new Date().getFullYear();
 }
-
+ 
 
 // Statistics //
 // Normtider, afspadsering og ferie //

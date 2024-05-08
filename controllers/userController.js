@@ -107,6 +107,43 @@ async function POST_reset_password(req, res) {
     }
 }
 
+async function POST_change_password(req, res) {
+    try {
+        const user = await User.findOne({ email: req.session.user.email });
+
+        if (!user) {
+            res.redirect('/?error=User not found');
+            return;
+        }
+
+        const currentPassword = req.body.currentPassword;
+        const newPassword = req.body.newPassword;
+        const confirmPassword = req.body.confirmPassword;
+
+        const match = await bcrypt.compare(currentPassword, user.password);
+
+        if (!match) {
+            res.redirect('/?error=Incorrect current password');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            res.redirect('/?error=New password and confirmation do not match');
+            return;
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+        await User.findOneAndUpdate({ email: req.session.user.email }, { password: hashedPassword });
+
+        res.redirect('/profile');
+    } catch (error) {
+        console.error(error);
+        res.redirect('/?error=An error occurred');
+    }
+}
+
+
+
 module.exports = {
     checkSession,
     checkSessionAndPermissions,
@@ -119,5 +156,6 @@ module.exports = {
     GET_edit_user,
     POST_edit_user,
     POST_delete_user,
-    POST_reset_password
+    POST_reset_password,
+    POST_change_password
 };

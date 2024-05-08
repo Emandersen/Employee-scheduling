@@ -87,12 +87,12 @@ html(lang="en")
               a.nav-link.dropdown-toggle.dropdown-link(href="/" id="navbarDropdown1" role="button") Personal Schedule
               .dropdown-menu(aria-labelledby="navbarDropdown1")
                 a.dropdown-item(href="/team_schedule/") Team Schedule
+                a.dropdown-item(href="/released-shifts") Released Shifts
                 a.dropdown-item(href="#") Statistics 
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
               .dropdown-menu(aria-labelledby="navbarDropdown2")
                 a.dropdown-item(href="/profile") Profile
-                a.dropdown-item(href="#") Settings
             if permission >= 1
               li.nav-item.dropdown
                 a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown3" role="button" data-toggle="dropdown") Management
@@ -125,6 +125,17 @@ html(lang="en")
                 div(style="margin-bottom: 10px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #d3d3d3;")
                   li= formattedDate
                   li= shift.startTime + ' - ' + shift.endTime
+            
+            h4 Stamping 
+            if timeStamp
+              form(action="/stamp-out", method="post")
+                button.btn.btn-primary(type="submit") Stamp out
+            else
+              form(action="/stamp-in", method="post")
+                button.btn.btn-primary(type="submit") Stamp in
+            
+
+    
 
         div.col-10
           div.content(style="padding-top: 100px;")
