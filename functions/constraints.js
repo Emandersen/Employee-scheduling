@@ -179,7 +179,7 @@ function noShiftDuringLeave(schedule, user) {
         for(let j = 0; j < user.vacationDays.length; j++) {
             if (schedule[i].date.toISOString() === user.vacationDays[j].toISOString() &&
                 schedule[i].email === user.email) {
-                console.log(schedule[i].date + "=" + user.vacationDays[j]);
+                console.log(schedule[i].date + " = " + user.vacationDays[j]);
                 return false;
             }
         }
