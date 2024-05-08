@@ -5,23 +5,20 @@ const personal_schedule_controller = require('../controllers/personalscheduleCon
 const team_schedule_controller = require('../controllers/teamscheduleController');
 const user_controller = require('../controllers/userController');
 const planning_controller = require('../controllers/planningController');
-const vacation_controller = require('../controllers/vacationController');
+const profile_controller = require('../controllers/profileController');
 
-
+// user authentication
 router.get('/login', user_controller.GET_login);
 router.post('/login',  user_controller.POST_login);
 router.get('/logout', user_controller.GET_logout);
 router.post('/login', user_controller.POST_login);
 
 
-
-router.get('/', user_controller.checkSession, personal_schedule_controller.GET_personal_schedule);
-router.post('/toggle-shift/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_shift);
-router.post('/request-vacation/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_vacation);
-
+// user registration
 router.get('/register', user_controller.checkSessionAndPermissions(2), user_controller.GET_register);
 router.post('/register', user_controller.checkSessionAndPermissions(2), user_controller.POST_register);
 
+// manage users
 router.get('/manage-users', user_controller.checkSessionAndPermissions(2), user_controller.GET_manage_users);
 router.get('/edit-user/:email', user_controller.checkSessionAndPermissions(2), user_controller.GET_edit_user);
 router.post('/edit-user/:email', user_controller.checkSessionAndPermissions(2), user_controller.POST_edit_user);
@@ -29,14 +26,32 @@ router.post('/delete-user/:email', user_controller.checkSessionAndPermissions(2)
 router.post('/reset-password/:email', user_controller.checkSessionAndPermissions(2), user_controller.POST_reset_password);
 
 
-
+// Team schedule
 router.get('/team_schedule/:year?-:week?', user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 router.get('/team_schedule/', user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
+
+// Planning tool
 router.get('/planning-tool', user_controller.checkSessionAndPermissions(1), planning_controller.GET_planning_tool);
 router.post('/planning-tool/add-shift/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_add_shift);
 router.post("/planning-tool/delete-shift/", user_controller.checkSessionAndPermissions(1), planning_controller.POST_delete_shift);
-router.get("/planning-tool/vacations/", vacation_controller.GET_login);
+
+// Profile page
+router.get('/profile', user_controller.checkSession, profile_controller.GET_profile_page);
+router.post('/profile/add-preferences', user_controller.checkSession, profile_controller.POST_add_preferences);
+router.post('/profile/remove-preference', user_controller.checkSession, profile_controller.POST_remove_preference);
+router.post('/profile/change-password', user_controller.checkSession, user_controller.POST_change_password);
+
+// Personal schedule
+router.get('/', user_controller.checkSession, personal_schedule_controller.GET_personal_schedule);
+router.post('/toggle-shift/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_shift);
+router.post('/request-vacation/:dayId', user_controller.checkSession, personal_schedule_controller.POST_toggle_vacation);
+router.get('/released-shifts', user_controller.checkSession, personal_schedule_controller.GET_released_shifts);
+router.post('/stamp-in', user_controller.checkSession, personal_schedule_controller.POST_stamp_in);
+router.post('/stamp-out', user_controller.checkSession, personal_schedule_controller.POST_stamp_out);
+
+
+
 
 // 500 handler
 router.use(function (err, req, res, next) {

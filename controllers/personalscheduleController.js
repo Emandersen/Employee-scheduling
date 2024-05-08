@@ -1,6 +1,8 @@
 const express = require('express');
 const moment = require('moment');
 const PersonalSchedule = require('../models/schedule');
+const timeStampModel = require('../models/timestamping');
+
 const User = require('../models/user');
 const dateHandler = require('../functions/dateHandler');
 
@@ -60,7 +62,7 @@ async function POST_toggle_shift(req, res) {
 
     await schedule.save();
 
-    res.redirect('/');
+    res.redirect(req.headers.referer || '/');
   } catch (error) {
     console.error(error);
     res.redirect('/?error=An error occurred');
@@ -70,7 +72,7 @@ async function POST_toggle_shift(req, res) {
 async function POST_toggle_vacation(req, res) {
   try {
     const d = new Date();
-    let year = d.prototype.getFullYear();
+    let year = d.getFullYear(); // Corrected line
     let date = moment.utc(req.params.dayId + ' ' + year, 'dddd D. MMMM YYYY').startOf('day');
     if (!date.isValid()) {
       console.error('Invalid date format');
@@ -105,8 +107,69 @@ async function POST_toggle_vacation(req, res) {
   }
 };
 
+async function GET_released_shifts(req, res) {
+  try {
+    const releasedShifts = await PersonalSchedule.find({ released: true });
+
+    res.render('released_shifts', {
+      title: 'Released Shifts',
+      releasedShifts: releasedShifts,
+      moment: moment,
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
+  }
+};
+
+
+async function POST_stamp_in(req, res) {
+  try {
+    const currentTime = new Date();
+    const newTimeStamp = new timeStampModel({
+      email: req.session.user.email,
+      verified: false,
+      startTime: currentTime
+    });
+
+    await newTimeStamp.save();
+    res.redirect(req.headers.referer || '/');
+  }
+  catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
+  }
+}
+
+async function POST_stamp_out(req, res) {
+  try {
+    const currentTime = new Date();
+    const timeStamp = await timeStampModel.findOne({ email: req.session.user.email, verified: false });
+
+    if (!timeStamp) {
+      res.redirect('/?error=No stamp in found');
+      return;
+    }
+
+    timeStamp.endTime = currentTime;
+    timeStamp.verified = true;
+
+    await timeStamp.save();
+    res.redirect(req.headers.referer || '/');
+  }
+  catch (error) {
+    console.error(error);
+    res.redirect('/?error=An error occurred');
+  }
+}
+
+
 module.exports = {
   GET_personal_schedule,
   POST_toggle_shift,
-  POST_toggle_vacation
+  POST_toggle_vacation,
+  GET_released_shifts,
+  POST_stamp_in,
+  POST_stamp_out
 };

@@ -8,9 +8,15 @@ const mongoose = require("mongoose");
 const session = require('express-session');
 const dotenv = require('dotenv');
 
+//Import schedule Model
+const PersonalSchedule = require('./models/schedule');
+const users = require('./models/user');
+const timeStamp = require('./models/timestamping');
+
 // Import routers
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+
+
 
 // Load environment variables from .env file
 dotenv.config({ path: './config.env' });
@@ -49,39 +55,34 @@ app.use(session({
 }));
 
 // Middleware to set user session data
-app.use(function(req, res, next) {
+app.use(async function(req, res, next) {
   if (req.session.user) {
+    // Get 3 upcoming shifts from database
+    const upcomingShifts = await PersonalSchedule.find({ email: req.session.user.email, date: { $gte: new Date() } }).sort({ date: 1 }).limit(3);
+    const user = await users.findOne({ email: req.session.user.email});
+    const timeStampingBool = await timeStamp.findOne({ email: req.session.user.email, verified: false });
+    
     // Destructure user session data for cleaner code
     permission = req.session.user.permission;
-    const { firstName, lastName, email, role, department } = req.session.user;
-    res.locals = { firstName, lastName, email, role, department, permission };
+    res.locals = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      department: user.department,
+      permission: user.permission,
+      upcomingShifts: upcomingShifts,
+      // if timestamp is not found, set timeStamp to false
+      timeStamp: timeStampingBool ? timeStampingBool : false
+    };
   } else {
     res.locals = { firstName: '', lastName: '', email: '', role: '', department: '', permission: '' };
   }
   next();
 });
 
-//
-//  DEBUGGING MIDDLEWARE
-//
-/*app.use(function (req, res, next) {
-  if (!req.session.user) {
-    // Auto login user
-    req.session.user = {
-      _id: '6618f56265af40c8cb4a4684',
-      firstName: 'thisIs',
-      lastName: 'AName',
-      email: 'user@user.com',
-      password: '$2b$10$M6MRIDSCulg4pajft1qzPetk31Wq3AV34yS7AjwG0Qfe0DQHXy7Fa',
-      role: 'Nurse',
-      department: 'Cardiology',
-      preferences: [],
-      permission: 2,
-      __v: 0
-    };
-  }
-  next();
-});*/
+
+
 
 
 
@@ -99,7 +100,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Use routers
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
