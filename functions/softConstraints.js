@@ -13,7 +13,13 @@ function lessPrioritizedOverworkedNurse(schedule, user) {
     
     schedule = schedule.sort((a, b) => a.date - b.date);
 
-    let beginningDay = new Date.getDate();
+    const dateForBeginningDay = new Date();
+    const yearForBeginningDay = dateForBeginningDay.getUTCFullYear();
+    const monthForBeginningDay = dateForBeginningDay.getUTCMonth() + 1; // months from 1-12
+    const dayForBeginningDay = dateForBeginningDay.getUTCDate();
+
+    let beginningDay = yearForBeginningDay + "/" + monthForBeginningDay + "/" + dayForBeginningDay;
+
     let endDay = new Date();
 
     endDay.setDate(beginningDay.getDate() + 7);
@@ -122,5 +128,7 @@ function softConstraints(user) {
     }
 }
 
-
+module.exports = {
+    lessPrioritizedOverworkedNurse
+};
 // Weighting system for soft constraints
