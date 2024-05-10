@@ -145,7 +145,7 @@ async function POST_stamp_in(req, res) {
 async function POST_stamp_out(req, res) {
   try {
     const currentTime = new Date();
-    const timeStamp = await timeStampModel.findOne({ email: req.session.user.email, verified: false });
+    const timeStamp = await timeStampModel.findOne({ email: req.session.user.email, verified: false, endTime: null});
 
     if (!timeStamp) {
       res.redirect('/?error=No stamp in found');
@@ -153,7 +153,7 @@ async function POST_stamp_out(req, res) {
     }
 
     timeStamp.endTime = currentTime;
-    timeStamp.verified = true;
+    timeStamp.verified = false;
 
     await timeStamp.save();
     res.redirect(req.headers.referer || '/');
