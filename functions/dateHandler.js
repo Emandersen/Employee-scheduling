@@ -129,10 +129,10 @@ function userNormWorkHours(schedule, req) {
   const today = new Date();
   const currentYear = today.getFullYear();
   const quarters = [
-      { start: new Date(currentYear, 0, 1), end: new Date(currentYear, 2, 31) }, // Q1: Jan. 1 - Mar. 31
-      { start: new Date(currentYear, 3, 1), end: new Date(currentYear, 5, 30) }, // Q2: Apr. 1 - Jun. 30
-      { start: new Date(currentYear, 6, 1), end: new Date(currentYear, 8, 30) }, // Q3: Jul. 1 - Sep. 30
-      { start: new Date(currentYear, 9, 1), end: new Date(currentYear, 11, 31) }  // Q4: Oct. 1 - Dec. 31
+    { start: new Date(currentYear, 0, 1, 0, 0, 0, 0), end: new Date(currentYear, 2, 31, 23, 59, 59, 999) }, // Q1: Jan. 1 - Mar. 31
+    { start: new Date(currentYear, 3, 1, 0, 0, 0, 0), end: new Date(currentYear, 5, 30, 23, 59, 59, 999) }, // Q2: Apr. 1 - Jun. 30
+    { start: new Date(currentYear, 6, 1, 0, 0, 0, 0), end: new Date(currentYear, 8, 30, 23, 59, 59, 999) }, // Q3: Jul. 1 - Sep. 30
+    { start: new Date(currentYear, 9, 1, 0, 0, 0, 0), end: new Date(currentYear, 11, 31, 23, 59, 59, 999) }, // Q4: Oct. 1 - Dec. 31
   ];
 
   const accumulativeWorkHoursByQuarter = quarters.map(quarter => {
