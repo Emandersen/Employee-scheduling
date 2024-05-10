@@ -123,7 +123,7 @@ function getCurrentYear() {
 // Statistics //
 // Normtider, afspadsering og ferie //
 // gennemsnitlige timer pr. uge og pr. måned //
-function userNormWorkHours(schedule, req) {
+function userNormWorkHours(schedule) {
   const today = new Date();
   const currentYear = today.getFullYear();
   const quarters = [
@@ -134,10 +134,10 @@ function userNormWorkHours(schedule, req) {
   ];
 
   const accumulativeWorkHoursByQuarter = quarters.map(quarter => {
-      // Filter schedule data for the current quarter and for the current user
+      // Filter schedule data for the current quarter
       const filteredData = schedule.filter(item => {
           const itemDate = new Date(item.date);
-          return itemDate >= quarter.start && itemDate <= quarter.end && item.email === req.session.user.email;
+          return itemDate >= quarter.start && itemDate <= quarter.end;
       });
 
       // Calculate total work hours for the current quarter
@@ -148,7 +148,6 @@ function userNormWorkHours(schedule, req) {
 
   return accumulativeWorkHoursByQuarter;
 }
-
 
 
 

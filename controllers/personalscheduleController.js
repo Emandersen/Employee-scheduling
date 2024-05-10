@@ -111,7 +111,8 @@ async function POST_toggle_vacation(req, res) {
 async function GET_released_shifts(req, res) {
   try {
     const releasedShifts = await PersonalSchedule.find({ released: true });
-    const norm = dateHandler.userNormWorkHours(PersonalSchedule, req.session.user.email);
+    const allSchedules = await PersonalSchedule.find({ email: req.session.user.email })
+    const norm = dateHandler.userNormWorkHours(allSchedules);
     res.render('released_shifts', {
       title: 'Released Shifts',
       releasedShifts: releasedShifts,
