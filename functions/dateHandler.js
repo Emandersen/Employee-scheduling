@@ -123,7 +123,6 @@ function getCurrentYear() {
 // Statistics //
 // Normtider, afspadsering og ferie //
 // gennemsnitlige timer pr. uge og pr. måned //
-Copy code
 function userNormWorkHours(schedule, req) {
   const today = new Date();
   const currentYear = today.getFullYear();
