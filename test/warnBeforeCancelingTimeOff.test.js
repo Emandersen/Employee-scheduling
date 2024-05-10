@@ -1,4 +1,4 @@
-const { warnBeforeCancelingTimeOff: warnBeforeCancelingTimeOffTest } = require('../functions/constraints');
+const { warnBeforeCancelingTimeOff: warnBeforeCancelingTimeOffTest } = require('../functions/hardConstraints');
 
 describe('warnBeforeCancelingTimeOffTest function', () => {
   // Mocking console.log and alert functions
