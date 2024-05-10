@@ -60,7 +60,7 @@ block content
                   - var formattedDate = moment(date).format('dddd D. MMMM YYYY')
                   form.action-buttons(method='post', action='/request-vacation/' + formattedDate)
                     - var dayDateString = moment(date).format('YYYY-MM-DDT00:00:00.000+00:00')
-                    - var isVacationDay = user.vacationDays.includes(dayDateString)
+                    - var isVacationDay = user.vacationDays.some(vacationDay => vacationDay[1] === dayDateString);
                     button.btn(type='submit') #{isVacationDay ? 'Cancel Vacation Request' : 'Request Vacation'}
   script.
     function formatDate(date) {
