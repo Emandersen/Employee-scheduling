@@ -153,6 +153,7 @@ function userNormWorkHours(schedule, req) {
 
 
 
+
 module.exports = {
 getCurrentWeek,
 generateWeek,
@@ -161,5 +162,5 @@ generateDates,
 getStartWeek,
 getEndWeek,
 getCurrentYear,
-userNormWorkHours
+userNormWorkHours,
 };
