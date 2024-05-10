@@ -1,4 +1,4 @@
-const { restAfterSixDays } = require('../functions/constraints');
+const { restAfterSixDays } = require('../functions/hardConstraints');
 
 describe('restAfterSixDays', () => {
     test('should return true if there is not six or more consecutive work days', () => {
