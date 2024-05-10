@@ -14,6 +14,7 @@ block content
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            text-align: left;
         }
         .released-shift {
             background-color: #f0f0f0;
@@ -50,6 +51,7 @@ block content
     div.container
         div.released-shift
             h2 Released shifts
+            p(style='text-align: right;') Current quarter shift hours: #{normHours}
             p Released shifts are shifts that are currently available for employees to claim. Once a shift is claimed, it will be removed from this list.
             each shift in releasedShifts
                 div.shift-box
