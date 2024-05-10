@@ -134,8 +134,11 @@ function userNormWorkHours(schedule, req) {
   ];
 
   const accumulativeWorkHoursByQuarter = quarters.map(quarter => {
+      // Convert schedule object to an array of values
+      const scheduleArray = Object.values(schedule);
+
       // Filter schedule data for the current quarter and for the current user
-      const filteredData = schedule.filter(item => {
+      const filteredData = scheduleArray.filter(item => {
           const itemDate = new Date(item.date);
           return itemDate >= quarter.start && itemDate <= quarter.end && item.email === req.session.user.email;
       });
@@ -148,6 +151,7 @@ function userNormWorkHours(schedule, req) {
 
   return accumulativeWorkHoursByQuarter;
 }
+
 
 
 
