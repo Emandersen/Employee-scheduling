@@ -164,6 +164,11 @@ async function POST_stamp_out(req, res) {
   }
 }
 
+//Calculating Overwork//
+function calculateOverwork(timeStamp, PersonalSchedule) {
+  
+}
+
 
 module.exports = {
   GET_personal_schedule,
