@@ -2,6 +2,9 @@
 // description: This function returns the current week number of the year.
 // return: weekNumber
 // parameters: none
+
+const user = require("../models/user");
+
 // example: getCurrentWeek()
 function getCurrentWeek() {
   const date = new Date();
@@ -118,6 +121,11 @@ function getEndWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear
 function getCurrentYear() {
   return new Date().getFullYear();
 }
+
+function currentQuarter() {
+  const today = new Date();
+  return Math.floor((today.getMonth() + 3) / 3);
+}
  
 
 // Statistics //
@@ -149,7 +157,20 @@ function userNormWorkHours(schedule) {
   return accumulativeWorkHoursByQuarter;
 }
 
-
+function normHoursCurrentQuarter(userNormWorkHours, currentQuarter) {
+  switch (currentQuarter) {
+    case 1:
+      return userNormWorkHours[0];
+    case 2:
+      return userNormWorkHours[1];
+    case 3:
+      return userNormWorkHours[2];
+    case 4:
+      return userNormWorkHours[3];
+    default:
+      console.log('error');
+  }
+}
 
 module.exports = {
 getCurrentWeek,
@@ -159,5 +180,7 @@ generateDates,
 getStartWeek,
 getEndWeek,
 getCurrentYear,
-userNormWorkHours
+userNormWorkHours,
+currentQuarter,
+normHoursCurrentQuarter
 };
