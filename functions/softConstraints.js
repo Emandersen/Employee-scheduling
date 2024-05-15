@@ -18,7 +18,7 @@ function lessPrioritizedOverworkedNurse(schedule, user) {
     const monthForBeginningDay = dateForBeginningDay.getUTCMonth() + 1; // months from 1-12
     const dayForBeginningDay = dateForBeginningDay.getUTCDate();
 
-    let beginningDay = yearForBeginningDay + "/" + monthForBeginningDay + "/" + dayForBeginningDay;
+    let beginningDay = new Date(yearForBeginningDay + "/" + monthForBeginningDay + "/" + dayForBeginningDay);
 
     let endDay = new Date();
 
