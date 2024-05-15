@@ -1,13 +1,12 @@
 extends layout 
 
 block content 
-
-    .container(style='font-size: 0.8em; margin-top: 30px;')
+    .register-container
         if error
             .alert.alert-danger #{error}
         if message
             .alert.alert-success #{message}
-        h1(style='font-size: 2em;') Register new users
+        h1 Register new users
         form(action='/register' method='post')
             .row
                 .col-md-6.form-group
@@ -71,7 +70,7 @@ block content
                         option(value='1') Shift planner
                         option(value='2') Administrator
                 .form-group
-                    button.btn.btn-lg.btn-primary(type='submit', style='font-weight: bold;') Register new user
+                    button.btn.btn-lg.btn-primary(type='submit') Register new user
         script.
             document.querySelector('form').addEventListener('submit', function(event) {
                 var password = document.getElementById('password').value;
