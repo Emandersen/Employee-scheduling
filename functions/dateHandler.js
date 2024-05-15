@@ -154,6 +154,14 @@ function userNormWorkHours(schedule, req) {
 async function calculateOverwork(req, res, timeStampModel, PersonalSchedule) {
   try {
     const currentDate = new Date().toISOString().split('T')[0];
+    
+    // Retrieve the scheduled shift for the current date
+    const scheduledShift = await PersonalSchedule.findOne({ email: req.session.user.email, date: currentDate });
+
+    if (!scheduledShift) {
+      return 0;
+    }
+
     const timeStamp = await timeStampModel.findOne({ email: req.session.user.email, verified: true });
 
     if (!timeStamp) {
@@ -162,13 +170,6 @@ async function calculateOverwork(req, res, timeStampModel, PersonalSchedule) {
 
     const startTime = timeStamp.startTime;
     const endTime = timeStamp.endTime || new Date();
-
-    // Retrieve the scheduled shift for the current date
-    const scheduledShift = await PersonalSchedule.findOne({ email: req.session.user.email, date: currentDate });
-
-    if (!scheduledShift) {
-      throw new Error('No scheduled shift found for today');
-    }
 
     const scheduledStartTime = scheduledShift.startTime;
     const scheduledEndTime = scheduledShift.endTime;
@@ -179,6 +180,7 @@ async function calculateOverwork(req, res, timeStampModel, PersonalSchedule) {
     const overworkMilliseconds = timeStampDuration - scheduledDuration;
     const overworkHours = overworkMilliseconds / (1000 * 60 * 60);
 
+    console.log(overworkHours);
     return overworkHours;
   }
   catch (error) {
