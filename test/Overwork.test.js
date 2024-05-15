@@ -1,16 +1,4 @@
-const { calculateOverwork } = require('../controllers/personalscheduleController'); // Adjust the path as needed
-
-const req = {
-  session: {
-    user: {
-      email: 'test@example.com',
-    },
-  },
-};
-
-const res = {
-  redirect: jest.fn(),
-};
+const { calculateOverwork } = require('../functions/dateHandler'); // Adjust the path as needed
 
 describe('calculateOverwork', () => {
   test('should calculate overwork for today', async () => {
