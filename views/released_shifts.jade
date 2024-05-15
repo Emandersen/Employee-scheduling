@@ -10,10 +10,9 @@ block content
         }
         h2 {
             font-size: 2em;
-            margin-top: 10px;
+            text-align: left;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            margin-bottom: 0px;
         }
         .released-shift {
             background-color: #f0f0f0;
@@ -46,10 +45,20 @@ block content
             margin-bottom: 10px;
             border-radius: 5px;
         }
+        .work {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
 
     div.container
         div.released-shift
-            h2 Released shifts
+            div.work
+                h2 Released shifts
+                h2 Q#{currentQuarter} hours: #{normHours}
             p Released shifts are shifts that are currently available for employees to claim. Once a shift is claimed, it will be removed from this list.
             each shift in releasedShifts
                 div.shift-box

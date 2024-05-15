@@ -90,11 +90,13 @@ function lessPrioritizedOverworkedNurse(schedule, user) {
 }
 
 function example2() {
-  return true;
+  // Return a number between 0.01 and 0.2
+  return 0.15;
 }
 
 function example3() {
-    return true;
+  // Return a number between 0.01 and 0.2
+  return 0.2;
 }
 
 const constraints = {
@@ -113,15 +115,14 @@ function user_preferences(user) {
     return functionList;
 }
 
-
-function softConstraints(user) {
-    const weightgain = 1;
+function softConstraints(user, schedule) {
+    let weightgain = 1;
     const functionList = user_preferences(user, constraints);
     
     for (const funkypunky of functionList) {
         weightgain += funkypunky(user, schedule);
     }
-    if (weightgain => 0.6) {
+    if (weightgain >= 0.6) {
         return true;
     } else {
         return false;
