@@ -152,6 +152,8 @@ function allPatientsCovered(schedule, user) {
     return true;
 }
 
+//This no longer works
+//Emil needs to fix it and the unit test to work with the new user model
 // Constraint 9: If a nurse is on vacation or other leave they can not be allocated to a shift in that period
 function noShiftDuringLeave(schedule, user) {
     for(let i = 0; i < schedule.length; i++) {

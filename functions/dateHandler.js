@@ -2,6 +2,9 @@
 // description: This function returns the current week number of the year.
 // return: weekNumber
 // parameters: none
+
+const user = require("../models/user");
+
 // example: getCurrentWeek()
 function getCurrentWeek() {
   const date = new Date();
@@ -147,7 +150,56 @@ function getEndWeek(weeknumber = getCurrentWeek(), year = new Date().getFullYear
 function getCurrentYear() {
   return new Date().getFullYear();
 }
+
+function currentQuarter() {
+  const today = new Date();
+  return Math.floor((today.getMonth() + 3) / 3);
+}
  
+
+// Statistics //
+// Normtider, afspadsering og ferie //
+// gennemsnitlige timer pr. uge og pr. måned //
+function userNormWorkHours(schedule) {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const quarters = [
+    { start: new Date(currentYear, 0, 1, 0, 0, 0, 0), end: new Date(currentYear, 2, 31, 23, 59, 59, 999) }, // Q1: Jan. 1 - Mar. 31
+    { start: new Date(currentYear, 3, 1, 0, 0, 0, 0), end: new Date(currentYear, 5, 30, 23, 59, 59, 999) }, // Q2: Apr. 1 - Jun. 30
+    { start: new Date(currentYear, 6, 1, 0, 0, 0, 0), end: new Date(currentYear, 8, 30, 23, 59, 59, 999) }, // Q3: Jul. 1 - Sep. 30
+    { start: new Date(currentYear, 9, 1, 0, 0, 0, 0), end: new Date(currentYear, 11, 31, 23, 59, 59, 999) }, // Q4: Oct. 1 - Dec. 31
+  ];
+
+  const accumulativeWorkHoursByQuarter = quarters.map(quarter => {
+      // Filter schedule data for the current quarter
+      const filteredData = schedule.filter(item => {
+          const itemDate = new Date(item.date);
+          return itemDate >= quarter.start && itemDate <= quarter.end;
+      });
+
+      // Calculate total work hours for the current quarter
+      const totalWorkHours = filteredData.reduce((total, item) => total + item.workHours, 0);
+
+      return totalWorkHours;
+  });
+
+  return accumulativeWorkHoursByQuarter;
+}
+
+function normHoursCurrentQuarter(userNormWorkHours, currentQuarter) {
+  switch (currentQuarter) {
+    case 1:
+      return userNormWorkHours[0];
+    case 2:
+      return userNormWorkHours[1];
+    case 3:
+      return userNormWorkHours[2];
+    case 4:
+      return userNormWorkHours[3];
+    default:
+      console.log('error');
+  }
+}
 
 module.exports = {
 getCurrentWeek,
@@ -156,5 +208,8 @@ fillMissingDates,
 generateDates,
 getStartWeek,
 getEndWeek,
-getCurrentYear
+getCurrentYear,
+userNormWorkHours,
+currentQuarter,
+normHoursCurrentQuarter
 };
