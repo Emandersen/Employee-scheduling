@@ -41,7 +41,11 @@ td.team_schedule-centered {
 
 th.team_schedule-centered {
   text-align: center;
+}
 
+.even-row {
+  background-color: #dddddd;
+}
 
 /* Path: layout.jade */
 
