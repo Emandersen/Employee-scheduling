@@ -27,14 +27,15 @@ block content
 
         table(style='width:100%; table-layout: fixed;', border='1')
             tr
-                th(style='text-align: center;') Personnel
+                th.team_schedule-centered Personnel
 
                 each day in weekDates.days
-                    th(style='text-align: center;') #{day.date}
+                    th.team_schedule-centered #{day.date}
 
                 each user, index in users
-                    tr(style=(index % 2 === 0) ? 'background-color: #dddddd;' : '')
-                        td= user.user.firstName + ' ' + user.user.lastName  
+                    tr(class=(index % 2 === 0 ? 'even-row' : ''))
+                        td= user.user.firstName + ' ' + user.user.lastName
+
                         
                         each day in user.week.days
-                                td(style='text-align: center;') #{day.startTime} - #{day.endTime} <br> #{day.department}
+                                td.team_schedule-centered #{day.startTime} - #{day.endTime} <br> #{day.department}
