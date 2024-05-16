@@ -1,4 +1,4 @@
-a.buttonToChangeWeek {
+a.team_schedule-buttonToChangeWeek {
   border-color: #E7E7E7;
   background-color: white;
   color: black;
@@ -15,27 +15,37 @@ a.buttonToChangeWeek {
   cursor: pointer;
 }
 
-a.buttonToChangeWeek:hover {
+a.team_schedule-buttonToChangeWeek:hover {
   background-color: #E7E7E7;
 }
 
-a.buttonToChangeWeek:link {
+a.team_schedule-buttonToChangeWeek:link {
   text-decoration: none;
 }
 
-a.buttonToChangeWeek:visited {
+a.team_schedule-buttonToChangeWeek:visited {
   text-decoration: none;
 }
 
-a.buttonToChangeWeek:hover {
+a.team_schedule-buttonToChangeWeek:hover {
   text-decoration: none;
 }
 
-a.buttonToChangeWeek:active {
+a.team_schedule-buttonToChangeWeek:active {
   text-decoration: none;
 }
 
+td.team_schedule-centered {
+  text-align: center;
+}
 
+th.team_schedule-centered {
+  text-align: center;
+}
+
+.even-row {
+  background-color: #dddddd;
+}
 
 /* Path: layout.jade */
 
@@ -207,7 +217,7 @@ a.buttonToChangeWeek:active {
 
 /* Path: views/login.jade */
 
-.login_page body {
+body.login_page {
   background-color: #007bff;
   color: white;
 }
@@ -216,6 +226,24 @@ a.buttonToChangeWeek:active {
   max-width: 330px;
   padding: 15px;
   margin: auto;
+}
+
+body.login_page .btn-custom {
+  background-color: white; /* White background color */
+  border-color: white; /* White border color */
+  color: black; /* Black text color */
+  font-weight: bold; /* Make the text bold for better visibility */
+  margin-top: 7px;
+}
+
+body.login_page .btn-custom:hover {
+  background-color: #e6e6e6; /* Light gray background color on hover */
+  border-color: #e6e6e6; /* Light gray border color on hover */
+  color: black; /* Keep text color black on hover */
+}
+
+body.login_page .form-control {
+  margin-bottom: 2px; /* Add margin between form control elements */
 }
 
 
