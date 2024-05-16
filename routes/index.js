@@ -37,6 +37,11 @@ router.get('/planning-tool', user_controller.checkSessionAndPermissions(1), plan
 router.post('/planning-tool/add-shift/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_add_shift);
 router.post("/planning-tool/delete-shift/", user_controller.checkSessionAndPermissions(1), planning_controller.POST_delete_shift);
 
+router.post('/planning-tool/approve-vacation/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_approve_vacation);
+router.post('/planning-tool/delete-vacation/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_delete_vacation);
+router.post('/planning-tool/approve-all-vacation/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_approve_all_vacations);
+router.post('/planning-tool/delete-all-vacation/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_delete_all_vacations);
+
 // Profile page
 router.get('/profile', user_controller.checkSession, profile_controller.GET_profile_page);
 router.post('/profile/add-preferences', user_controller.checkSession, profile_controller.POST_add_preferences);
