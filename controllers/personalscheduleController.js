@@ -72,7 +72,7 @@ async function POST_toggle_shift(req, res) {
 async function POST_toggle_vacation(req, res) {
   try {
     const d = new Date();
-    let year = d.getFullYear(); // Corrected line
+    let year = d.getFullYear();
     let date = moment.utc(req.params.dayId + ' ' + year, 'dddd D. MMMM YYYY').startOf('day');
     if (!date.isValid()) {
       console.error('Invalid date format');
@@ -85,17 +85,18 @@ async function POST_toggle_vacation(req, res) {
     if (!schedule || !schedule.released) {
       const specificUser = await User.findOne({ email: req.session.user.email });
       if (specificUser) {
-        const update = specificUser.vacationDays.includes(isoDate)
-          ? { $pull: { vacationDays: isoDate } }
-          : { $addToSet: { vacationDays: isoDate } };
+        const vacationDayIndex = specificUser.vacationDays.findIndex(day => day[1] === isoDate);
+        const update = vacationDayIndex !== -1
+          ? { $pull: { vacationDays: specificUser.vacationDays[vacationDayIndex] } }
+          : { $push: { vacationDays: [false, isoDate] } };
 
         await User.findOneAndUpdate({ email: req.session.user.email }, update);
 
         // Update the session data
         if (update.$pull) {
-          req.session.user.vacationDays = req.session.user.vacationDays.filter(day => day !== isoDate);
-        } else if (update.$addToSet) {
-          req.session.user.vacationDays.push(isoDate);
+          req.session.user.vacationDays = req.session.user.vacationDays.filter((_, index) => index !== vacationDayIndex);
+        } else if (update.$push) {
+          req.session.user.vacationDays.push([false, isoDate]);
         }
       }
     }
@@ -110,12 +111,16 @@ async function POST_toggle_vacation(req, res) {
 async function GET_released_shifts(req, res) {
   try {
     const releasedShifts = await PersonalSchedule.find({ released: true });
-
+    const allSchedules = await PersonalSchedule.find({ email: req.session.user.email })
+    const norm = dateHandler.normHoursCurrentQuarter(dateHandler.userNormWorkHours(allSchedules), dateHandler.currentQuarter());
+    const quarter = dateHandler.currentQuarter();
     res.render('released_shifts', {
       title: 'Released Shifts',
       releasedShifts: releasedShifts,
       moment: moment,
-      user: req.session.user
+      user: req.session.user,
+      normHours: norm,
+      currentQuarter: quarter
     });
   } catch (error) {
     console.error(error);
@@ -145,7 +150,7 @@ async function POST_stamp_in(req, res) {
 async function POST_stamp_out(req, res) {
   try {
     const currentTime = new Date();
-    const timeStamp = await timeStampModel.findOne({ email: req.session.user.email, verified: false });
+    const timeStamp = await timeStampModel.findOne({ email: req.session.user.email, verified: false, endTime: null});
 
     if (!timeStamp) {
       res.redirect('/?error=No stamp in found');
@@ -153,7 +158,7 @@ async function POST_stamp_out(req, res) {
     }
 
     timeStamp.endTime = currentTime;
-    timeStamp.verified = true;
+    timeStamp.verified = false;
 
     await timeStamp.save();
     res.redirect(req.headers.referer || '/');

@@ -1,4 +1,4 @@
-const { userNormWorkHours } = require('../functions/dateHandler'); // Assuming the function is in a separate file
+const { userNormWorkHours } = require('../functions/dateHandler');
 
 describe('userNormWorkHours', () => {
   test('calculates accumulative work hours by quarter', () => {
@@ -48,14 +48,16 @@ describe('userNormWorkHours', () => {
 
   test('calculates accumulative work hours correctly for boundary dates', () => {
     const mockSchedule = [
-      { email: 'user1@example.com', date: '2024-01-01', workHours: 8 },
-      { email: 'user1@example.com', date: '2024-03-31', workHours: 7 },
-      { email: 'user1@example.com', date: '2024-06-30', workHours: 6 },
-      { email: 'user1@example.com', date: '2024-09-30', workHours: 8 }
+      { email: 'user1@example.com', date: '2024-01-01', workHours: 5 },
+      { email: 'user1@example.com', date: '2024-03-31', workHours: 5 },
+      { email: 'user1@example.com', date: '2024-04-01', workHours: 4 },
+      { email: 'user1@example.com', date: '2024-06-30', workHours: 4 },
+      { email: 'user1@example.com', date: '2024-10-01', workHours: 3 },
+      { email: 'user1@example.com', date: '2024-12-31', workHours: 3 }
     ];
     const req = { session: { user: { email: 'user1@example.com' } } };
     const result = userNormWorkHours(mockSchedule, req);
-    const expected = [15, 0, 6, 8]; // Work hours for Q1, Q2, Q3, Q4
+    const expected = [10, 8, 0, 6]; // Work hours for Q1, Q2, Q3, Q4
     expect(result).toEqual(expected);
   });
 
