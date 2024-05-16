@@ -29,18 +29,17 @@ block content
                         - var previousWeekNumber = null
                         - var dateIndex = 0
                         each schedule in user.schedules
-                            - var weekNumber = moment(dates[dateIndex]).isoWeek()
-                            if previousWeekNumber != null && weekNumber != previousWeekNumber
+                            - var date = new Date(dates[dateIndex])
+                            - var weekNumber = Math.ceil((date - new Date(date.getFullYear(),0,1) + 1) / 604800000)
+                            if weekNumber != previousWeekNumber && previousWeekNumber != null
                                 td(style='background-color: #000; width: 2px;')
                             if schedule.workHours > 0
-                                - var date = schedule.date.toISOString().split('T')[0]
-                                - var vacationDate = user.vacationDays.some(vacation => vacation.split('T')[0] == date)
-                                td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative; background: #{vacationDate ? "#ff9bff" : "#74f8fe"};' data-date=dates[dateIndex] data-user=user.email)
+                                td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative; background: #{schedule.blockColor};' data-date=dates[dateIndex] data-user=user.email)
                                     a(onclick='handleEditEvent(event)' style='display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 3;')
                                     div(style='position: relative; z-index: 2;')
-                                        | Role: #{schedule.role} 
+                                        | Role: #{schedule.role}
                                         br
-                                        | Department: #{schedule.department} 
+                                        | Department: #{schedule.department}  
                                         br
                                         | Location: #{schedule.location} 
                                         br
@@ -48,9 +47,9 @@ block content
                                         br
                                         | Hours: #{schedule.workHours}
                             else 
-                                td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative;' data-date=dates[dateIndex] data-user=user.email)
+                                td(style='border-right: 1px solid #000; font-size: 10px; white-space: nowrap; position: relative; background: #{schedule.blockColor};' data-date=dates[dateIndex] data-user=user.email)
                                     a(onclick='handleAddEvent(event)' style='display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 3;')
-                                    div(style='position: relative; z-index: 2;') No work scheduled
+                                    div(style='position: relative; z-index: 2;') No work scheduled 
                             - previousWeekNumber = weekNumber
                             - dateIndex++
 

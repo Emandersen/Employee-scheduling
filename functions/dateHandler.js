@@ -72,7 +72,7 @@ function generateWeek(year, weekNumber, workDays = [], releasedShifts = []) {
   return week;
 };
 
-function fillMissingDates(start, end, schedules) {
+function fillMissingDates(start, end, schedules, user) {
   const datesWithSchedules = [];
   let date = new Date(start);
   while (date < end) {
@@ -82,15 +82,44 @@ function fillMissingDates(start, end, schedules) {
         scheduleDate.getMonth() === date.getMonth() &&
         scheduleDate.getFullYear() === date.getFullYear();
     });
-    datesWithSchedules.push(schedule || {
-      date: date,
-      workHours: 0,
-      startTime: undefined,
-      endTime: undefined,
-      role: undefined,
-      department: undefined,
-      location: undefined,
-      email: undefined
+
+    const vacationDay = user.vacationDays.find(v => {
+      const vacationDate = new Date(v[1]);
+      return vacationDate.getDate() === date.getDate() &&
+        vacationDate.getMonth() === date.getMonth() &&
+        vacationDate.getFullYear() === date.getFullYear();
+    });
+
+    const isVacation = vacationDay ? true : false;
+
+    const isWorkhours = schedule ? true : false;
+    
+    var blockColor = "";
+
+    if (isVacation) {
+      if (vacationDay[0] == true) {
+        blockColor = "#e68cfa"; // pink
+      } else if (vacationDay[0] == false) {
+        blockColor = "#b56bfa"; // Dark purple
+      }
+    }
+
+    if (isWorkhours && !isVacation) {
+      blockColor = "#89fafa"; // Light blue
+    }
+    
+
+    datesWithSchedules.push({
+      ...schedule,
+      blockColor,
+      date: date.toISOString(),
+      workHours: schedule ? schedule.workHours : 0,
+      startTime: schedule ? schedule.startTime : undefined,
+      endTime: schedule ? schedule.endTime : undefined,
+      role: schedule ? schedule.role : undefined,
+      department: schedule ? schedule.department : undefined,
+      location: schedule ? schedule.location : undefined,
+      email: schedule ? schedule.email : undefined
     });
     date.setDate(date.getDate() + 1);
   }
