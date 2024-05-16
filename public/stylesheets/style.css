@@ -217,7 +217,7 @@ th.team_schedule-centered {
 
 /* Path: views/login.jade */
 
-.login_page body {
+body.login_page {
   background-color: #007bff;
   color: white;
 }
