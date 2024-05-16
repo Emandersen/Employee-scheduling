@@ -1,4 +1,4 @@
-a.buttonToChangeWeek {
+a.team_schedule-buttonToChangeWeek {
   border-color: #E7E7E7;
   background-color: white;
   color: black;
@@ -15,22 +15,30 @@ a.buttonToChangeWeek {
   cursor: pointer;
 }
 
-a.buttonToChangeWeek:hover {
+a.team_schedule-buttonToChangeWeek:hover {
   background-color: #E7E7E7;
 }
 
-a.buttonToChangeWeek:link {
+a.team_schedule-buttonToChangeWeek:link {
   text-decoration: none;
 }
 
-a.buttonToChangeWeek:visited {
+a.team_schedule-buttonToChangeWeek:visited {
   text-decoration: none;
 }
 
-a.buttonToChangeWeek:hover {
+a.team_schedule-buttonToChangeWeek:hover {
   text-decoration: none;
 }
 
-a.buttonToChangeWeek:active {
+a.team_schedule-buttonToChangeWeek:active {
   text-decoration: none;
+}
+
+td.team_schedule-centered {
+  text-align: center;
+}
+
+th.team_schedule-centered {
+  text-align: center;
 }
