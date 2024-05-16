@@ -228,6 +228,24 @@ body.login_page {
   margin: auto;
 }
 
+body.login_page .btn-custom {
+  background-color: white; /* White background color */
+  border-color: white; /* White border color */
+  color: black; /* Black text color */
+  font-weight: bold; /* Make the text bold for better visibility */
+  margin-top: 7px;
+}
+
+body.login_page .btn-custom:hover {
+  background-color: #e6e6e6; /* Light gray background color on hover */
+  border-color: #e6e6e6; /* Light gray border color on hover */
+  color: black; /* Keep text color black on hover */
+}
+
+body.login_page .form-control {
+  margin-bottom: 2px; /* Add margin between form control elements */
+}
+
 
 /* Path: views/planning_tool.jade */
 
