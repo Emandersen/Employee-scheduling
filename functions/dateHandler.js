@@ -210,7 +210,37 @@ async function calculateOverwork(req, res, timeStampModel, PersonalSchedule) {
   }
 }
 
+//2,08 dages ferie pr. måned. Ferieåret er fra d. 1. september til og med d. 31. august året efter//
+//Ferieafholdelsesperioden er dog på 16 måneder fra den 1. september til den 31. december året efter//
+//Man har ret til 25 feriedage i løbet af disse 16 måneder og de kan ikke transfers videre//
+async function vacationRegistration(req, User) {
+  try {
+    const user = await User.find({ user: req.body.user });
+    const vacationDays = 25;
+    let vacationDaysVerified = 0;
 
+    if (!user.vacationDays || user.vacationDays.length === 0) {
+      return { message: 'There are no vacation day requests from the user.' };
+    }
+    
+    for(let i = 0; i < user.vacationDays.length; i++) {
+      if (user.vacationDays[i][0] == true) {
+        vacationDaysVerified += 1;
+      }
+    }
+
+    console.log(vacationDaysVerified);
+    let vacationDaysLeft = vacationDays - vacationDaysVerified;
+
+    return vacationDaysLeft;
+  }
+  catch (error) {
+    console.error('Error during vacation registration:', error);
+    return { message: 'An error occured during vacation registration.', error: error.message };
+  } 
+}
+
+//skal lave funktion der finder vacationdaylimit med user som input og boolean som output//
 
 module.exports = {
 getCurrentWeek,
@@ -223,5 +253,6 @@ getCurrentYear,
 userNormWorkHours,
 calculateOverwork,
 currentQuarter,
-normHoursCurrentQuarter
+normHoursCurrentQuarter,
+vacationRegistration
 };
