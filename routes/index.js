@@ -31,6 +31,7 @@ router.get('/team_schedule/:year?-:week?', user_controller.checkSession, team_sc
 router.get('/team_schedule/', user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
 
+
 // Planning tool
 router.get('/planning-tool', user_controller.checkSessionAndPermissions(1), planning_controller.GET_planning_tool);
 router.post('/planning-tool/add-shift/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_add_shift);

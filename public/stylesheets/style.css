@@ -41,4 +41,385 @@ td.team_schedule-centered {
 
 th.team_schedule-centered {
   text-align: center;
+
+
+/* Path: layout.jade */
+
+.layout_page .dropdown-menu {
+  border: 20px solid transparent; /* Transparent border */
+  box-sizing: content-box; /* This makes the border not affect the size of the dropdown menu */
+}
+.layout_page .logo {
+  border: 5px solid #4CAF50; /* Green border */
+  border-radius: 50%; /* Circular shape */
+  box-sizing: border-box;
+}
+.layout_page .nav-link {
+  border: 3px solid transparent; /* Transparent border */
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+  color: #fff; /* White text */
+}
+.layout_page .nav-link:hover {
+  background-color: #4CAF50; /* Green background on hover */
+}
+.layout_page .small {
+  font-size: 0.8em;
+  color: #777; /* Gray text */
+}
+.layout_page .sidebar {
+  position: fixed;
+  top: 56px; /* Adjusted to match the height of the navbar */
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  background-color: #E3F2FD; /* Light blue background */
+  padding: 20px 10px; /* Adjusted padding */
+  max-width: 250px; /* Maximum width */
+  z-index: 1; /* Adjusted z-index */
+}
+.layout_page .content {
+  padding-top: 70px; /* Adjusted to match the height of the navbar */
+  margin-left: 0; /* Adjusted to start from the left side */
+}
+
+
+
+/* Path: views/personal_schedule.jade */
+
+.personal-schedule-container {
+  font-size: 0.8em;
+}
+
+#personal-schedule-title {
+  font-size: 1.2em;
+}
+
+.personal-schedule-week-header {
+  font-size: 2em;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+.personal-schedule-current-week {
+  background-color: #00ccff;
+}
+
+.personal-schedule-other-week {
+  background-color: #f0f0f0;
+}
+
+.personal-schedule-week-container {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+#personal-schedule-schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.personal-schedule-schedule-row {
+  border-bottom: 1px solid #ccc;
+  height: 30px;
+}
+
+
+/* Path: views/manage_users.jade */
+
+.manage_users table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.manage_users th, .manage_users td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.manage_users th {
+  background-color:#61dfff;
+  color: white;
+}
+.manage_users .action-buttons {
+  display: flex;
+  gap: 10px;
+}
+.manage_users .action-buttons button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.manage_users .action-buttons button:hover {
+  background-color: #0069d9;
+}
+.manage_users .dropdown {
+  position: relative;
+  display: inline-block;
+}
+.manage_users .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+.manage_users .dropdown:hover .dropdown-content {
+  display: block;
+}
+.manage_users .dropdown button {
+  background-color: #007BFF;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+.manage_users .dropdown button:hover {
+  background-color: #0069d9;
+}
+.manage_users .dropdown-content button {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.manage_users .dropdown-content button:hover {
+  background-color: #ddd;
+}
+.manage_users .button.btn:hover, .manage_users button.btn:hover {
+  background-color: #ddd;
+  color: #333;
+}
+
+
+/* Path: views/login.jade */
+
+.login_page body {
+  background-color: #007bff;
+  color: white;
+}
+.login_page .form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+
+/* Path: views/planning_tool.jade */
+
+
+/* Path: views/profile.jade */
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.profile-form {
+  max-width: 500px;
+  margin: auto;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.profile-form h1 {
+  text-align: center;
+  color: #007BFF;
+}
+
+.input-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-group label {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.input-group input {
+  flex: 2;
+}
+
+.profile-form label {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.profile-form input, .profile-form select {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.profile-form button {
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  background-color: #007BFF;
+  margin-top: 20px;
+}
+
+.profile-form button:hover {
+  background-color: #0056b3;
+}
+
+.profile-form p {
+  margin-bottom: 0;
+}
+
+.profile-form ul {
+  padding-left: 0;
+}
+
+.profile-form ul li {
+  list-style-type: none;
+  margin-bottom: 10px;
+}
+
+/* Path: views/released_shifts.jade */
+
+.released_shifts-container {
+  font-size: 0.9em;
+  color: #333;
+  line-height: 1.6;
+}
+
+.released_shifts-container h1 {
+  font-size: 1.5em;
+  color: #007BFF;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.released_shifts-container h2 {
+  font-size: 1.3em;
+  color: #333;
+  text-align: left;
+  padding: 10px;
+  margin-bottom: 0px;
+}
+
+.released_shifts-released-shift {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.released_shifts-container p {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.released_shifts-shift-box table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 10px 0;
+}
+
+.released_shifts-shift-box td {
+  text-align: left;
+  padding: 10px 0;
+  width: 16.66%;
+}
+
+.released_shifts-shift-box tr {
+  height: 30px;
+}
+
+.released_shifts-shift-box {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.released_shifts-work {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background-color: #f8f9fa;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Path: views/register.jade */
+
+.register-container {
+  font-size: 0.8em;
+  margin-top: 30px;
+}
+
+.register-container h1 {
+  font-size: 2em;
+}
+
+.register-container button.btn.btn-lg.btn-primary {
+  font-weight: bold;
+}
+
+
+/* Path: views/error.jade */
+
+.error-container {
+  font-size: 0.9em;
+  color: #333;
+  line-height: 1.6;
+  text-align: center;
+  padding: 50px;
+}
+
+.error-container h1 {
+  font-size: 2em;
+  color: #dc3545;
+  margin-bottom: 20px;
+}
+
+.error-container h2 {
+  font-size: 1.5em;
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+.error-container pre {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  padding: 20px;
+  border-radius: 5px;
+  overflow-x: auto;
 }

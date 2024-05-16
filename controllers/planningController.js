@@ -18,7 +18,7 @@ async function GET_planning_tool(req, res) {
 	const usersWithSchedules = users.map(user => {
 		user = user.toObject(); // Convert Mongoose object to a regular JavaScript object
 		const userSchedules = schedules.filter(schedule => schedule.email === user.email);
-		const datesWithSchedules = dateHandler.fillMissingDates(start, end, userSchedules);
+		const datesWithSchedules = dateHandler.fillMissingDates(start, end, userSchedules, user);
 		user.schedules = datesWithSchedules;
 		return user;
 	});
