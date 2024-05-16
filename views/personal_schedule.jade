@@ -2,14 +2,13 @@ extends layout
 
 block content
   div.personal-schedule-container
-    h1(id='personal-schedule-title')= title
     each week in weeks
       h2(class='personal-schedule-week-header personal-schedule-week-' + week.number + (week.number == currentWeek ? ' personal-schedule-current-week' : ' personal-schedule-other-week')) Week #{week.number} - #{week.year} #{week.number == currentWeek ? '(Current Week)' : ''}
       div.personal-schedule-week-container
         table#personal-schedule-schedule-table
           tbody
-            each day in week.days
-              tr(class='personal-schedule-schedule-row')
+            each day, index in week.days
+              tr(class='personal-schedule-schedule-row' + (index === week.days.length - 1 ? ' no-bottom-border' : ''))
                 td= day.date
                 if day.workHours > 0
                   td Role: #{day.role}
