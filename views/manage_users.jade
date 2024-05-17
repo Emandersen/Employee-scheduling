@@ -1,115 +1,38 @@
 extends layout 
 
 block content
-    h1 #{title}
-    style.
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color:#61dfff;
-            color: white;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .action-buttons button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 10px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .action-buttons button:hover {
-            background-color: #0069d9;
-        }
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            padding: 12px 16px;
-            z-index: 1;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .dropdown button {
-            background-color: #007BFF;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-        .dropdown button:hover {
-            background-color: #0069d9;
-        }
-        .dropdown-content button {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-        }
-        .dropdown-content button:hover {
-            background-color: #ddd;
-        }
-        .button.btn:hover, button.btn:hover {
-            /* Add the hover styles you want here. For example: */
-            background-color: #ddd;
-            color: #333;
-        }
-    table
-        thead
-            tr
-                th First Name
-                th Last Name
-                th Email
-                th Department
-                th Permissions
-                th Actions
-        tbody
-            each user in users
+    div.manage_users
+        h1 #{title}
+        table
+            thead
                 tr
-                    td #{user.firstName}
-                    td #{user.lastName}
-                    td #{user.email}
-                    td #{user.department}
-                    td 
-                        if user.permission == 0
-                            | User
-                        else if user.permission == 1
-                            | Schedule Planner
-                        else if user.permission == 2
-                            | Administrator
-                    td 
-                        .dropdown
-                            button Actions
-                            .dropdown-content
-                                form.action-buttons(method='post')
-                                    a.button.btn(href=`/edit-user/${user.email}`) Edit
-                                form.action-buttons(method='post', action=`/delete-user/${user.email}`)
-                                    button.btn(type='submit') Delete
-                                form.action-buttons(method='post', action=`/reset-password/${user.email}`)
-                                    button.btn(type='submit', onclick='alert("Default password is: default123");') Reset password
+                    th First Name
+                    th Last Name
+                    th Email
+                    th Department
+                    th Permissions
+                    th Actions
+            tbody
+                each user in users
+                    tr
+                        td #{user.firstName}
+                        td #{user.lastName}
+                        td #{user.email}
+                        td #{user.department}
+                        td 
+                            if user.permission == 0
+                                | User
+                            else if user.permission == 1
+                                | Schedule Planner
+                            else if user.permission == 2
+                                | Administrator
+                        td 
+                            .dropdown
+                                button Actions
+                                .dropdown-content
+                                    form.action-buttons(method='post')
+                                        a.button.btn(href=`/edit-user/${user.email}`) Edit
+                                    form.action-buttons(method='post', action=`/delete-user/${user.email}`)
+                                        button.btn(type='submit') Delete
+                                    form.action-buttons(method='post', action=`/reset-password/${user.email}`)
+                                        button.btn(type='submit', onclick='alert("Default password is: default123");') Reset password

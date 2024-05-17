@@ -53,7 +53,8 @@ async function POST_register(req, res) {
         role: req.body.role,
         department: req.body.department,
         preferences: req.body.preferences,
-        permission: req.body.permission
+        permission: req.body.permission,
+        timeStamp: false
     });
 
     await newUser.save();

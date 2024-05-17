@@ -17,7 +17,7 @@ describe('noShiftDuringLeave', () => {
                 __v: 0
             }
         ];
-        const user = { firstName: 'user', lastName: 'user', email: 'user@user.com', vacationDays: [new Date("2024-04-08T00:00:00.000+00:00")] };
+        const user = { firstName: 'user', lastName: 'user', email: 'user@user.com', vacationDays: [[false, new Date("2024-04-08T00:00:00.000+00:00")]] };
         expect(noShiftDuringLeave(schedule, user)).toBe(false);
     })
     test('should return true if there is no vacation day and a work day overlap', () => {
@@ -49,7 +49,7 @@ describe('noShiftDuringLeave', () => {
                 __v: 0
             }
         ];
-        const user = { firstName: 'user', lastName: 'user', email: 'user@user.com', vacationDays: [new Date("2024-04-09T00:00:00.000+00:00")] };
+        const user = { firstName: 'user', lastName: 'user', email: 'user@user.com', vacationDays: [[false, new Date("2024-04-09T00:00:00.000+00:00")]] };
         expect(noShiftDuringLeave(schedule, user)).toBe(true);
     })
 })
