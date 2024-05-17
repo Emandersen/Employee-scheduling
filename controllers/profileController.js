@@ -80,7 +80,11 @@ async function POST_remove_preference(req, res) {
     }
 }
 
+function GET_statistics(req, res) {
+    res.render('statistics', {
 
+    })
+}
         
 
 
@@ -88,5 +92,6 @@ async function POST_remove_preference(req, res) {
 module.exports = {
     GET_profile_page,
     POST_add_preferences,
-    POST_remove_preference
+    POST_remove_preference,
+    GET_statistics
 };
