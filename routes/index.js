@@ -31,10 +31,16 @@ router.get('/team_schedule/:year?-:week?', user_controller.checkSession, team_sc
 router.get('/team_schedule/', user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
 
+
 // Planning tool
 router.get('/planning-tool', user_controller.checkSessionAndPermissions(1), planning_controller.GET_planning_tool);
 router.post('/planning-tool/add-shift/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_add_shift);
 router.post("/planning-tool/delete-shift/", user_controller.checkSessionAndPermissions(1), planning_controller.POST_delete_shift);
+
+router.post('/planning-tool/approve-vacation/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_approve_vacation);
+router.post('/planning-tool/delete-vacation/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_delete_vacation);
+router.post('/planning-tool/approve-all-vacation/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_approve_all_vacations);
+router.post('/planning-tool/delete-all-vacation/', user_controller.checkSessionAndPermissions(1), planning_controller.POST_delete_all_vacations);
 
 // Profile page
 router.get('/profile', user_controller.checkSession, profile_controller.GET_profile_page);

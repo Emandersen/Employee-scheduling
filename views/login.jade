@@ -3,18 +3,9 @@ html
     head
         title Login Page
         link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
-        style.
-            body {
-                background-color: #007bff;
-                color: white;
-            }
-            .form-signin {
-                width: 100%;
-                max-width: 330px;
-                padding: 15px;
-                margin: auto;
-            }
-    body
+        link(rel='stylesheet', href='/stylesheets/style.css')
+
+    body.login_page
         .container
             .row.justify-content-center.align-items-center.min-vh-100
                 .col-4
@@ -24,4 +15,4 @@ html
                         input#inputEmail.form-control(type='email', name='email', placeholder='Email address', required, autofocus)
                         label.sr-only(for='inputPassword') Password
                         input#inputPassword.form-control(type='password', name='password', placeholder='Password', required)
-                        button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
+                        button.btn.btn-lg.btn-block.btn-custom(type='submit') Sign in

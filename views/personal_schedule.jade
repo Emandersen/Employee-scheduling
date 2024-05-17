@@ -1,49 +1,14 @@
 extends layout
 
 block content
-  style.
-    .container {
-      font-size: 0.8em;
-    }
-    h1 {
-      font-size: 1.2em;
-    }
-    h2 {
-      font-size: 2em;
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .current-week {
-      background-color: #00ccff;
-    }
-    .other-week {
-      background-color: #f0f0f0;
-    }
-    .week-container {
-      border: 1px solid #ccc;
-      padding: 5px;
-      margin-bottom: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    tr {
-      border-bottom: 1px solid #ccc;
-      height: 30px;
-    }
-
-  div.container
-    h1= title
+  div.personal-schedule-container
     each week in weeks
-      h2(id='week-' + week.number, class=(week.number == currentWeek ? 'current-week' : 'other-week')) Week #{week.number} - #{week.year} #{week.number == currentWeek ? '(Current Week)' : ''}
-      div.week-container
-        table
+      h2(class='personal-schedule-week-header personal-schedule-week-' + week.number + (week.number == currentWeek ? ' personal-schedule-current-week' : ' personal-schedule-other-week')) Week #{week.number} - #{week.year} #{week.number == currentWeek ? '(Current Week)' : ''}
+      div.personal-schedule-week-container
+        table#personal-schedule-schedule-table
           tbody
-            each day in week.days
-              tr
+            each day, index in week.days
+              tr(class='personal-schedule-schedule-row' + (index === week.days.length - 1 ? ' no-bottom-border' : ''))
                 td= day.date
                 if day.workHours > 0
                   td Role: #{day.role}
@@ -60,7 +25,7 @@ block content
                   - var formattedDate = moment(date).format('dddd D. MMMM YYYY')
                   form.action-buttons(method='post', action='/request-vacation/' + formattedDate)
                     - var dayDateString = moment(date).format('YYYY-MM-DDT00:00:00.000+00:00')
-                    - var isVacationDay = user.vacationDays.includes(dayDateString)
+                    - var isVacationDay = user.vacationDays.some(vacationDay => vacationDay[1] === dayDateString);
                     button.btn(type='submit') #{isVacationDay ? 'Cancel Vacation Request' : 'Request Vacation'}
   script.
     function formatDate(date) {
@@ -68,7 +33,7 @@ block content
     }
 
     window.addEventListener('DOMContentLoaded', (event) => {
-      const currentWeekElement = document.getElementById('week-' + #{currentWeek});
+      const currentWeekElement = document.querySelector('.personal-schedule-week-' + #{currentWeek});
       if (currentWeekElement) {
         const offset = 100; // Adjust this value to your needs
         const elementPosition = currentWeekElement.getBoundingClientRect().top + window.pageYOffset;

@@ -60,7 +60,7 @@ app.use(async function(req, res, next) {
     // Get 3 upcoming shifts from database
     const upcomingShifts = await PersonalSchedule.find({ email: req.session.user.email, date: { $gte: new Date() } }).sort({ date: 1 }).limit(3);
     const user = await users.findOne({ email: req.session.user.email});
-    const timeStampingBool = await timeStamp.findOne({ email: req.session.user.email, verified: false });
+    const timeStampingBool = await timeStamp.findOne({ email: req.session.user.email, endTime: { $exists: false } });
     
     // Destructure user session data for cleaner code
     permission = req.session.user.permission;

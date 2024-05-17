@@ -18,7 +18,7 @@ async function GET_planning_tool(req, res) {
 	const usersWithSchedules = users.map(user => {
 		user = user.toObject(); // Convert Mongoose object to a regular JavaScript object
 		const userSchedules = schedules.filter(schedule => schedule.email === user.email);
-		const datesWithSchedules = dateHandler.fillMissingDates(start, end, userSchedules);
+		const datesWithSchedules = dateHandler.fillMissingDates(start, end, userSchedules, user);
 		user.schedules = datesWithSchedules;
 		return user;
 	});
@@ -74,12 +74,95 @@ async function POST_delete_shift(req, res) {
 async function POST_publish_plan(req, res) {
 	console.log("publishing plan");
 }
-		
+
+
+
+async function POST_approve_all_vacations(req, res) {
+	try {
+		const doc = await userModel.findOne({ email: req.body.user });
+		if (!doc) {
+			return res.status(404).send({ error: 'User not found.' });
+		}
+		const update = { $set: {} };
+		doc.vacationDays.forEach((day, index) => {
+			update.$set[`vacationDays.${index}.0`] = true;
+		});
+		await userModel.updateOne({ email: req.body.user }, update);
+		res.status(200).send({ message: 'All vacations approved successfully.' });
+	} catch (err) {
+		console.error(err);
+		res.status(500).send({ error: 'An error occurred while approving the vacations.' });
+	}
+}
+
+async function POST_delete_all_vacations(req, res) {
+	try {
+		const doc = await userModel.findOne({ email: req.body.user });
+		if (!doc) { 
+			return res.status(404).send({ error: 'User not found.' });
+		}
+		const update = { $unset: {} };
+		doc.vacationDays.forEach((day, index) => {
+			update.$unset[`vacationDays.${index}`] = 1;
+		});
+		await userModel.updateOne({ email: req.body.user }, update);
+		await userModel.updateOne({ email: req.body.user }, { $pull: { vacationDays: null } });
+		res.status(200).send({ message: 'All vacations deleted successfully.' });
+	} catch (err) {
+		console.error(err);
+		res.status(500).send({ error: 'An error occurred while deleting the vacations.' });
+	}
+}
+
+async function POST_approve_vacation(req, res) {
+	try {
+		const doc = await userModel.findOne({ email: req.body.user });
+		if (!doc) {
+			return res.status(404).send({ error: 'User not found.' });
+		}
+		const index = doc.vacationDays.findIndex(day => day[1] === req.body.date);
+		if (index === -1) {
+			return res.status(404).send({ error: 'Vacation day not found.' });
+		}
+		const update = { $set: {} };
+		update.$set[`vacationDays.${index}.0`] = true;
+		await userModel.updateOne({ email: req.body.user }, update);
+		res.status(200).send({ message: 'Vacation approved successfully.' });
+	} catch (err) {
+		console.error(err);
+		res.status(500).send({ error: 'An error occurred while approving the vacation.' });
+	}
+}
+
+async function POST_delete_vacation(req, res) {
+	try {
+		const doc = await userModel.findOne({ email: req.body.user });
+		if (!doc) {
+			return res.status(404).send({ error: 'User not found.' });
+		}
+		const index = doc.vacationDays.findIndex(day => day[1] === req.body.date);
+		if (index === -1) {
+			return res.status(404).send({ error: 'Vacation day not found.' });
+		}
+		const update = { $unset: {} };
+		update.$unset[`vacationDays.${index}`] = 1;
+		await userModel.updateOne({ email: req.body.user }, update);
+		await userModel.updateOne({ email: req.body.user }, { $pull: { vacationDays: null } });
+		res.status(200).send({ message: 'Vacation deleted successfully.' });
+	} catch (err) {
+		console.error(err);
+		res.status(500).send({ error: 'An error occurred while deleting the vacation.' });
+	}
+}	
 
 module.exports = {
 	GET_planning_tool,
 	POST_publish_plan,
 	POST_add_shift,
-	POST_delete_shift
+	POST_delete_shift,
+	POST_approve_vacation,
+	POST_delete_vacation,
+	POST_approve_all_vacations,
+	POST_delete_all_vacations
 
 };
