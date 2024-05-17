@@ -249,7 +249,7 @@ async function vacationRegistration(req, User) {
     let vacationDaysVerified = 0;
 
     if (!user.vacationDays || user.vacationDays.length === 0) {
-      return { message: 'There are no vacation day requests from the user.' };
+      return { message: 'There are no vacation day requests from this user.' };
     }
     
     for(let i = 0; i < user.vacationDays.length; i++) {
@@ -270,6 +270,17 @@ async function vacationRegistration(req, User) {
 }
 
 //skal lave funktion der finder vacationdaylimit med user som input og boolean som output//
+function checkVacationDayLimit(req, User) {
+  const vacationDaysLeft = vacationRegistration(req, User);
+
+  if (vacationDaysLeft <= 0) {
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+
 
 module.exports = {
 getCurrentWeek,
@@ -283,5 +294,6 @@ userNormWorkHours,
 calculateOverwork,
 currentQuarter,
 normHoursCurrentQuarter,
-vacationRegistration
+vacationRegistration,
+checkVacationDayLimit
 };
