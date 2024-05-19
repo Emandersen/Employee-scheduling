@@ -18,7 +18,7 @@ function getCurrentWeek() {
 
 
 // function: generateWeek
-// description: This function generates a week object with the given year, week number and work days amd 
+// description: This function generates a week object with the given year, week number and work days and 
 // fills it with the days of the week.
 // return: week
 // parameters: year, weekNumber, workDays
@@ -201,6 +201,11 @@ function normHoursCurrentQuarter(userNormWorkHours, currentQuarter) {
   }
 }
 
+// asynce function: calculateOverwork //
+// description: A function that calculates the amount of overwork the user have worked for the current day and returns them //
+// returns: overworkHours //
+// parameters: req, res, timeStampModel and PersonalSchedule //
+
 async function calculateOverwork(req, res, timeStampModel, PersonalSchedule) {
   try {
     const currentDate = new Date().toISOString().split('T')[0];
@@ -239,9 +244,11 @@ async function calculateOverwork(req, res, timeStampModel, PersonalSchedule) {
   }
 }
 
-//2,08 dages ferie pr. måned. Ferieåret er fra d. 1. september til og med d. 31. august året efter//
-//Ferieafholdelsesperioden er dog på 16 måneder fra den 1. september til den 31. december året efter//
-//Man har ret til 25 feriedage i løbet af disse 16 måneder og de kan ikke transfers videre//
+// async function: vacationRegistration //
+// description: A function that registers how many days of vacation the user has left of the vacationperiod and returns them //
+// returns: vacationDaysLeft //
+// parameters: req and User //
+
 async function vacationRegistration(req, User) {
   try {
     const user = await User.find({ user: req.body.user });
@@ -269,7 +276,12 @@ async function vacationRegistration(req, User) {
   } 
 }
 
-//skal lave funktion der finder vacationdaylimit med user som input og boolean som output//
+// function: checkVacationDayLimit //
+/* description: This function helps tracking the amount of vacation days that are left, 
+   by returning true as long vacationDaysLeft is above 0. */
+// returns: true if vacationDaysLeft is above 0, false if vacationDaysLeft is smaller or equal to 0. //
+// parameters: req and User //
+
 function checkVacationDayLimit(req, User) {
   const vacationDaysLeft = vacationRegistration(req, User);
 
