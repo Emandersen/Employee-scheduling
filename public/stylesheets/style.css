@@ -75,17 +75,17 @@ th.team_schedule-centered {
 }
 .layout_page .sidebar {
   position: sticky;
-  top: 56px; /* Adjusted to match the height of the navbar */
+  top: 86px; /* Adjusted to match the height of the navbar */
   left: 0; /* Align sidebar with the left side of the screen */
-  height: calc(100vh - 56px); /* Adjusted to fill the remaining height of the viewport */
+  height: calc(100vh - 86px); /* Adjusted to fill the remaining height of the viewport */
   overflow-y: auto; /* Enable vertical scrolling if the content exceeds the sidebar height */
   background-color: #E3F2FD; /* Light blue background */
-  padding: 40px 10px; /* Adjusted padding */
+  padding: 5px 10px; /* Adjusted padding */
   max-width: 250px; /* Maximum width */
   z-index: 1; /* Adjusted z-index */
 }
 .layout_page .content {
-  padding-top: 70px; /* Adjusted to match the height of the navbar */
+  padding-top: 0px; /* Adjusted to match the height of the navbar */
   margin-left: 0; /* Adjusted to start from the left side */
 }
 

@@ -83,8 +83,8 @@ async function POST_remove_preference(req, res) {
 function GET_statistics(req, res) {
     res.render('statistics', {
 
-    })
-}
+    });
+};
         
 
 
