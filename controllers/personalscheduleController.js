@@ -169,12 +169,11 @@ async function POST_stamp_out(req, res) {
   }
 }
 
-
 module.exports = {
   GET_personal_schedule,
   POST_toggle_shift,
   POST_toggle_vacation,
   GET_released_shifts,
   POST_stamp_in,
-  POST_stamp_out
+  POST_stamp_out,
 };
