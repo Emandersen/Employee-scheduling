@@ -31,7 +31,7 @@ router.get('/team_schedule/:year?-:week?', user_controller.checkSession, team_sc
 router.get('/team_schedule/', user_controller.checkSession, team_schedule_controller.GET_team_schedule);
 
 // Statistics
-router.get('/statistics', profile_controller.GET_statistics)
+router.get('/statistics', user_controller.checkSession, profile_controller.GET_statistics);
 
 // Planning tool
 router.get('/planning-tool', user_controller.checkSessionAndPermissions(1), planning_controller.GET_planning_tool);
