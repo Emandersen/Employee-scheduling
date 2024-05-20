@@ -1,6 +1,8 @@
 // import models
 const PersonalSchedule = require('../models/schedule');
 const User = require('../models/user');
+const dateHandler = require('../functions/dateHandler');
+const timeStamp = require('../models/timestamping');
 
 async function GET_profile_page(req, res) {
     try {
@@ -80,10 +82,23 @@ async function POST_remove_preference(req, res) {
     }
 }
 
-function GET_statistics(req, res) {
-    res.render('statistics', {
-
-    });
+async function GET_statistics(req, res) {
+    try {
+        const allSchedules = await PersonalSchedule.find({ email: req.session.user.email });
+        const norm = dateHandler.normHoursCurrentQuarter(dateHandler.userNormWorkHours(allSchedules), dateHandler.currentQuarter());
+        const quarter = dateHandler.currentQuarter();
+        const overwork = await dateHandler.calculateOverwork(req, res, timeStamp, PersonalSchedule);
+        const vacation = await dateHandler.vacationRegistration(req, User);
+        res.render('statistics', {
+            normHours: norm,
+            currentQuarter: quarter,
+            overwork: overwork,
+            vacation: vacation
+        });
+    } catch (error) {
+        console.error(error);
+        res.redirect('/?error=An error occurred');
+    }
 };
         
 

@@ -27,6 +27,15 @@ describe('vacationRegistration', () => {
         expect(result).toBe(23); // 25 - 2 true verified vacation days //
     });
 
+    it('should return the total number of vacation days if there are no used vacation days', async () => {
+        User.find.mockResolvedValueOnce({ vacationDays: [[false], [false], [false]] });
+
+        const req = { body: { user: 'testUser' } };
+        const result = await vacationRegistration(req, User);
+
+        expect(result).toBe(25); // No used vacation days, so all 25 vacation days are available //
+    });
+
     it('should handle errors and return an appropriate message', async () => {
         User.find.mockRejectedValueOnce(new Error('Database error'));
 
