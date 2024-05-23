@@ -267,7 +267,7 @@ async function vacationRegistration(req, User) {
 
     console.log(vacationDaysVerified);
     let vacationDaysLeft = vacationDays - vacationDaysVerified;
-
+    console.log(vacationDaysLeft);
     return vacationDaysLeft;
   }
   catch (error) {

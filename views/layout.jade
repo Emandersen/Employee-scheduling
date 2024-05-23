@@ -33,8 +33,9 @@ html(lang="en")
           });
         });
       });
+
   body.layout_page
-    nav(class="navbar navbar-expand-lg navbar-dark bg-primary", style="position: fixed; width: 100%; z-index: 1000;")
+    nav(class="navbar navbar-expand-lg navbar-dark bg-primary", style="position: sticky; top:0; width: 100%; z-index: 1000;")
       div.container-fluid
         a.navbar-brand(href="/")
           img.logo(src="/path/to/your/logo.png", alt="Logo", height="40", width="40").d-inline-block.align-top.mr-2
@@ -47,7 +48,7 @@ html(lang="en")
               .dropdown-menu(aria-labelledby="navbarDropdown1")
                 a.dropdown-item(href="/team_schedule/") Team Schedule
                 a.dropdown-item(href="/released-shifts") Released Shifts
-                a.dropdown-item(href="#") Statistics 
+                a.dropdown-item(href="/statistics") Statistics 
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
               .dropdown-menu(aria-labelledby="navbarDropdown2")
@@ -67,7 +68,7 @@ html(lang="en")
     div.container-fluid
       div.row
         div.col-2
-          div.sidebar(style="margin-top: 15px;")
+          div.sidebar
             h4 Account Information
             p.small Name: #{firstName} #{lastName}
             p.small Email: #{email}
@@ -97,7 +98,7 @@ html(lang="en")
     
 
         div.col-10
-          div.content(style="padding-top: 100px;")
+          div.content
             block content
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")

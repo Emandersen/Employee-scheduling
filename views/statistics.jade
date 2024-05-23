@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    div.statistics-container
+        h1(style='text-align: center;') Statistics
+
+        table(style='width: 40%; table-layout: fixed; margin-left: auto; margin-right: auto;', border='1')
+            tr
+                td.statistics-row1 Normtid 
+                td.statistics-row2 Q#{currentQuarter} = #{normHours} / 481
+            tr
+                td.statistics-row1 Hours overworked 
+                td.statistics-row2 #{overwork}
+            tr
+                td.statistics-row1 Remaining vacation 
+                td.statistics-row2 #{vacation}
