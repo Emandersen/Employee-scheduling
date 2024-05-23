@@ -106,16 +106,12 @@ async function POST_reset_password(req, res) {
     } catch (err) {
         console.error(err);
     }
-}
+};
 
 async function POST_change_password(req, res) {
     try {
         const user = await User.findOne({ email: req.session.user.email });
 
-        if (!user) {
-            res.redirect('/?error=User not found');
-            return;
-        }
 
         const currentPassword = req.body.currentPassword;
         const newPassword = req.body.newPassword;
@@ -141,7 +137,7 @@ async function POST_change_password(req, res) {
         console.error(error);
         res.redirect('/?error=An error occurred');
     }
-}
+};
 
 
 

@@ -3,7 +3,19 @@ extends layout
 
 block content
     div.navbar.navbar-expand-lg.navbar-light.bg-light
-        button.btn.btn-primary(id="vacationRequests" style="margin: 10px") Vacation requests
+        ul.nav.navbar-nav
+            li(style='position: relative;') 
+                a.nav-link.dropdown-toggle(href='#' id='navbarDropdown1' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') Vacation functionalities
+                .dropdown-menu(style='position: absolute; top: 100%; left: 0; z-index: 1000; float: left; min-width: 10rem; padding: 0.5rem 0; margin: 0.125rem 0 0; font-size: 1rem; color: #212529; text-align: left; list-style: none; background-color: #fff; background-clip: padding-box; border: 1px solid rgba(0,0,0,.15); border-radius: .25rem;' aria-labelledby='navbarDropdown1')
+                    button.btn.btn-primary(id="vacationRequests" style="margin: 10px; background-color: blue; color: white;") Vacation requests
+                    button.btn.btn-primary(onclick='handleApprovedVacationsEvent(event)' style='margin: 10px; background-color: blue; color: white;') Approved vacations
+
+        ul.nav.navbar-nav.ml-auto
+            li(style='position: relative;') 
+                a.nav-link.dropdown-toggle(href='#' id='navbarDropdown2' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') User functionalities
+                .dropdown-menu(style='position: absolute; top: 100%; left: 0; z-index: 1000; float: left; min-width: 10rem; padding: 0.5rem 0; margin: 0.125rem 0 0; font-size: 1rem; color: #212529; text-align: left; list-style: none; background-color: #fff; background-clip: padding-box; border: 1px solid rgba(0,0,0,.15); border-radius: .25rem;' aria-labelledby='navbarDropdown2')
+                    button.btn.btn-primary(onclick='handleAddShiftEveryEvent(event)' style='margin: 10px; background-color: blue; color: white;') Add shifts
+                    button.btn.btn-primary(onclick='deleteShiftsTimeframeEvent(event)' style='margin: 10px; background-color: blue; color: white;') Delete shifts
 
 
     div.table-responsive(id='scroll-container', style='visibility: hidden;')
@@ -17,15 +29,15 @@ block content
                         - var weekNumber = moment(date).isoWeek()
                         if previousWeekNumber != null && weekNumber != previousWeekNumber
                             if weekNumber == currentWeek
-                                th(id='week-' + weekNumber style='background-color: #1cbffd; width: 2px; opacity: 0.5; color: white;') Week #{weekNumber}
+                                th(id='week-' + weekNumber style='background-color: #1cbffd; width: 2px; opacity: 0.5; color: white; position: sticky;') Week #{weekNumber}
                             else
-                                th(id='week-' + weekNumber style='background-color: #000; width: 2px; opacity: 0.5; color: white;') Week #{weekNumber}
+                                th(id='week-' + weekNumber style='background-color: #000; width: 2px; opacity: 0.5; color: white; position: sticky;') Week #{weekNumber}
                         th(style='font-size: 10px; border-right: 1px solid #000;') #{moment(date).format('dddd')}<br>#{moment(date).format('DD. MMMM')}<br>#{moment(date).format('YYYY')}
                         - previousWeekNumber = weekNumber
             tbody
                 each user in users
                     tr
-                        td(style='border-right: 1px solid #000; position: sticky; left: 0; background: white; z-index: 100;') #{user.firstName} #{user.lastName}
+                        td(style='border-right: 1px solid #000; position: sticky; left: 0; top: 0; background: white; z-index: 100;') #{user.firstName} #{user.lastName}
                         - var previousWeekNumber = null
                         - var dateIndex = 0
                         each schedule in user.schedules
@@ -54,8 +66,8 @@ block content
                             - dateIndex++
 
         div(id='addModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);')
-            div(class='modal-content' style='background-color: #87CEFA; margin: 5% auto; padding: 5px; border: 1px solid #888; width: 20%;')
-                span(id='closeButtonAdd' class='close' style='color: #aaa; float: right; font-size: 20px; font-weight: bold;') &times;
+            div(class='modal-content container' style='background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);')
+                span(id='closeButtonAdd' class='close' style='color: #aaa; float: right; font-size: 28px; font-weight: bold;') &times;
                 form(id='addForm')
                     label(for='department' style='display: block; margin-top: 5px; font-size: 12px;') Department
                     select#department.form-control(name='department' required)
@@ -94,8 +106,8 @@ block content
                     input(type='submit' value='Submit' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;')
         
         div(id='editModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);')
-            div(class='modal-content' style='background-color: #87CEFA; margin: 5% auto; padding: 5px; border: 1px solid #888; width: 20%;')
-                span(id='closeButtonEdit' class='closeButton' style='color: #aaa; float: right; font-size: 20px; font-weight: bold;') &times;
+            div(class='modal-content container' style='background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);')
+                span(id='closeButtonEdit' class='closeButton' style='color: #aaa; float: right; font-size: 28px; font-weight: bold;') &times;
                 form(id='editForm')
                     label(for='editDepartment' style='display: block; margin-top: 5px; font-size: 12px;') Department
                     select#editDepartment.form-control(name='department' required)
@@ -140,24 +152,119 @@ block content
                     input(type='submit' value='Submit' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;')
                 button(id='deleteShift' onclick='deleteShift(event)' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Delete Shift
 
-        div(id='vacationModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 50px;')
-            div(class='modal-content' style='background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);')
-                span(id='closeButtonVacation' class='close' style='color: #aaa; float: right; font-size: 28px; font-weight: bold;') &times;
-                each user in users
-                    if user.vacationDays.length > 0
-                        div(style='margin: 5px; padding: 10px; border-bottom: 1px solid #ddd;')
-                            | #{user.firstName} #{user.lastName} - #{user.role}
-                            button(onclick='handleVacationApproveAll(event, "' + user.email + '")' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Approve all
-                            button(onclick='handleVacationDeleteAll(event, "' + user.email + '")' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Delete all
-                            br
-                            for vacation in user.vacationDays
-                                if vacation[0] != true
-                                    - var formattedDate = moment(vacation[1]).format('YYYY-MM-DD');
-                                    p(id='vacation=' + vacation[1]) #{formattedDate} 
-                                    button(onclick='handleVacationApprove(event, "' + vacation[1] + '", "' + user.email + '")' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Approve
-                                    button(onclick='handleVacationDelete(event, "' + vacation[1] + '", "' + user.email + '")' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Delete
-                                br
+        div(id='approvedVacationsModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 50px;')
+            div(class='modal-content container' style='background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);')
+                span(id='closeButtonApprovedVacations' class='close' style='color: #aaa; float: right; font-size: 28px; font-weight: bold;') &times;
+                div(class='row')
+                    each user in users
+                        if user.vacationDays.length > 0 && user.vacationDays.some(entry => entry[0] === true)
+                            div(class='col-md-6')
+                                details(style='margin: 10px; padding: 10px; border: 10px solid #ddd; border-radius: 5px; background-color: #f9f9f9;')
+                                    summary(style='cursor: pointer; font-weight: bold; padding: 5px;')
+                                        | #{user.firstName} #{user.lastName} - #{user.role}
+                                        button(onclick='handleVacationDisapproveAll(event, "' + user.email + '")' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Disapprove all
+                                    br
+                                    for vacation in user.vacationDays
+                                        if vacation[0] === true
+                                            - var formattedDate = moment(vacation[1]).format('YYYY-MM-DD');
+                                            div(style="border: 5px solid #ddd; border-radius: 5px; padding: 5px; margin: 5px; background-color: #f9f9f9;")
+                                                p(id='vacation=' + vacation[1]) #{formattedDate} 
+                                                button(onclick='handleVacationDisapprove(event, "' + vacation[1] + '", "' + user.email + '")' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Disapprove
+                                                button(onclick='handleVacationDelete(event, "' + vacation[1] + '", "' + user.email + '")' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Delete
+                                            br
 
+        div(id='vacationRequestsModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 50px;')
+            div(class='modal-content container' style='background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);')
+                span(id='closeButtonVacation' class='close' style='color: #aaa; float: right; font-size: 28px; font-weight: bold;') &times;
+                div(class='row')
+                    each user in users
+                        if user.vacationDays.length > 0 && user.vacationDays.some(entry => entry[0] === false)
+                            div(class='col-md-6')
+                                    details(style='margin: 10px; padding: 10px; border: 10px solid #ddd; border-radius: 5px; background-color: #f9f9f9;')
+                                        summary(style='cursor: pointer; font-weight: bold; padding: 5px;')
+                                            | #{user.firstName} #{user.lastName} - #{user.role}
+                                            button(onclick='handleVacationApproveAll(event, "' + user.email + '")' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Approve all
+                                            button(onclick='handleVacationDeleteAll(event, "' + user.email + '")' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Delete all
+                                        for vacation in user.vacationDays
+                                            if vacation[0] != true
+                                                - var formattedDate = moment(vacation[1]).format('YYYY-MM-DD');
+                                                div(style="border: 5px solid #ddd; border-radius: 5px; padding: 5px; margin: 5px; background-color: #f9f9f9;")
+                                                    p(id='vacation=' + vacation[1]) #{formattedDate} 
+                                                    button(onclick='handleVacationApprove(event, "' + vacation[1] + '", "' + user.email + '")' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Approve
+                                                    button(onclick='handleVacationDelete(event, "' + vacation[1] + '", "' + user.email + '")' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;') Delete
+                                            br
+
+        div(id='addShiftEveryModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);')
+            div(class='modal-content' style='background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 20%;')
+                span(id='closeButtonAddShiftEvery' class='close' style='color: #aaa; float: right; font-size: 20px; font-weight: bold;') &times;
+                form(id='addShiftEveryForm')
+                    label(for='role' style='display: block; margin-top: 5px; font-size: 12px;') User
+                    select#user.form-control(name='user' required)
+                        each user in users
+                            option(value=user.email) #{user.firstName} #{user.lastName} - #{user.role}
+                    label(for='role' style='display: block; margin-top: 5px; font-size: 12px;') Day of the week
+                    select#dayOfWeek.form-control(name='dayOfWeek' required)
+                        option(value='Monday') Monday
+                        option(value='Tuesday') Tuesday
+                        option(value='Wednesday') Wednesday
+                        option(value='Thursday') Thursday
+                        option(value='Friday') Friday
+                        option(value='Saturday') Saturday
+                        option(value='Sunday') Sunday
+                    label(for='department' style='display: block; margin-top: 5px; font-size: 12px;') Start week
+                    input(type='date' id='startWeek' name='startWeek' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='department' style='display: block; margin-top: 5px; font-size: 12px;') End week
+                    input(type='date' id='endWeek' name='endWeek' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='department' style='display: block; margin-top: 5px; font-size: 12px;') Department
+                    select#department.form-control(name='department' required)
+                        option(value='Cardiology') Cardiology
+                        option(value='Neurology') Neurology
+                        option(value='Orthopedics') Orthopedics
+                        option(value='Pediatrics') Pediatrics
+                        option(value='Radiology') Radiology
+                        option(value='Surgery') Surgery
+                        option(value='Dermatology') Dermatology
+                        option(value='Gastroenterology') Gastroenterology
+                        option(value='Endocrinology') Endocrinology
+                        option(value='Oncology') Oncology
+                        option(value='Ophthalmology') Ophthalmology
+                        option(value='Psychiatry') Psychiatry
+                        option(value='Anesthesiology') Anesthesiology
+                        option(value='Gynecology') Gynecology
+                        option(value='Geriatrics') Geriatrics
+                        option(value='Immunology') Immunology
+                    label(for='location' style='display: block; margin-top: 5px; font-size: 12px;') Location
+                    select#location.form-control(name='location' required)
+                        option(value='Rigshospitalet - Copenhagen') Rigshospitalet - Copenhagen
+                        option(value='Bispebjerg Hospital - Copenhagen') Bispebjerg Hospital - Copenhagen
+                        option(value='Herlev Hospital - Herlev') Herlev Hospital - Herlev
+                        option(value='Hillerød Hospital - Hillerød') Hillerød Hospital - Hillerød
+                        option(value='Hvidovre Hospital - Hvidovre') Hvidovre Hospital - Hvidovre
+                        option(value='Holbæk Hospital - Holbæk') Holbæk Hospital - Holbæk
+                        option(value='Roskilde Hospital - Roskilde') Roskilde Hospital - Roskilde
+                        option(value='Næstved Hospital - Næstved') Næstved Hospital - Næstved
+                        option(value='Slagelse Hospital - Slagelse') Slagelse Hospital - Slagelse
+                        option(value='Nykøbing Falster Hospital - Nykøbing Falster') Nykøbing Falster Hospital - Nykøbing Falster
+                    label(for='startTime' style='display: block; margin-top: 5px; font-size: 12px;') Start Time
+                    input(type='time' id='startTime' name='startTime' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='endTime' style='display: block; margin-top: 5px; font-size: 12px;') End Time
+                    input(type='time' id='endTime' name='endTime' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    input(type='submit' value='Submit' style='background-color: #4CAF50; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;')
+
+        div(id='deleteShiftsModal' class='modal' style='display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);')
+            div(class='modal-content' style='background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 20%;')
+                span(id='closeButtonDeleteShifts' class='close' style='color: #aaa; float: right; font-size: 20px; font-weight: bold;') &times;
+                form(id='deleteShiftsForm')
+                    label(style='display: block; margin-top: 5px; font-size: 12px;') User
+                    select#user.form-control(name='user' required)
+                        each user in users
+                            option(value=user.email) #{user.firstName} #{user.lastName} - #{user.role}
+                    label(for='startDate' style='display: block; margin-top: 5px; font-size: 12px;') Start Date
+                    input(type='date' id='startDate' name='startDate' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    label(for='endDate' style='display: block; margin-top: 5px; font-size: 12px;') End Date
+                    input(type='date' id='endDate' name='endDate' required style='width: 100%; padding: 3px 5px; margin: 2px 0; box-sizing: border-box; border: none; background-color: #f8f8f8; font-size: 12px;')
+                    input(type='submit' value='Submit' style='background-color: #f44336; color: white; padding: 3px 5px; margin: 2px 0; border: none; cursor: pointer; width: 100%; font-size: 12px;')
+        
         script.
             // Variables
             var date;
@@ -183,7 +290,7 @@ block content
 
             // Event handlers
             document.getElementById('vacationRequests').onclick = function() {
-                handleModal("vacationModal", "closeButtonVacation");
+                handleModal("vacationRequestsModal", "closeButtonVacation");
             };
 
             function handleAddEvent(event) {
@@ -198,6 +305,21 @@ block content
                 handleFormSubmit("editForm", '/planning-tool/edit-shift');
             }
 
+            function handleApprovedVacationsEvent(event) {
+                handleModal("approvedVacationsModal", "closeButtonApprovedVacations");
+            }
+
+            function handleAddShiftEveryEvent(event) {
+                handleModal("addShiftEveryModal", "closeButtonAddShiftEvery");
+                handleFormSubmit("addShiftEveryForm", '/planning-tool/add-shift-every/');
+            }
+
+            function deleteShiftsTimeframeEvent(event) {
+                handleModal("deleteShiftsModal", "closeButtonDeleteShifts");
+                handleFormSubmit("deleteShiftsForm", '/planning-tool/delete-shifts-timeframe');
+            }
+
+
             // Vacation request handling
             function handleVacationRequest(event, date, email, url) {
                 var xhr = new XMLHttpRequest();
@@ -211,7 +333,7 @@ block content
                 document.getElementById('vacationModal').style.display = 'none';
                 setTimeout(function() {
                     location.reload();
-                }, 500); // Delay in milliseconds (e.g., 2000 = 2 seconds)
+                }, 1000); // Delay in milliseconds (e.g., 2000 = 2 seconds)
             }
 
 
@@ -223,12 +345,20 @@ block content
                 handleVacationRequest(event, null, email, '/planning-tool/delete-all-vacation');
             }
 
+            function handleVacationDisapproveAll(event, email) {
+                handleVacationRequest(event, null, email, '/planning-tool/disapprove-all-vacation');
+            }
+
             function handleVacationApprove(event, date, email) {
                 handleVacationRequest(event, date, email, '/planning-tool/approve-vacation');
             }
 
             function handleVacationDelete(event, date, email) {
                 handleVacationRequest(event, date, email, '/planning-tool/delete-vacation');
+            }
+
+            function handleVacationDisapprove(event, date, email) {
+                handleVacationRequest(event, date, email, '/planning-tool/disapprove-vacation');
             }
 
 
@@ -250,25 +380,25 @@ block content
                 document.getElementById(formId).onsubmit = function(e) {
                     e.preventDefault();
 
-                    var location = document.getElementById("location").value;
-                    var department = document.getElementById("department").value;
-                    var startTime = document.getElementById("startTime").value;
-                    var endTime = document.getElementById("endTime").value;
+                    var form = document.getElementById(formId);
+                    var formData = {};
+                    for (var i = 0; i < form.elements.length; i++) {
+                        if (form.elements[i].tagName === 'INPUT' || form.elements[i].tagName === 'SELECT') {
+                            formData[form.elements[i].name] = form.elements[i].value;
+                        }
+                    }
 
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", url, true);
                     xhr.setRequestHeader("Content-Type", "application/json");
-                    xhr.send(JSON.stringify({
-                        department: department,
-                        location: location,
-                        startTime: startTime,
-                        endTime: endTime,
-                        user: user,
-                        date: date
-                    }));
+                    xhr.send(JSON.stringify(formData));
 
                     document.getElementById(formId).parentNode.style.display = "none";
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000); // Delay in milliseconds (e.g., 2000 = 2 seconds)
                 }
+
             }
 
             // Delete shift
@@ -284,7 +414,6 @@ block content
                 }));
 
                 document.getElementById('editModal').style.display = 'none';
-                location.reload();
             }
 
             // Escape key handling
