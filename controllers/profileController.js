@@ -13,7 +13,7 @@ async function GET_profile_page(req, res) {
             title: 'Profile',
             user,
             personalSchedule,
-            availablePreferences: ['email', 'firstName', 'lastName', 'role', 'department'],
+            availablePreferences: ['Morning shift', 'Night shift', 'Weekend shift'],
     });
   } catch (error) {
     console.error(error);
