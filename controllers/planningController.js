@@ -2,7 +2,8 @@ const moment = require('moment');
 const dateHandler = require('../functions/dateHandler');
 const userModel = require('../models/user');
 const scheduleModel = require('../models/schedule');
-const constraintHandler = require('../functions/hardConstraints');
+const hardConstraintHandler = require('../functions/hardConstraints');
+const softConstraintHandler = require('../functions/softConstraints');
 
 
 async function GET_planning_tool(req, res) {
@@ -47,10 +48,22 @@ async function POST_add_shift(req, res) {
 	allSchedules = await scheduleModel.find({ email: req.body.user });
 	
 	var diff = (endTime - startTime) / 1000 / 60 / 60;
-	// Previously used to check if constraints were working, now unit tests are used 
-	/*
-	console.log(constraintHandler.checkHardConstraints(allSchedules, user)); 
-	*/
+
+	// check if the user has a shift that day
+	if (schedule) {
+		return res.status(410).send({ error: 'User already has a shift that day.' });
+	}
+
+	// Check hard constraints
+	if (!hardConstraintHandler.checkHardConstraints(allSchedules, user)) {
+		return res.status(420).send({ error: 'Hard constraints not met.' });
+	}
+
+	// Check soft constraints
+	if (!softConstraintHandler.checkSoftConstraints(allSchedules, user)) {
+		return res.status(430).send({ error: 'Soft constraints not met.' });
+	}
+	
 
 
 	// add to schedule 

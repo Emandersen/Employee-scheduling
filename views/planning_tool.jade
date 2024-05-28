@@ -17,6 +17,24 @@ block content
                     button.btn.btn-primary(onclick='handleAddShiftEveryEvent(event)' style='margin: 10px; background-color: blue; color: white;') Add shifts
                     button.btn.btn-primary(onclick='deleteShiftsTimeframeEvent(event)' style='margin: 10px; background-color: blue; color: white;') Delete shifts
 
+        ul.nav.navbar-nav.ml-auto
+            li.nav-item(style="padding: 5px;")
+                div
+                    span(style="display: inline-block; background-color: #e68cfa; width: 20px; height: 20px; margin-right: 10px; border: 1px solid #000;")
+                    | Purple: vacation awaiting approval
+
+            li.nav-item(style="padding: 5px;")
+                div
+                    span(style="display: inline-block; background-color: #b56bfa; width: 20px; height: 20px; margin-right: 10px; border: 1px solid #000;")
+                    | Pink: vacation approved
+
+            li.nav-item(style="padding: 5px;")
+                div
+                    span(style="display: inline-block; background-color: #89fafa; width: 20px; height: 20px; margin-right: 10px; border: 1px solid #000;")
+                    | Cyan: Assigned shift
+                    
+    
+    
 
     div.table-responsive(id='scroll-container', style='visibility: hidden;')
         table.table.table-striped
@@ -387,6 +405,8 @@ block content
                             formData[form.elements[i].name] = form.elements[i].value;
                         }
                     }
+                    formData.date = date;
+                    formData.user = user;
 
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", url, true);

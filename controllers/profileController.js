@@ -4,16 +4,23 @@ const User = require('../models/user');
 const dateHandler = require('../functions/dateHandler');
 const timeStamp = require('../models/timestamping');
 
+
 async function GET_profile_page(req, res) {
     try {
         const user = await User.findOne({ email: req.session.user.email });
         const personalSchedule = await PersonalSchedule.find({ email: req.session.user.email });
 
+        const constraints = [
+            "avoidNights",
+            "preferDay",
+            "constraint3",
+        ];
+
         res.render('profile', {
             title: 'Profile',
             user,
             personalSchedule,
-            availablePreferences: ['email', 'firstName', 'lastName', 'role', 'department'],
+            availablePreferences: constraints.filter(preference => !user.preferences.includes(preference))
     });
   } catch (error) {
     console.error(error);

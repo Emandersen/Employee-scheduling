@@ -2,23 +2,22 @@ const moment = require('moment');
 
 // Constraint 1: Nurses can demand to have 2 days off each week
 function twoDaysOffEachWeek(schedule, user) {
-    console.log(`Checking twoDaysOffEachWeek for user ${user.firstName}`);
+    if (!schedule) return true; 
+    // sort the schedule by date
+    schedule = schedule.sort((a, b) => a.date - b.date);
 
-        // sort the schedule by date
-        schedule = schedule.sort((a, b) => a.date - b.date);
+    let weeks = {};
 
-        let weeks = {};
-    
-        for (let i = 0; i < schedule.length; i++) {
-            const weekNumber = moment(schedule[i].date).isoWeek();
+    for (let i = 0; i < schedule.length; i++) {
+        const weekNumber = moment(schedule[i].date).isoWeek();
 
-            if (!weeks[weekNumber]) {
-                weeks[weekNumber] = [];
-            }
-    
-            weeks[weekNumber].push(schedule[i].date);
+        if (!weeks[weekNumber]) {
+            weeks[weekNumber] = [];
+        }
+
+        weeks[weekNumber].push(schedule[i].date);
     }
-    
+
     // console log the length of each week
     for (let week in weeks) {
         console.log(`Week ${Number(week)} has ${weeks[week].length} days`);
@@ -29,12 +28,14 @@ function twoDaysOffEachWeek(schedule, user) {
             return false;
         }
     }
+
     return true;
 }
 
 
 // Constraint 3: In a 24 hour work day nurses must have at least 11 consecutive hours of rest
 function elevenHoursRest(schedule, user) {
+    if (!schedule) return true;
     const userSchedule = schedule.filter(shift => shift.email === user.email);
     
     for (let i = 0; i < userSchedule.length - 1; i++) {
@@ -64,6 +65,7 @@ function elevenHoursRest(schedule, user) {
 
 // Constraint 4: After six days of work nurses are required to have at least one day of rest
 function restAfterSixDays(schedule, user) {
+    if (!schedule) return true;
     // Sort the schedule by date //
     schedule = schedule.sort((a, b) => a.date - b.date);
 
@@ -91,6 +93,7 @@ function restAfterSixDays(schedule, user) {
 
 // contraint 5 og 6 warn employee if timeoff was canceled and inform user to take time off within 3 months of overtime
 function warnBeforeCancelingTimeOff(schedule, user) {
+    if (!schedule) return true;
     // Assuming schedule is an array of objects with date property
 
     const currentDate = new Date();
@@ -123,6 +126,7 @@ function warnBeforeCancelingTimeOff(schedule, user) {
             }
         }
     }
+    return true;
 }
 
 
@@ -130,6 +134,7 @@ function warnBeforeCancelingTimeOff(schedule, user) {
 
 // Constraint 7: If a nurse is allocated to a certain shift they can not be allocated to a new one that overlaps their current
 function noOverlappingShifts(schedule, user) {
+    if (!schedule) return true;
     for (let i = 1; i < schedule.length; i++) {
         if (schedule[i].date.getTime() === schedule[i - 1].date.getTime() &&
             schedule[i].startTime < schedule[i - 1].endTime) {
@@ -142,25 +147,14 @@ function noOverlappingShifts(schedule, user) {
 }
 
 
-// A for-loop that goes through the dates of the schedule and looks to see if there is more of one of each date pr. day //
-// If there is more than one shift pr. date, delete so that there is only one left. //
-// return true //
 
-// Constraint 8: All patients must have a nurse covering them
-function allPatientsCovered(schedule, user) {
-    // Implementation depends on the structure of your schedule object
-    return true;
-}
-
-//This no longer works
-//Emil needs to fix it and the unit test to work with the new user model
-// Constraint 9: If a nurse is on vacation or other leave they can not be allocated to a shift in that period
 function noShiftDuringLeave(schedule, user) {
+    if (!user || !schedule || !user.vacationDays) return true;
+
     for(let i = 0; i < schedule.length; i++) {
         for(let j = 0; j < user.vacationDays.length; j++) {
             if (schedule[i].date.toISOString() === user.vacationDays[j][1].toISOString() &&
                 schedule[i].email === user.email) {
-
 
                 console.log(schedule[i].date + " = " + user.vacationDays[j][1]);
 
@@ -168,27 +162,18 @@ function noShiftDuringLeave(schedule, user) {
             }
         }
     }
-    console.log(user.vacationDays);
     return true;
-    // Implementation depends on the structure of your schedule object
 }
 
-// Constraint 2: A nurse can only be allocated to a shift if their qualifications match the requirements for the given shift
-// Only applicable if the schedule has shifts with specific requirements as in shift reassigment
-function qualificationsMatchRequirements(schedule, user) {
-    // Implementation depends on the structure of your schedule and nurse objects
-    return true;
-}
+
 
 
 const hardConstraints = [
     twoDaysOffEachWeek,
-    qualificationsMatchRequirements,
     elevenHoursRest,
     restAfterSixDays,
     warnBeforeCancelingTimeOff,
     noOverlappingShifts,
-    allPatientsCovered,
     noShiftDuringLeave
 ];
 
@@ -196,7 +181,9 @@ const hardConstraints = [
 function checkHardConstraints(schedule, user) {
     return hardConstraints.every(constraint => {
         try {
-            return constraint(schedule, user);
+            let bool = constraint(schedule, user)
+            console.log(`Constraint ${constraint.name} returned ${bool}`);
+            return bool;
         } catch (error) {
             console.error(`Error in constraint ${constraint.name}: ${error}`);
             return false;
@@ -207,11 +194,9 @@ function checkHardConstraints(schedule, user) {
 module.exports = {
     checkHardConstraints,
     twoDaysOffEachWeek,
-    qualificationsMatchRequirements,
     elevenHoursRest,
     restAfterSixDays,
     warnBeforeCancelingTimeOff,
     noOverlappingShifts,
-    allPatientsCovered,
     noShiftDuringLeave
 };
