@@ -1,0 +1,50 @@
+extends layout
+
+block content
+    h1 Profile
+
+    div.profile-form
+        h1= user.firstName + ' ' + user.lastName
+
+        p
+            strong Email: 
+            span= user.email
+
+        p
+            strong Role: 
+            span= user.role
+
+        p
+            strong Department: 
+            span= user.department
+
+    div.profile-form
+        h1 Change Password 
+        form(action="/profile/change-password" method="POST")
+            .input-group
+                label(for="currentPassword") Current Password
+                input#currentPassword(name="currentPassword" type="password" required="required")
+            .input-group
+                label(for="newPassword") New Password
+                input#newPassword(name="newPassword" type="password" required="required")
+            .input-group
+                label(for="confirmPassword") Confirm Password
+                input#confirmPassword(name="confirmPassword" type="password" required="required")
+            button(type="submit") Change Password
+
+    div.profile-form
+        h1 Preferences
+        form(action="/profile/add-preferences" method="POST")
+            label(for="addPreference") Add Preference
+            select#addPreference(name="addPreference")
+                each preference in availablePreferences
+                    option(value=preference)= preference
+            button(type="submit") Add
+        p
+            strong Current Preferences: 
+            ul
+                each preference in user.preferences
+                    li
+                        span= preference
+                        form(action=`/profile/remove-preference?preference=${preference}` method="POST")
+                            button(type="submit") Remove

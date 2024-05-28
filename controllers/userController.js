@@ -1,78 +1,60 @@
+const express = require("express");
 const bcrypt = require('bcrypt');
-
-const users = require("../models/user");
 const { check_credentials, checkSession, checkSessionAndPermissions } = require("../functions/sessionHandler.js");
+const User = require("../models/user");
 
+const saltRounds = 10;
 
-
-// Login and logout functionality
-function GET_login (req, res) {
+function GET_login(req, res) {
     if (req.session && req.session.user) {
         res.redirect("/");
     } else {
-        res.render("login", { title: "Login"});
+        res.render("login", { title: "Login" });
     }
 };
 
-async function POST_login (req, res) {
-    console.log('Attempting to log in with email:', req.body.email);
+async function POST_login(req, res) {
     if (await check_credentials(req.body.email, req.body.password)) {
-        console.log('Credentials are valid, trying to find user in database');
         try {
-            const user = await users.findOne({ email: req.body.email });
-            console.log('User found, setting session user:', user);
+            const user = await User.findOne({ email: req.body.email });
             req.session.user = user;
-            console.log('Redirecting to home page');
             res.redirect("/");
         } catch (err) {
-            console.log('Error occurred while finding user:', err);
             res.redirect("/login");
         }
     } else {
-        console.log('Invalid credentials, redirecting to login page');
         res.redirect("/login");
     }
 };
 
-function GET_logout (req, res) {
-    if (checkSession(req)) {
-        req.session.destroy();
-        res.redirect("/login");
-    }
-    else {
-        res.redirect("/");
-    }
+function GET_logout(req, res) {
+    req.session.destroy();
+    res.redirect("/login");
 };
 
-
-// Register functionality
-
-function GET_register (req, res) {
+function GET_register(req, res) {
     res.render('register', { title: 'Register', error: req.query.error, message: req.query.message });
 };
 
-
-async function POST_register (req, res) {
-    // Check if the user already exists
-    const user = await users.findOne({ email: req.body.email });
+async function POST_register(req, res) {
+    const user = await User.findOne({ email: req.body.email });
     if (user) {
         res.redirect('/register?error=User already exists!');
         return;
     }
 
-    // Hash the password before saving it
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
 
-    // Create the user
-    const newUser = new users({
+    const newUser = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: hashedPassword, // Use the hashed password here
+        password: hashedPassword,
         role: req.body.role,
         department: req.body.department,
         preferences: req.body.preferences,
-        permission: req.body.permission
+        permission: req.body.permission,
+        timeStamp: false
     });
 
     await newUser.save();
@@ -80,54 +62,82 @@ async function POST_register (req, res) {
     res.redirect('/register?message=User created successfully!');
 };
 
-
-// User management functionality
-async function GET_manage_users (req, res) {
+async function GET_manage_users(req, res) {
     try {
-        const accounts = await users.find({});
-        res.render('manage_users', { title: 'Users', users: accounts});
+        const accounts = await User.find({});
+        res.render('manage_users', { title: 'Users', users: accounts });
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 };
 
 async function GET_edit_user(req, res) {
     try {
-        const user = await users.findOne({ email: req.params.email });
+        const user = await User.findOne({ email: req.params.email });
         res.render('edit_user', { title: 'Edit User', user: user });
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 };
 
 async function POST_edit_user(req, res) {
     try {
-        await users.findOneAndUpdate({ email: req.params.email }, { $set: req.body });
+        await User.findOneAndUpdate({ email: req.params.email }, { $set: req.body });
         res.redirect('/manage-users');
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 };
 
 async function POST_delete_user(req, res) {
     try {
-        await users.findOneAndDelete({ email: req.params.email });
+        await User.findOneAndDelete({ email: req.params.email });
         res.redirect('/manage-users');
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 };
 
 async function POST_reset_password(req, res) {
     try {
         const hashedPassword = await bcrypt.hash("default123", saltRounds);
-        await users.findOneAndUpdate({ email: req.params.email }, { password: hashedPassword });
+        await User.findOneAndUpdate({ email: req.params.email }, { password: hashedPassword });
         res.redirect('/manage-users');
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
-}
+};
 
+async function POST_change_password(req, res) {
+    try {
+        const user = await User.findOne({ email: req.session.user.email });
+
+
+        const currentPassword = req.body.currentPassword;
+        const newPassword = req.body.newPassword;
+        const confirmPassword = req.body.confirmPassword;
+
+        const match = await bcrypt.compare(currentPassword, user.password);
+
+        if (!match) {
+            res.redirect('/?error=Incorrect current password');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            res.redirect('/?error=New password and confirmation do not match');
+            return;
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+        await User.findOneAndUpdate({ email: req.session.user.email }, { password: hashedPassword });
+
+        res.redirect('/profile');
+    } catch (error) {
+        console.error(error);
+        res.redirect('/?error=An error occurred');
+    }
+};
 
 
 
@@ -143,5 +153,6 @@ module.exports = {
     GET_edit_user,
     POST_edit_user,
     POST_delete_user,
-    POST_reset_password
+    POST_reset_password,
+    POST_change_password
 };

@@ -1,63 +1,64 @@
 doctype html
-html
+html(lang="en")
   head
     title= title
     link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
-    style.
-      .logo {
-        border: 5px solid white;
-        box-sizing: border-box;
-      }
-      .nav-link {
-        border: 3px solid #ddd;
-        border-radius: 10px;
-        padding: 10px;
-        margin: 10px;
-        transition: background-color 0.3s ease;
-      }
-      .nav-link:hover {
-        background-color: #f8f9fa;
-        opacity: 1;
-      }
-      .small {
-        font-size: 0.8em;
-      }
-      .sidebar {
-        position: fixed;
-        top: 150px; /* Adjust this value to match the height of your navbar */
-        bottom: 0;
-        left: 0;
-        overflow: auto;
-      }
-      .content {
-        padding-top: 110px; /* Adjust this value to match the height of your navbar */
-      }
-      
-  body
-    nav(class="navbar navbar-expand-lg navbar-dark bg-primary", style="position: fixed; width: 100%; z-index: 1000;")
+    link(rel='stylesheet' href='/stylesheets/style.css')
+    script.
+      document.addEventListener("DOMContentLoaded", function() {
+        var dropdownLinks = document.querySelectorAll('.dropdown-link');
+        var dropdownMenus = document.querySelectorAll('.dropdown-menu');
+
+        dropdownLinks.forEach(function(link, index) {
+          link.addEventListener('mouseover', function() {
+            var dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.add('show');
+          });
+          link.addEventListener('mouseout', function() {
+            var dropdownMenu = this.nextElementSibling;
+            setTimeout(function() {
+              if (!dropdownMenu.matches(':hover')) {
+                dropdownMenu.classList.remove('show');
+              }
+            }, 300); // Delay to allow the mouse to move to the dropdown menu
+          });
+        });
+
+        dropdownMenus.forEach(function(menu) {
+          menu.addEventListener('mouseover', function() {
+            this.classList.add('show'); // Add 'show' class when mouse enters dropdown menu
+          });
+          menu.addEventListener('mouseout', function() {
+            this.classList.remove('show'); // Remove 'show' class when mouse leaves dropdown menu
+          });
+        });
+      });
+
+  body.layout_page
+    nav(class="navbar navbar-expand-lg navbar-dark bg-primary", style="position: sticky; top:0; width: 100%; z-index: 1000;")
       div.container-fluid
         a.navbar-brand(href="/")
-          img.logo(src="/path/to/your/logo.png", alt="Logo", height="100", width="100").d-inline-block.align-top.mr-2
+          img.logo(src="/path/to/your/logo.png", alt="Logo", height="40", width="40").d-inline-block.align-top.mr-2
         button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav")
           span.navbar-toggler-icon
         div.collapse.navbar-collapse(id="navbarNav")
           ul.navbar-nav
             li.nav-item.dropdown
-              a.nav-link.dropdown-toggle(href="#" id="navbarDropdown1" role="button" data-toggle="dropdown") Personal Schedule
-              div.dropdown-menu(aria-labelledby="navbarDropdown1")
-                a.dropdown-item(href="/team_schedule") Team Schedule
-                a.dropdown-item(href="#") statistics 
+              a.nav-link.dropdown-toggle.dropdown-link(href="/" id="navbarDropdown1" role="button") Personal Schedule
+              .dropdown-menu(aria-labelledby="navbarDropdown1")
+                a.dropdown-item(href="/team_schedule/") Team Schedule
+                a.dropdown-item(href="/released-shifts") Released Shifts
+                a.dropdown-item(href="/statistics") Statistics 
             li.nav-item.dropdown
-              a.nav-link.dropdown-toggle(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
-              div.dropdown-menu(aria-labelledby="navbarDropdown2")
-                a.dropdown-item(href="#") Profile
-                a.dropdown-item(href="#") Settings
+              a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown2" role="button" data-toggle="dropdown") My Account
+              .dropdown-menu(aria-labelledby="navbarDropdown2")
+                a.dropdown-item(href="/profile") Profile
             if permission >= 1
               li.nav-item.dropdown
-                a.nav-link.dropdown-toggle(href="#" id="navbarDropdown3" role="button" data-toggle="dropdown") Management
-                div.dropdown-menu(aria-labelledby="navbarDropdown3")
+                a.nav-link.dropdown-toggle.dropdown-link(href="#" id="navbarDropdown3" role="button" data-toggle="dropdown") Management
+                .dropdown-menu(aria-labelledby="navbarDropdown3")
                   if permission >=1
-                    a.dropdown-item(href="#") Schedule planner
+                    a.dropdown-item(href="/planning-tool") Schedule planner
                   if permission >=2
                     a.dropdown-item(href="/manage-users") Manage Users
                     a.dropdown-item(href="/register") Add users
@@ -73,8 +74,29 @@ html
             p.small Email: #{email}
             p.small Role: #{role}
             p.small Department: #{department}
+            h6 Upcoming Shifts 
+            ul(style="list-style-type: none; padding-left: 0;")
+              each shift in upcomingShifts
+                //- Format the date better
+                - var date = typeof shift.date === 'string' ? new Date(shift.date) : shift.date
+                - var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                - var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                - var formattedDate = days[date.getDay()] + ' ' + date.getDate() + '. ' + months[date.getMonth()] + ' ' + date.getFullYear()
+                div(style="margin-bottom: 10px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #d3d3d3;")
+                  li= formattedDate
+                  li= shift.startTime + ' - ' + shift.endTime
             
+            h4 Stamping 
+            if timeStamp
+              form(action="/stamp-out", method="post")
+                button.btn.btn-primary(type="submit") Stamp out
+            else
+              form(action="/stamp-in", method="post")
+                button.btn.btn-primary(type="submit") Stamp in
             
+
+    
+
         div.col-10
           div.content
             block content

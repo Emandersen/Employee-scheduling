@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+    div.released_shifts-container
+        div.released_shifts-released-shift
+            div.released_shifts-work
+                h2 Released shifts
+                h2 Q#{currentQuarter} hours: #{normHours} / 481
+            p Released shifts are shifts that are currently available for employees to claim. Once a shift is claimed, it will be removed from this list.
+            each shift in releasedShifts
+                div.released_shifts-shift-box
+                    table
+                        tbody
+                            tr
+                                td #{moment(shift.date).format('dddd D. MMMM YYYY')}
+                                td Role: #{shift.role}
+                                td Department: #{shift.department}
+                                td Location: #{shift.location}
+                                td Hours: #{shift.startTime} - #{shift.endTime} (#{shift.workHours})
+                                td
+                                    form.action-buttons(method='post', action=`/toggle-shift/${shift.id}`)
+                                        button.btn(type='submit') Claim Shift
