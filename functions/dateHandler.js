@@ -186,16 +186,16 @@ function userNormWorkHours(schedule) {
   return accumulativeWorkHoursByQuarter;
 }
 
-function normHoursCurrentQuarter(userNormWorkHours, currentQuarter) {
-  switch (currentQuarter) {
+function normHoursCurrentQuarter(schedule, currentQ) {
+  switch (currentQ) {
     case 1:
-      return userNormWorkHours[0];
+      return userNormWorkHours(schedule)[0];
     case 2:
-      return userNormWorkHours[1];
+      return userNormWorkHours(schedule)[1];
     case 3:
-      return userNormWorkHours[2];
+      return userNormWorkHours(schedule)[2];
     case 4:
-      return userNormWorkHours[3];
+      return userNormWorkHours(schedule)[3];
     default:
       console.log('error');
   }

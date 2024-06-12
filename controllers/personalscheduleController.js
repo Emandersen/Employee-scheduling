@@ -69,17 +69,32 @@ async function POST_toggle_shift(req, res) {
   }
 };
 
+// Different way of getting date in iso format
+
+function testDate(dayId) {
+  const parts = dayId.split(' ');
+  const day = parseInt(parts[1]);
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const month = monthNames.indexOf(parts[2]) + 1; // JavaScript months are 0-indexed.
+  const year = parts[3];
+  const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T00:00:00.000+00:00`;
+  console.log("date 2: ", dateStr);
+}
+
 async function POST_toggle_vacation(req, res) {
   try {
     const d = new Date();
     let year = d.getFullYear();
     let date = moment.utc(req.params.dayId + ' ' + year, 'dddd D. MMMM YYYY').startOf('day');
+    
     if (!date.isValid()) {
       console.error('Invalid date format');
       return;
     }
     let isoDate = date.format('YYYY-MM-DDTHH:mm:ss.SSS+00:00');
-
+    
+    // testDate(req.params.dayId);
+    
     const schedule = await PersonalSchedule.findOne({ email: req.session.user.email, date: isoDate });
 
     if (!schedule || !schedule.released) {
@@ -111,9 +126,9 @@ async function POST_toggle_vacation(req, res) {
 async function GET_released_shifts(req, res) {
   try {
     const releasedShifts = await PersonalSchedule.find({ released: true });
-    const allSchedules = await PersonalSchedule.find({ email: req.session.user.email })
-    const norm = dateHandler.normHoursCurrentQuarter(dateHandler.userNormWorkHours(allSchedules), dateHandler.currentQuarter());
+    const allSchedules = await PersonalSchedule.find({ email: req.session.user.email });
     const quarter = dateHandler.currentQuarter();
+    const norm = dateHandler.normHoursCurrentQuarter(allSchedules, quarter);
     res.render('released_shifts', {
       title: 'Released Shifts',
       releasedShifts: releasedShifts,
